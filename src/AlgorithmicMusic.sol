@@ -32,6 +32,30 @@ contract AlgorithmicMusic is ERC721Base, IERC721Metadata, Proxied {
 		return _tokenURI(id);
 	}
 
+	function uint2str(uint256 num) private pure returns (string memory _uintAsString) {
+		unchecked {
+			if (num == 0) {
+				return "0";
+			}
+
+			uint256 j = num;
+			uint256 len;
+			while (j != 0) {
+				len++;
+				j /= 10;
+			}
+
+			bytes memory bstr = new bytes(len);
+			uint256 k = len - 1;
+			while (num != 0) {
+				bstr[k--] = bytes1(uint8(48 + (num % 10)));
+				num /= 10;
+			}
+
+			return string(bstr);
+		}
+	}
+
 	function mint(address to, bytes memory algorithm) external payable returns (uint256) {
 		// TODO
 
@@ -42,6 +66,20 @@ contract AlgorithmicMusic is ERC721Base, IERC721Metadata, Proxied {
 
 	// solhint-disable-next-line code-complexity
 	function _tokenURI(uint256 id) internal pure returns (string memory) {
-		return "dsdsd";
+		bytes memory buffer = ""; // empty wav
+
+		return
+			string(
+				bytes.concat(
+					'data:application/json,{"name":"Algorithmic%20Music","description":"Onchain%20Algorithmic%20Music","external_url":"TODO","image":"',
+					"data:image/svg+xml,<svg%20viewBox='0%200%2032%2016'%20xmlns='http://www.w3.org/2000/svg'><text%20x='50%'%20y='50%'%20dominant-baseline='middle'%20text-anchor='middle'%20style='fill:rgb(219,39,119);font-size:12px;'>",
+					bytes(uint2str(id)),
+					"</text></svg>",
+					'","animation_url":"data:audio/wav;base64,UklGRgAAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAA',
+					// Base64.encode(buffer),
+					buffer,
+					'"}'
+				)
+			);
 	}
 }
