@@ -1,6 +1,5 @@
 import {HardhatRuntimeEnvironment} from 'hardhat/types';
 import {DeployFunction} from 'hardhat-deploy/types';
-import {parseEther} from '@ethersproject/units';
 
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 	const {deployments, getNamedAccounts} = hre;
@@ -17,7 +16,11 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 	});
 
 	if (!hre.network.live) {
-		await execute('AlgorithmicMusic', {from: deployer, log: true}, 'mint', deployer, '0xbbbb');
+		try {
+			await execute('AlgorithmicMusic', {from: deployer, log: true}, 'mint', deployer, '0xbbbb');
+		} catch (err) {
+			console.error(err);
+		}
 	}
 };
 export default func;

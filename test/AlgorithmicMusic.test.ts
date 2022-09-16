@@ -18,6 +18,9 @@ const setup = deployments.createFixture(async () => {
 describe('AlgorithmicMusic', function () {
 	it('works', async function () {
 		const state = await setup();
-		expect(state).to.be.not.null;
+		await expect(state.users[0].AlgorithmicMusic.mint(state.users[0].address, '0xBBBBCC')).to.emit(
+			state.AlgorithmicMusic,
+			'Transfer'
+		);
 	});
 });
