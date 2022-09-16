@@ -3,7 +3,7 @@ pragma solidity 0.8.16;
 
 import "./ERC721Base.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol";
-import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+import "base64-sol/base64.sol";
 import "hardhat-deploy/solc_0.8/proxy/Proxied.sol";
 
 contract AlgorithmicMusic is ERC721Base, IERC721Metadata, Proxied {
@@ -77,8 +77,7 @@ contract AlgorithmicMusic is ERC721Base, IERC721Metadata, Proxied {
 					bytes(uint2str(id)),
 					"</text></svg>",
 					'","animation_url":"data:audio/wav;base64,UklGRgAAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAA',
-					// Base64.encode(buffer),
-					buffer,
+					bytes(Base64.encode(buffer)),
 					'"}'
 				)
 			);
