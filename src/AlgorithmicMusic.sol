@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: AGPL-1.0
 pragma solidity 0.8.16;
 
 import "./ERC721Base.sol";
@@ -7,9 +7,6 @@ import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import "hardhat-deploy/solc_0.8/proxy/Proxied.sol";
 
 contract AlgorithmicMusic is ERC721Base, IERC721Metadata, Proxied {
-	bytes internal constant TEMPLATE =
-		"data:application/json,{\"name\":\"Mandala%200x0000000000000000000000000000000000000000\",\"description\":\"A%20Unique%20Mandala\",\"image\":\"data:image/svg+xml,<svg%20xmlns='http://www.w3.org/2000/svg'%20shape-rendering='crispEdges'%20width='512'%20height='512'><g%20transform='scale(64)'><image%20width='8'%20height='8'%20style='image-rendering:pixelated;'%20href='data:image/gif;base64,R0lGODdhEwATAMQAAAAAAPb+Y/7EJfN3NNARQUUKLG0bMsR1SujKqW7wQwe/dQBcmQeEqjDR0UgXo4A0vrlq2AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkKAAAALAAAAAATABMAAAdNgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABNgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABNgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABNgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA6gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGBADs='/></g></svg>\"}";
-
 	constructor() {
 		postUpgrade();
 	}
@@ -26,8 +23,12 @@ contract AlgorithmicMusic is ERC721Base, IERC721Metadata, Proxied {
 		return "AM";
 	}
 
+	// function play(address contractAddress) external view returns (string memory) {
+	// 	return _tokenURI(address(uint160(contractAddress)));
+	// }
+
 	function tokenURI(uint256 id) public view virtual override returns (string memory) {
-		address owner = _ownerOf(id);
+		// address owner = _ownerOf(id);
 		// require(owner != address(0), "NOT_EXISTS");
 		return _tokenURI(id);
 	}
@@ -64,9 +65,9 @@ contract AlgorithmicMusic is ERC721Base, IERC721Metadata, Proxied {
 		return id;
 	}
 
-	// solhint-disable-next-line code-complexity
-	function _tokenURI(uint256 id) internal pure returns (string memory) {
-		bytes memory buffer = ""; // empty wav
+	function _tokenURI(uint256 id) internal view returns (string memory) {
+		bytes memory param = hex"0000000000000000000000000001F40300000000000000000000000000000000"; // offset of 6s :BB80";
+		(, bytes memory buffer) = address(uint160(id)).staticcall(param);
 
 		return
 			string(
