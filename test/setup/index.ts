@@ -1,13 +1,11 @@
 import {ethers, deployments, getUnnamedAccounts} from 'hardhat';
 import {setupUsers} from '../utils/users';
-import {MandalaToken} from '../../typechain';
-
-export const CommitmentHashZero = '0x000000000000000000000000000000000000000000000000';
+import {AlgorithmicMusic} from '../../typechain';
 
 export const setup = deployments.createFixture(async () => {
-	await deployments.fixture('MandalaToken');
+	await deployments.fixture('AlgorithmicMusic');
 	const contracts = {
-		MandalaToken: <MandalaToken>await ethers.getContract('MandalaToken')
+		AlgorithmicMusic: <AlgorithmicMusic>await ethers.getContract('AlgorithmicMusic')
 	};
 	const users = await setupUsers(await getUnnamedAccounts(), contracts);
 

@@ -1,12 +1,12 @@
 import {expect} from './chai-setup';
 import {ethers, deployments, getUnnamedAccounts} from 'hardhat';
 import {setupUsers} from './utils/users';
-import {MandalaToken} from '../typechain';
+import {AlgorithmicMusic} from '../typechain';
 
 const setup = deployments.createFixture(async () => {
-	await deployments.fixture('MandalaToken');
+	await deployments.fixture('AlgorithmicMusic');
 	const contracts = {
-		MandalaToken: <MandalaToken>await ethers.getContract('MandalaToken')
+		AlgorithmicMusic: <AlgorithmicMusic>await ethers.getContract('AlgorithmicMusic')
 	};
 	const users = await setupUsers(await getUnnamedAccounts(), contracts);
 	return {
@@ -15,7 +15,7 @@ const setup = deployments.createFixture(async () => {
 	};
 });
 
-describe('MandalaToken', function () {
+describe('AlgorithmicMusic', function () {
 	it('works', async function () {
 		const state = await setup();
 		expect(state).to.be.not.null;
