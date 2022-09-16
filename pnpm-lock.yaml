@@ -2,12 +2,14 @@ lockfileVersion: 5.4
 
 specifiers:
   '@ethersproject/abstract-provider': ^5.7.0
+  '@ethersproject/asm': ^5.7.0
   '@ethersproject/units': ^5.7.0
   '@nomiclabs/hardhat-ethers': npm:hardhat-deploy-ethers@0.3.0-beta.12
   '@openzeppelin/contracts': ^4.7.3
   '@typechain/ethers-v5': ^10.0.0
   '@typechain/hardhat': ^6.0.0
   '@types/chai': ^4.3.1
+  '@types/fs-extra': ^9.0.13
   '@types/mocha': ^9.1.0
   '@types/node': ^18.7.14
   chai: ^4.3.6
@@ -33,12 +35,14 @@ specifiers:
 
 devDependencies:
   '@ethersproject/abstract-provider': 5.7.0
+  '@ethersproject/asm': 5.7.0
   '@ethersproject/units': 5.7.0
   '@nomiclabs/hardhat-ethers': /hardhat-deploy-ethers/0.3.0-beta.12_im6uuiflh5ovyfxdp4ogx3ls3y
   '@openzeppelin/contracts': 4.7.3
   '@typechain/ethers-v5': 10.1.0_drswgcswmfgijycazbbuyzqpku
   '@typechain/hardhat': 6.1.2_n5vb2y6iqwhmnf5wap35g6i6qu
   '@types/chai': 4.3.3
+  '@types/fs-extra': 9.0.13
   '@types/mocha': 9.1.1
   '@types/node': 18.7.14
   chai: 4.3.6
@@ -129,6 +133,15 @@ packages:
       '@ethersproject/keccak256': 5.7.0
       '@ethersproject/logger': 5.7.0
       '@ethersproject/rlp': 5.7.0
+    dev: true
+
+  /@ethersproject/asm/5.7.0:
+    resolution: {integrity: sha512-0HzY0vewoDEGE5Rxjd7eKsvfql1Gj/w/QSODTqjWsltWMeLjA07K4iuA+nfYxQkx6Eu+9GgPptA6icdnKBDBtg==}
+    dependencies:
+      ethers: 5.7.0
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
     dev: true
 
   /@ethersproject/base64/5.7.0:
@@ -956,6 +969,12 @@ packages:
 
   /@types/form-data/0.0.33:
     resolution: {integrity: sha1-yayFsqX9GENbjIXZ7LUObWyJP/g=}
+    dependencies:
+      '@types/node': 18.7.14
+    dev: true
+
+  /@types/fs-extra/9.0.13:
+    resolution: {integrity: sha512-nEnwB++1u5lVDM2UI4c1+5R+FYaKfaAzS4OococimjVm3nQw3TuzH5UNsocrcTBbhnerblyHj4A49qXbIiZdpA==}
     dependencies:
       '@types/node': 18.7.14
     dev: true
