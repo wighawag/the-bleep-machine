@@ -11,7 +11,6 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 	await deploy('AlgorithmicMusic', {
 		from: deployer,
 		log: true,
-		args: [],
 		proxy: !hre.network.live ? 'postUpgrade' : false,
 		autoMine: true,
 		skipIfAlreadyDeployed: hre.network.live

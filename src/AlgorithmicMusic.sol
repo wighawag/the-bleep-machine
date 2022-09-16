@@ -28,7 +28,7 @@ contract AlgorithmicMusic is ERC721Base, IERC721Metadata, Proxied {
 
 	function tokenURI(uint256 id) public view virtual override returns (string memory) {
 		address owner = _ownerOf(id);
-		require(owner != address(0), "NOT_EXISTS");
+		// require(owner != address(0), "NOT_EXISTS");
 		return _tokenURI(id);
 	}
 
@@ -36,12 +36,12 @@ contract AlgorithmicMusic is ERC721Base, IERC721Metadata, Proxied {
 		// TODO
 
 		uint256 id = uint256(keccak256(algorithm));
-		emit Transfer(address(0), to, id);
+		_mint(id, to);
 		return id;
 	}
 
 	// solhint-disable-next-line code-complexity
 	function _tokenURI(uint256 id) internal pure returns (string memory) {
-		return "";
+		return "dsdsd";
 	}
 }

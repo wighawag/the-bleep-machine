@@ -132,7 +132,7 @@
             })
           }).then(v => v.json());
           if (result.result.length) {
-            return {contractAddress: result.result[result.result.length - 1].address, tokenIDAsHex: result.result[result.result.length - 1].topics[3].slice(26)};
+            return {contractAddress: result.result[result.result.length - 1].address, tokenIDAsHex: result.result[result.result.length - 1].topics[3].slice(2)};
           }
           if (fromBlockNumber == 0) {
             latestBlock = undefined;
