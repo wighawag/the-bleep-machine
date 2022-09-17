@@ -7,6 +7,11 @@ import "base64-sol/base64.sol";
 import "hardhat-deploy/solc_0.8/proxy/Proxied.sol";
 
 contract AlgorithmicMusic is ERC721Base, IERC721Metadata, Proxied {
+
+    // 1F403 = 128003 = 16.000375 seconds
+    // 186A258 = 25600600 = 3200.075 seconds
+    bytes constant DEFAULT_PARAMS = hex"0000000000000000000000000001F40300000000000000000000000000000000"; // offset of 6s :BB80";
+
 	constructor() {
 		postUpgrade();
 	}
@@ -97,8 +102,7 @@ contract AlgorithmicMusic is ERC721Base, IERC721Metadata, Proxied {
 	// }
 
 	function _tokenURI(uint256 id) internal view returns (string memory) {
-		bytes memory param = hex"0000000000000000000000000001F40300000000000000000000000000000000"; // offset of 6s :BB80";
-		(, bytes memory buffer) = address(uint160(id)).staticcall(param);
+		(, bytes memory buffer) = address(uint160(id)).staticcall(DEFAULT_PARAMS);
 
 		return
 			string(
@@ -147,8 +151,7 @@ contract AlgorithmicMusic is ERC721Base, IERC721Metadata, Proxied {
         require(executor != address(0), "CREATE_FAILS");
 
 
-        bytes memory param = hex"0000000000000000000000000001F40300000000000000000000000000000000"; // offset of 6s :BB80";
-		(, bytes memory buffer) = executor.staticcall(param);
+		(, bytes memory buffer) = executor.staticcall(DEFAULT_PARAMS);
 
         return
 			string(

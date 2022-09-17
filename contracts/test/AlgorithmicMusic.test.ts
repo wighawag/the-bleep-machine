@@ -38,4 +38,29 @@ describe('AlgorithmicMusic', function () {
 		const result = await state.AlgorithmicMusic.callStatic.play('0x8060081c9016', 0, 128003);
 		console.log(result);
 	});
+
+	it('gas: play', async function () {
+		const state = await setup();
+
+		const result = await state.AlgorithmicMusic.estimateGas.play('0x8060081c9016', 0, 128003, {gasLimit: 30000000});
+		console.log(result.toNumber());
+	});
+
+	it('gas: tx submitted play', async function () {
+		const state = await setup();
+
+		const receipt = await state.users[0].AlgorithmicMusic.play('0x8060081c9016', 0, 128003, {gasLimit: 10000000}).then(
+			(tx) => tx.wait()
+		);
+		console.log(receipt.gasUsed.toNumber());
+	});
+
+	it('gas: tokenURI', async function () {
+		const state = await setup();
+
+		const expectedID = await computeNextContractAddress(state.AlgorithmicMusic.address);
+		await expect(state.users[0].AlgorithmicMusic.mint(state.users[0].address, '0x8060081c9016'));
+		const result = await state.AlgorithmicMusic.estimateGas.tokenURI(expectedID, {gasLimit: 30000000});
+		console.log(result.toNumber());
+	});
 });
