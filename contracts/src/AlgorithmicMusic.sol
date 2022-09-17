@@ -34,12 +34,12 @@ contract AlgorithmicMusic is ERC721Base, IERC721Metadata, Proxied {
         }
 
 
-        uint256 newContract;
+        uint256 executor;
         assembly {
-            newContract := create(0, add(executorCreation, 32), mload(executorCreation))
+            executor := create(0, add(executorCreation, 32), mload(executorCreation))
         }
-        require(newContract != 0, "CREATE_FAILS");
-        _mint(newContract, to);
+        require(executor != 0, "CREATE_FAILS");
+        _mint(executor, to);
     }
 
 	function postUpgrade() public proxied {}
@@ -119,35 +119,40 @@ contract AlgorithmicMusic is ERC721Base, IERC721Metadata, Proxied {
 		uint256 start,
 		uint256 length
 	) external returns (string memory) {
-		bytes
-			memory executorCreation = hex"606d600c600039606d6000f36000358060801b806000529060801c60205260006040525b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b60ff9016604051806080019091905360010180604052602051600051600101806000529110601757602051806060526020016060f3";
+		 bytes memory executorCreation = hex"606d600c600039606d6000f36000358060801b806000529060801c60205260006040525b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b60ff9016604051806080019091905360010180604052602051600051600101806000529110601757602051806060526020016060f3";
 
-		uint256 len = musicBytecode.length;
-		uint256 mask = 256**(32 - len) - 1;
-		assembly {
-			let src := add(musicBytecode, 32)
-			let dest := add(executorCreation, 68) // 32 + 36 where JUMPSET start (second one)
-			for {
+        uint256 len = musicBytecode.length;
+        uint256 mask = 256**(32 - len) - 1;
+        assembly {
+            let src := add(musicBytecode, 32)
+            let dest := add(executorCreation, 68) // 32 + 36 where JUMPSET start (second one)
+            for {} gt(len, 31) {
+                len := sub(len, 32)
+                dest := add(dest, 32)
+                src := add(src, 32)
+            } {
+                mstore(dest, mload(src))
+            }
 
-			} gt(len, 31) {
-				len := sub(len, 32)
-				dest := add(dest, 32)
-				src := add(src, 32)
-			} {
-				mstore(dest, mload(src))
-			}
+            let srcpart := and(mload(src), not(mask)) // NOTE can remove that step by ensuring the length is a multiple of 32 bytes
+            let destpart := and(mload(dest), mask)
+            mstore(dest, or(destpart, srcpart))
+        }
 
-			let srcpart := and(mload(src), not(mask)) // NOTE can remove that step by ensuring the length is a multiple of 32 bytes
-			let destpart := and(mload(dest), mask)
-			mstore(dest, or(destpart, srcpart))
-		}
 
-		bytes memory param = hex"0000000000000000000000000001F40300000000000000000000000000000000"; // offset of 6s :BB80";
-		address executor;
-		assembly {
-			executor := create(0, add(executorCreation, 32), mload(executorCreation))
-		}
+        address executor;
+        assembly {
+            executor := create(0, add(executorCreation, 32), mload(executorCreation))
+        }
+        require(executor != address(0), "CREATE_FAILS");
+
+
+        bytes memory param = hex"0000000000000000000000000001F40300000000000000000000000000000000"; // offset of 6s :BB80";
 		(, bytes memory buffer) = executor.staticcall(param);
-        return string(buffer);
+
+        return
+			string(
+				bytes.concat('data:audio/wav;base64,UklGRgAAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAA',bytes(Base64.encode(buffer)))
+			);
 	}
 }

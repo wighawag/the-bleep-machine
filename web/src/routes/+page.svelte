@@ -16,12 +16,12 @@
 			contracts.contracts.AlgorithmicMusic.abi,
 			provider
 		);
-		const result = await contract.callStatic.play('0x8060081c9016', 0, 4000);
+		const result = await contract.callStatic.play('0x8060081c9016', 0, 128003);
+		music = result;
 		// const result = await contract.callStatic.tokenURI(contracts.contracts.Executor.address);
-		// console.log(result);
-		const metadata = await fetch(result).then((v) => v.json());
-		// console.log(metadata.animation_url);
-		music = metadata.animation_url;
+		// const metadata = await fetch(result).then((v) => v.json());
+		// music = metadata.animation_url;
+
 		// await flow.execute(async (contracts) => {
 		// 	const result = contracts?.AlgorithmicMusic.play('0x8060081c9016', 0, 4000);
 		// 	console.log(result);

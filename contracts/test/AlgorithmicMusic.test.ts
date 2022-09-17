@@ -31,4 +31,11 @@ describe('AlgorithmicMusic', function () {
 		const metadata = JSON.parse(uri.substring(preludeLength).replace('%20', ' '));
 		console.log(`echo ${metadata.animation_url} | base64 -d | aplay`);
 	});
+
+	it('works with play', async function () {
+		const state = await setup();
+
+		const result = await state.AlgorithmicMusic.callStatic.play('0x8060081c9016', 0, 128003);
+		console.log(result);
+	});
 });
