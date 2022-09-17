@@ -13,7 +13,8 @@ contract Executor {
 			resultPtr := add(buffer, 32)
 
 			function f(t) -> value {
-				value := and(t, shr(8, t))
+				// value := and(t, shr(8, t)) // (t >> 8) & t
+				value := mul(t, and(shr(10, t), 42)) // ((t >> 10) & 42) * t
 			}
 
 			for {
