@@ -3,21 +3,24 @@ pragma solidity 0.8.16;
 
 import "./ERC721Base.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
 import "base64-sol/base64.sol";
 import "hardhat-deploy/solc_0.8/proxy/Proxied.sol";
 
 contract AlgorithmicMusic is ERC721Base, IERC721Metadata, Proxied {
+    using Strings for uint256;
 
     // 1F403 = 128003 = 16.000375 seconds
     // 186A258 = 25600600 = 3200.075 seconds
-     // offset of 6s :BB80";
+    // offset of 6s :BB80";
     // bytes constant DEFAULT_PARAMS = hex"0000000000000000000000000001F40300000000000000000000000000000000";
     // bytes constant DEFAULT_PARAMS = hex"0000000000000000000000000186A25800000000000000000000000000000000";
     bytes constant DEFAULT_PARAMS = hex"0000000000000000000000000001F40300000000000000000000000000000000";
 
 	constructor() {
-		postUpgrade();
+		postUpgrade(); //proxied for hot reload
 	}
+    function postUpgrade() public proxied {} //proxied for hot reload
 
 
     function mint(address to, bytes memory musicBytecode) external {
@@ -50,7 +53,7 @@ contract AlgorithmicMusic is ERC721Base, IERC721Metadata, Proxied {
         _mint(executor, to);
     }
 
-	function postUpgrade() public proxied {}
+
 
 	/// @notice A descriptive name for a collection of NFTs in this contract
 	function name() external pure override returns (string memory) {
@@ -62,47 +65,14 @@ contract AlgorithmicMusic is ERC721Base, IERC721Metadata, Proxied {
 		return "AM";
 	}
 
-	// function play(address contractAddress) external view returns (string memory) {
-	// 	return _tokenURI(address(uint160(contractAddress)));
-	// }
-
 	function tokenURI(uint256 id) public view virtual override returns (string memory) {
+        // TODO fails on non owner ?
 		// address owner = _ownerOf(id);
-		// require(owner != address(0), "NOT_EXISTS");
 		return _tokenURI(id);
 	}
 
-	function uint2str(uint256 num) private pure returns (string memory _uintAsString) {
-		unchecked {
-			if (num == 0) {
-				return "0";
-			}
 
-			uint256 j = num;
-			uint256 len;
-			while (j != 0) {
-				len++;
-				j /= 10;
-			}
 
-			bytes memory bstr = new bytes(len);
-			uint256 k = len - 1;
-			while (num != 0) {
-				bstr[k--] = bytes1(uint8(48 + (num % 10)));
-				num /= 10;
-			}
-
-			return string(bstr);
-		}
-	}
-
-	// function mint(address to, bytes memory algorithm) external payable returns (uint256) {
-	// 	// TODO
-
-	// 	uint256 id = uint256(keccak256(algorithm));
-	// 	_mint(id, to);
-	// 	return id;
-	// }
 
 	function _tokenURI(uint256 id) internal view returns (string memory) {
 		(, bytes memory buffer) = address(uint160(id)).staticcall(DEFAULT_PARAMS);
@@ -112,7 +82,7 @@ contract AlgorithmicMusic is ERC721Base, IERC721Metadata, Proxied {
 				bytes.concat(
 					'data:application/json,{"name":"Algorithmic%20Music","description":"Onchain%20Algorithmic%20Music","external_url":"TODO","image":"',
 					"data:image/svg+xml,<svg%20viewBox='0%200%2032%2016'%20xmlns='http://www.w3.org/2000/svg'><text%20x='50%'%20y='50%'%20dominant-baseline='middle'%20text-anchor='middle'%20style='fill:rgb(219,39,119);font-size:12px;'>",
-					bytes(uint2str(id)),
+					bytes(id.toString()),
 					"</text></svg>",
 					'","animation_url":"data:audio/wav;base64,UklGRgAAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAA',
 					bytes(Base64.encode(buffer)),
@@ -153,6 +123,7 @@ contract AlgorithmicMusic is ERC721Base, IERC721Metadata, Proxied {
         }
         require(executor != address(0), "CREATE_FAILS");
 
+        // TODO assembly for passing params
         // bytes memory buffer;
         // assembly {
         //     let p := mload(0x40)
