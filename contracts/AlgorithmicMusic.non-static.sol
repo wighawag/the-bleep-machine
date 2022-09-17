@@ -24,13 +24,19 @@ contract AlgorithmicMusic is ERC721Base, Proxied {
     function postUpgrade() public proxied {} //proxied for hot reload
 
 
-    function mint(address to, bytes memory musicBytecode) external {
-        require(musicBytecode.length <= 32, "INVALID_LENGTH");
-        uint256 id;
-        assembly {
-            id := mload(add(musicBytecode, 32))
-        }
-        _mint(id, to);
+    // backward compatible with currentl calls
+    // function mint(address to, bytes memory musicBytecode) external {
+    //     require(musicBytecode.length <= 32, "INVALID_LENGTH");
+    //     uint256 id;
+    //     assembly {
+    //         id := mload(add(musicBytecode, 32))
+    //     }
+    //     _mint(id, to);
+    // }
+
+    // this one need: const expectedID = await computeNextContractAddress(state.AlgorithmicMusic.address);
+    function mint(address to, bytes32 musicBytecode) external {
+        _mint(uint256(musicBytecode), to);
     }
 
 	/// @notice A descriptive name for a collection of NFTs in this contract

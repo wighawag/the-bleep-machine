@@ -1,3 +1,4 @@
+import {BigNumber} from 'ethers';
 import {deployments, getNamedAccounts} from 'hardhat';
 
 async function main() {
@@ -7,7 +8,8 @@ async function main() {
 	const args = process.argv.slice(2);
 
 	const receipt = await execute('AlgorithmicMusic', {from: deployer, log: true}, 'mint', deployer, args[0]);
-	console.log((receipt as any).logs[0].topics[3]);
+	const id = (receipt as any).logs[0].topics[3];
+	console.log(BigNumber.from(id).toString());
 }
 
 main()

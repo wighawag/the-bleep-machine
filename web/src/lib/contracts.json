@@ -1,9 +1,9 @@
 {
-  "name": "rinkeby",
-  "chainId": "4",
+  "name": "goerli",
+  "chainId": "5",
   "contracts": {
     "AlgorithmicMusic": {
-      "address": "0x958f06e532b8cf70b8a9647ffa7e3bfb5539f180",
+      "address": "0x874E0DB9757bD3dB1398942FcF276c1E69a3c085",
       "abi": [
         {
           "inputs": [],
