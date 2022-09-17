@@ -8,7 +8,7 @@ import "base64-sol/base64.sol";
 import "hardhat-deploy/solc_0.8/proxy/Proxied.sol";
 
 // TODO use a more modern ERC721base
-contract AlgorithmicMusic is ERC721Base, /*IERC721Metadata*/ Proxied {
+contract AlgorithmicMusic is ERC721Base, Proxied {
     using Strings for uint256;
 
     // 1F403 = 128003 = 16.000375 seconds
@@ -25,33 +25,12 @@ contract AlgorithmicMusic is ERC721Base, /*IERC721Metadata*/ Proxied {
 
 
     function mint(address to, bytes memory musicBytecode) external {
-        bytes memory executorCreation = hex"606d600c600039606d6000f36000358060801b806000529060801c60205260006040525b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b60ff9016604051806080019091905360010180604052602051600051600101806000529110601757602051806060526020016060f3";
-
-        uint256 len = musicBytecode.length;
-        uint256 mask = 256**(32 - len) - 1;
+        require(musicBytecode.length <= 32, "INVALID_LENGTH");
+        uint256 id;
         assembly {
-            let src := add(musicBytecode, 32)
-            let dest := add(executorCreation, 68) // 32 + 36 where JUMPSET start (second one)
-            for {} gt(len, 31) {
-                len := sub(len, 32)
-                dest := add(dest, 32)
-                src := add(src, 32)
-            } {
-                mstore(dest, mload(src))
-            }
-
-            let srcpart := and(mload(src), not(mask)) // NOTE can remove that step by ensuring the length is a multiple of 32 bytes
-            let destpart := and(mload(dest), mask)
-            mstore(dest, or(destpart, srcpart))
+            id := mload(add(musicBytecode, 32))
         }
-
-
-        uint256 executor;
-        assembly {
-            executor := create(0, add(executorCreation, 32), mload(executorCreation))
-        }
-        require(executor != 0, "CREATE_FAILS");
-        _mint(executor, to);
+        _mint(id, to);
     }
 
 	/// @notice A descriptive name for a collection of NFTs in this contract
@@ -71,8 +50,12 @@ contract AlgorithmicMusic is ERC721Base, /*IERC721Metadata*/ Proxied {
 	}
 
 
-	function _tokenURI(uint256 id) internal view returns (string memory) {
-        (, bytes memory buffer) = address(uint160(id)).staticcall(DEFAULT_PARAMS);
+	function _tokenURI(uint256 id) internal returns (string memory) {
+        bytes memory musicBytecode;
+        assembly {
+            mstore(musicBytecode, 32)
+            mstore(add(musicBytecode, 32), id)
+        }
 
 		return
 			string(
@@ -82,7 +65,7 @@ contract AlgorithmicMusic is ERC721Base, /*IERC721Metadata*/ Proxied {
 					bytes(id.toString()),
 					"</text></svg>",
 					'","animation_url":"data:audio/wav;base64,UklGRgAAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAA',
-					bytes(Base64.encode(buffer)),
+					_execute(musicBytecode, 0, 128003),
 					'"}'
 				)
 			);
