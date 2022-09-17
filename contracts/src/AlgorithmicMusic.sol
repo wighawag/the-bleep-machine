@@ -72,8 +72,6 @@ contract AlgorithmicMusic is ERC721Base, IERC721Metadata, Proxied {
 	}
 
 
-
-
 	function _tokenURI(uint256 id) internal view returns (string memory) {
 		(, bytes memory buffer) = address(uint160(id)).staticcall(DEFAULT_PARAMS);
 

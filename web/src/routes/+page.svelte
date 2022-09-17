@@ -17,10 +17,13 @@ AND
 MUL
 `;
 	async function play() {
-		// const ast = parse(algorithm);
-		// const musicBytecode = await assemble(ast);
-
-		const musicBytecode = generateBytecode(algorithm);
+		let musicBytecode;
+		if (algorithm.startsWith('ASM\n')) {
+			const ast = (window as any).asm.parse(algorithm.slice(4));
+			musicBytecode = await (window as any).asm.assemble(ast, {});
+		} else {
+			musicBytecode = generateBytecode(algorithm);
+		}
 
 		console.log({ musicBytecode });
 
