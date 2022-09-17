@@ -3,7 +3,7 @@
   "chainId": "1337",
   "contracts": {
     "AlgorithmicMusic_Implementation": {
-      "address": "0x9A676e781A523b5d0C0e43731313A708CB607508",
+      "address": "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
       "abi": [
         {
           "inputs": [],

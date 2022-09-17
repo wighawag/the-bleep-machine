@@ -16,7 +16,9 @@ contract AlgorithmicMusic is ERC721Base, /*IERC721Metadata*/ Proxied {
     // offset of 6s :BB80";
     // bytes constant DEFAULT_PARAMS = hex"0000000000000000000000000001F40300000000000000000000000000000000";
     // bytes constant DEFAULT_PARAMS = hex"0000000000000000000000000186A25800000000000000000000000000000000";
-    bytes constant DEFAULT_PARAMS = hex"0000000000000000000000000001F40300000000000000000000000000000000";
+    bytes constant DEFAULT_PARAMS = hex"000000000000000000000000000186A000000000000000000000000000000000";
+
+    bytes32 constant HEX = "0123456789abcdef0000000000000000";
 
 	constructor() {
 		postUpgrade(); //proxied for hot reload
@@ -71,22 +73,29 @@ contract AlgorithmicMusic is ERC721Base, /*IERC721Metadata*/ Proxied {
 	}
 
 
-	function _tokenURI(uint256 id) internal view returns (string memory) {
+	function _tokenURI(uint256 id) internal view returns (string memory str) {
         (, bytes memory buffer) = address(uint160(id)).staticcall(DEFAULT_PARAMS);
 
-		return
+
+
+		str =
 			string(
 				bytes.concat(
 					'data:application/json,{"name":"Algorithmic%20Music","description":"Onchain%20Algorithmic%20Music","external_url":"TODO","image":"',
-					"data:image/svg+xml,<svg%20viewBox='0%200%2032%2016'%20xmlns='http://www.w3.org/2000/svg'><text%20x='50%'%20y='50%'%20dominant-baseline='middle'%20text-anchor='middle'%20style='fill:rgb(219,39,119);font-size:12px;'>",
-					bytes(id.toString()),
-					"</text></svg>",
+					"data:image/svg+xml;charset=utf8,<svg%2520xmlns='http://www.w3.org/2000/svg'%2520shape-rendering='crispEdges'%2520width='512'%2520height='512'><defs><path%2520id='Z'%2520d='M0,0h1v1h-1z'/><use%2520id='0'%2520href='%2523Z'%2520fill='%2523f6fe63'/><use%2520id='1'%2520href='%2523Z'%2520fill='%2523fec425'/><use%2520id='2'%2520href='%2523Z'%2520fill='%2523f37734'/><use%2520id='3'%2520href='%2523Z'%2520fill='%2523d01141'/><use%2520id='4'%2520href='%2523Z'%2520fill='%2523450a2c'/><use%2520id='5'%2520href='%2523Z'%2520fill='%25236d1b32'/><use%2520id='6'%2520href='%2523Z'%2520fill='%2523c4754a'/><use%2520id='7'%2520href='%2523Z'%2520fill='%2523e8caa9'/><use%2520id='8'%2520href='%2523Z'%2520fill='%25236ef043'/><use%2520id='9'%2520href='%2523Z'%2520fill='%252307bf75'/><use%2520id='a'%2520href='%2523Z'%2520fill='%2523005c99'/><use%2520id='b'%2520href='%2523Z'%2520fill='%25230784aa'/><use%2520id='c'%2520href='%2523Z'%2520fill='%252330d1d1'/><use%2520id='d'%2520href='%2523Z'%2520fill='%25234817a3'/><use%2520id='e'%2520href='%2523Z'%2520fill='%25238034be'/><use%2520id='f'%2520href='%2523Z'%2520fill='%2523b96ad8'/></defs><g%2520transform='scale(64)'><use%2520x='00'%2520y='00'%2520href='%25233'/><use%2520x='01'%2520y='00'%2520href='%25233'/><use%2520x='02'%2520y='00'%2520href='%25233'/><use%2520x='03'%2520y='00'%2520href='%25233'/><use%2520x='04'%2520y='00'%2520href='%25233'/><use%2520x='05'%2520y='00'%2520href='%25233'/><use%2520x='06'%2520y='00'%2520href='%25233'/><use%2520x='07'%2520y='00'%2520href='%25233'/><use%2520x='00'%2520y='01'%2520href='%25233'/><use%2520x='01'%2520y='01'%2520href='%25233'/><use%2520x='02'%2520y='01'%2520href='%25233'/><use%2520x='03'%2520y='01'%2520href='%25233'/><use%2520x='04'%2520y='01'%2520href='%25233'/><use%2520x='05'%2520y='01'%2520href='%25233'/><use%2520x='06'%2520y='01'%2520href='%25233'/><use%2520x='07'%2520y='01'%2520href='%25233'/><use%2520x='00'%2520y='02'%2520href='%25233'/><use%2520x='01'%2520y='02'%2520href='%25233'/><use%2520x='02'%2520y='02'%2520href='%25233'/><use%2520x='03'%2520y='02'%2520href='%25233'/><use%2520x='04'%2520y='02'%2520href='%25233'/><use%2520x='05'%2520y='02'%2520href='%25233'/><use%2520x='06'%2520y='02'%2520href='%25233'/><use%2520x='07'%2520y='02'%2520href='%25233'/><use%2520x='00'%2520y='03'%2520href='%25233'/><use%2520x='01'%2520y='03'%2520href='%25233'/><use%2520x='02'%2520y='03'%2520href='%25233'/><use%2520x='03'%2520y='03'%2520href='%25233'/><use%2520x='04'%2520y='03'%2520href='%25233'/><use%2520x='05'%2520y='03'%2520href='%25233'/><use%2520x='06'%2520y='03'%2520href='%25233'/><use%2520x='07'%2520y='03'%2520href='%25233'/><use%2520x='00'%2520y='04'%2520href='%25233'/><use%2520x='01'%2520y='04'%2520href='%25233'/><use%2520x='02'%2520y='04'%2520href='%25233'/><use%2520x='03'%2520y='04'%2520href='%25233'/><use%2520x='04'%2520y='04'%2520href='%25233'/><use%2520x='05'%2520y='04'%2520href='%25233'/><use%2520x='06'%2520y='04'%2520href='%25233'/><use%2520x='07'%2520y='04'%2520href='%25233'/><use%2520x='00'%2520y='05'%2520href='%25233'/><use%2520x='01'%2520y='05'%2520href='%25233'/><use%2520x='02'%2520y='05'%2520href='%25233'/><use%2520x='03'%2520y='05'%2520href='%25233'/><use%2520x='04'%2520y='05'%2520href='%25233'/><use%2520x='05'%2520y='05'%2520href='%25233'/><use%2520x='06'%2520y='05'%2520href='%25233'/><use%2520x='07'%2520y='05'%2520href='%25233'/><use%2520x='00'%2520y='06'%2520href='%25233'/><use%2520x='01'%2520y='06'%2520href='%25233'/><use%2520x='02'%2520y='06'%2520href='%25233'/><use%2520x='03'%2520y='06'%2520href='%25233'/><use%2520x='04'%2520y='06'%2520href='%25233'/><use%2520x='05'%2520y='06'%2520href='%25233'/><use%2520x='06'%2520y='06'%2520href='%25233'/><use%2520x='07'%2520y='06'%2520href='%25233'/><use%2520x='00'%2520y='07'%2520href='%25233'/><use%2520x='01'%2520y='07'%2520href='%25233'/><use%2520x='02'%2520y='07'%2520href='%25233'/><use%2520x='03'%2520y='07'%2520href='%25233'/><use%2520x='04'%2520y='07'%2520href='%25233'/><use%2520x='05'%2520y='07'%2520href='%25233'/><use%2520x='06'%2520y='07'%2520href='%25233'/><use%2520x='07'%2520y='07'%2520href='%25233'/></g></svg>",
 					'","animation_url":"data:audio/wav;base64,UklGRgAAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAA',
 					bytes(Base64.encode(buffer)),
 					'"}'
 				)
-			);
+			); // 1193, 46
 
+        for (uint256 i = 0; i < 256; i +=8) {
+            uint256 index = i / 8;
+            bytes(str)[129 + 1193 + index*46] = HEX[uint8(bytes32(id)[index] >> 4)];
+            bytes(str)[129 + 1193 + 46 + index*46 ] = HEX[uint8(bytes32(id)[index] & 0x0F)];
+        }
+
+        // bytes(str)[1193+46] = '5';
         // TODO _finishBuffer(bytes(result), 0x1F403);
 	}
 
