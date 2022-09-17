@@ -112,6 +112,26 @@ async function performAction(rawArgs) {
 
 		execute(`npm run serve`, 'web.log', {shell: false});
 		await execute(`npm run local:dev`);
+	} else if (firstArg === 'geth:watch') {
+		try {
+			await execute(`docker-compose down -v --remove-orphans`).catch((e) => console.log(e));
+		} catch (err) {
+			console.error(`down error`, err);
+		}
+
+		try {
+			execute(`docker-compose up`, 'geth.log', {shell: false}).catch((e) => console.log(e));
+		} catch (err) {
+			console.error(`up error`, err);
+		}
+
+		await execute(`wait-on tcp:localhost:8545`);
+		await performAction([`run`, 'localhost', 'scripts/fundingFromCoinbase.ts']);
+		try {
+			fs.rmSync('deployments/localhost', {recursive: true});
+		} catch (err) {}
+
+		await execute(`npm run local:dev`);
 	} else if (firstArg === 'deploy') {
 		const {fixedArgs, extra} = parseArgs(args, 1, {});
 		await execute(`hardhat --network ${fixedArgs[0]} deploy --report-gas ${extra.join(' ')}`);

@@ -12,6 +12,9 @@
 		"format": "prettier --write ."
 	},
 	"devDependencies": {
+		"@ethersproject/abstract-provider": "^5.7.0",
+		"@ethersproject/contracts": "^5.7.0",
+		"@ethersproject/providers": "^5.7.1",
 		"@sveltejs/adapter-auto": "next",
 		"@sveltejs/kit": "next",
 		"prettier": "^2.6.2",
@@ -23,5 +26,9 @@
 		"typescript": "^4.7.4",
 		"vite": "^3.1.0"
 	},
-	"type": "module"
+	"type": "module",
+	"dependencies": {
+		"named-logs": "^0.2.0",
+		"web3w": "0.3.2-beta.22"
+	}
 }
