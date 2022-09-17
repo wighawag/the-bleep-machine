@@ -150,7 +150,6 @@
 
 
       function fetchToken(contractAddress, tokenIDAsHex) {
-        console.log('FETCH', {contractAddress, tokenIDAsHex});
         const data = '0xc87b56dd' + tokenIDAsHex.padStart(64, '0');
 
         return fetch('http://localhost:8545', {
@@ -185,7 +184,6 @@
       async function fetchIt(contractAddress, tokenIDAsHex) {
 
         if (contractAddress && tokenIDAsHex) {
-          console.log('fetchIT', {contractAddress, tokenIDAsHex})
           return fetchToken(contractAddress, tokenIDAsHex);
         } else {
           if (firsTime) {
@@ -221,7 +219,6 @@
           if (last_contractAddress !== contractAddress || last_tokenID != tokenID) {
             last_contractAddress = contractAddress;
             last_tokenIDx = tokenID;
-            console.log({tokenID, contractAddress});
           }
 
           tokenIDAsHex = tokenID.startsWith('0x') ? tokenID.slice(2) : parseInt(tokenID).toString(16);
