@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { flow, wallet } from '$lib/blockchain/wallet';
+	import { chain, fallback, flow, wallet } from '$lib/blockchain/wallet';
 	import WalletAccess from '$lib/blockchain/WalletAccess.svelte';
 	import { JsonRpcProvider } from '@ethersproject/providers';
 	import { Contract } from '@ethersproject/contracts';
@@ -40,11 +40,18 @@ MUL
 		// const metadata = await fetch(result).then((v) => v.json());
 		// music = metadata.animation_url;
 
-		await flow.execute(async (contracts) => {
-			const result = await contracts.AlgorithmicMusic.callStatic.play(musicBytecode, 0, 128003);
+		if (!wallet.contracts && fallback.provider) {
+			const AlgorithmMusic = $contractsInfos.contracts.AlgorithmicMusic;
+			const contract = new Contract(AlgorithmMusic.address, AlgorithmMusic.abi, fallback.provider);
+			const result = await contract.callStatic.play(musicBytecode, 0, 128003);
 			music = result;
-			// console.log(result);
-		});
+		} else {
+			await flow.execute(async (contracts) => {
+				const result = await contracts.AlgorithmicMusic.callStatic.play(musicBytecode, 0, 128003);
+				music = result;
+				// console.log(result);
+			});
+		}
 	}
 
 	async function mint() {

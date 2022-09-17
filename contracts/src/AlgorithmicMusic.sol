@@ -86,6 +86,8 @@ contract AlgorithmicMusic is ERC721Base, /*IERC721Metadata*/ Proxied {
 					'"}'
 				)
 			);
+
+        // TODO _finishBuffer(bytes(result), 0x1F403);
 	}
 
 	function play(
@@ -94,6 +96,8 @@ contract AlgorithmicMusic is ERC721Base, /*IERC721Metadata*/ Proxied {
 		uint256 length
 	) external returns (string memory) {
         return string(bytes.concat('data:audio/wav;base64,UklGRgAAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAA', _execute(musicBytecode, start, length)));
+
+        // TODO _finishBuffer(bytes(result), 0x1F403);
 	}
 
     function _execute(bytes memory musicBytecode, uint256 start,
