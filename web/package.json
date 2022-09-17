@@ -28,6 +28,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@ethersproject/asm": "^5.7.0",
 		"named-logs": "^0.2.0",
 		"web3w": "0.3.2-beta.22"
 	}

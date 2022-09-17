@@ -26,6 +26,12 @@ const config: UserConfig = {
 	plugins: [sveltekit()],
 	define: {
 		__VERSION__: JSON.stringify(VERSION)
+	},
+	build: {
+		commonjsOptions: {
+			transformMixedEsModules: false
+			// exclude: ['node_modules/lodash-es/**', 'node_modules/@types/lodash-es/**']
+		}
 	}
 };
 
