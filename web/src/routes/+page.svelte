@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { flow } from '$lib/blockchain/wallet';
+	import { flow, wallet } from '$lib/blockchain/wallet';
 	import WalletAccess from '$lib/blockchain/WalletAccess.svelte';
 	import { JsonRpcProvider } from '@ethersproject/providers';
 	import { Contract } from '@ethersproject/contracts';
@@ -16,8 +16,8 @@ PUSH1 2a
 AND
 MUL
 `;
+	let musicBytecode: string | undefined;
 	async function play() {
-		let musicBytecode;
 		if (algorithm.startsWith('ASM\n')) {
 			const ast = (window as any).asm.parse(algorithm.slice(4));
 			musicBytecode = await (window as any).asm.assemble(ast, {});
@@ -27,26 +27,35 @@ MUL
 
 		console.log({ musicBytecode });
 
-		const provider = new JsonRpcProvider('http://localhost:8545');
-		const contracts = get(contractsInfos);
-		const contract = new Contract(
-			contracts.contracts.AlgorithmicMusic.address,
-			contracts.contracts.AlgorithmicMusic.abi,
-			provider
-		);
-		const result = await contract.callStatic.play(musicBytecode, 0, 128003);
-		music = result;
+		// const provider = new JsonRpcProvider('http://localhost:8545');
+		// const contracts = get(contractsInfos);
+		// const contract = new Contract(
+		// 	contracts.contracts.AlgorithmicMusic.address,
+		// 	contracts.contracts.AlgorithmicMusic.abi,
+		// 	provider
+		// );
+		// const result = await contract.callStatic.play(musicBytecode, 0, 128003);
+		// music = result;
 		// const result = await contract.callStatic.tokenURI(contracts.contracts.Executor.address);
 		// const metadata = await fetch(result).then((v) => v.json());
 		// music = metadata.animation_url;
 
-		// await flow.execute(async (contracts) => {
-		// 	const result = contracts?.AlgorithmicMusic.play('0x8060081c9016', 0, 4000);
-		// 	console.log(result);
-		// });
+		await flow.execute(async (contracts) => {
+			const result = await contracts.AlgorithmicMusic.callStatic.play(musicBytecode, 0, 128003);
+			music = result;
+			// console.log(result);
+		});
 	}
 
-	async function mint() {}
+	async function mint() {
+		if (wallet.contracts) {
+			wallet.contracts.AlgorithmicMusic.mint($wallet.address, musicBytecode);
+		} else {
+			await flow.execute(async (contracts) => {
+				contracts.AlgorithmicMusic.mint($wallet.address, musicBytecode);
+			});
+		}
+	}
 </script>
 
 <WalletAccess>
@@ -59,6 +68,9 @@ MUL
 	<button on:click={() => mint()}>mint</button>
 	<button on:click={() => (music = undefined)}>clear</button>
 {:else}
+	{#if musicBytecode}
+		<button on:click={() => mint()}>mint</button>
+	{/if}
 	<button on:click={() => play()}>play</button>
 {/if}
 

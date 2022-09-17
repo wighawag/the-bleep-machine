@@ -1,6 +1,6 @@
 {
   "name": "localhost",
-  "chainId": "31337",
+  "chainId": "1337",
   "contracts": {
     "AlgorithmicMusic_Implementation": {
       "address": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
@@ -174,19 +174,13 @@
             },
             {
               "internalType": "bytes",
-              "name": "algorithm",
+              "name": "musicBytecode",
               "type": "bytes"
             }
           ],
           "name": "mint",
-          "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "stateMutability": "payable",
+          "outputs": [],
+          "stateMutability": "nonpayable",
           "type": "function"
         },
         {
@@ -876,19 +870,13 @@
             },
             {
               "internalType": "bytes",
-              "name": "algorithm",
+              "name": "musicBytecode",
               "type": "bytes"
             }
           ],
           "name": "mint",
-          "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "stateMutability": "payable",
+          "outputs": [],
+          "stateMutability": "nonpayable",
           "type": "function"
         },
         {
@@ -1140,15 +1128,6 @@
           ],
           "stateMutability": "payable",
           "type": "constructor"
-        }
-      ]
-    },
-    "Executor": {
-      "address": "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
-      "abi": [
-        {
-          "stateMutability": "nonpayable",
-          "type": "fallback"
         }
       ]
     }
