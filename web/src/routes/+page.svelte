@@ -43,11 +43,15 @@ MUL
 		if (!wallet.contracts && fallback.provider) {
 			const AlgorithmMusic = $contractsInfos.contracts.AlgorithmicMusic;
 			const contract = new Contract(AlgorithmMusic.address, AlgorithmMusic.abi, fallback.provider);
-			const result = await contract.callStatic.play(musicBytecode, 0, 128003);
+			const result = await contract.callStatic.play(musicBytecode, 0, 100000, {
+				// gasLimit: 49000000
+			});
 			music = result;
 		} else {
 			await flow.execute(async (contracts) => {
-				const result = await contracts.AlgorithmicMusic.callStatic.play(musicBytecode, 0, 128003);
+				const result = await contracts.AlgorithmicMusic.callStatic.play(musicBytecode, 0, 100000, {
+					// gasLimit: 49000000
+				});
 				music = result;
 				// console.log(result);
 			});

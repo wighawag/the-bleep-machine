@@ -1,3 +1,4 @@
+; t * ((t >> 10) & 42)
 dup1()        ; [TIME, TIME]
 shr(10, $$)   ; [TIME, shr(10,t)]
 and(42, $$)   ; [TIME, and(shr(10, t), 42)]
