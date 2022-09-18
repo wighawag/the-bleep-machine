@@ -1,16 +1,20 @@
 import {HardhatRuntimeEnvironment} from 'hardhat/types';
 import {DeployFunction} from 'hardhat-deploy/types';
+import {getChainId} from 'hardhat';
 
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 	const {deployments, getNamedAccounts} = hre;
-	const {deploy, execute, log} = deployments;
+	const {deploy} = deployments;
 
 	const {deployer} = await getNamedAccounts();
+
+	const chainId = await getChainId();
+	const dev = chainId != '1'; //!hre.network.live; // TODO use tag
 
 	await deploy('AlgorithmicMusic', {
 		from: deployer,
 		log: true,
-		proxy: !hre.network.live ? 'postUpgrade' : false,
+		proxy: dev ? 'postUpgrade' : false,
 		autoMine: true,
 		skipIfAlreadyDeployed: hre.network.live
 	});
