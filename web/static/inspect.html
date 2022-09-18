@@ -1,12 +1,13 @@
 <html>
 	<head>
-		<title>Inspect NFT</title>
+		<title>EVM, The Ethereum Vibe Machine.</title>
 		<style>
 			* {
         background-color: #111111;
         color: wheat;
 				margin: 0;
 				padding: 0;
+        font-family: Hack, monospace;
 			}
 			p,
 			h1 {
@@ -45,6 +46,15 @@
 					height: auto;
 				}
 			}
+
+      #nft-title {
+        margin-top: 1em;
+      }
+
+      #nft-description {
+        margin-bottom: 2em;
+      }
+
 		</style>
 	</head>
 	<body>
@@ -59,7 +69,7 @@
 				<iframe id="nft-iframe"></iframe>
         </div>
 			</p>
-			<p><audio id="nft-sound" controls autoplay></audio></p>
+			<p><audio id="nft-sound" controls autoplay loop></audio></p>
 		</div>
 		<script>
 			function hex_to_ascii(str1) {

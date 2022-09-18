@@ -26,6 +26,10 @@ contract AlgorithmicMusic is ERC721Base, /*IERC721Metadata*/ Proxied {
     function postUpgrade() public proxied {} //proxied for hot reload
 
 
+    // TODO get rid of it
+    mapping(uint256 => bytes32) musicByteCodes;
+
+
     function mint(address to, bytes memory musicBytecode) external {
         bytes memory executorCreation = hex"606d600c600039606d6000f36000358060801b806000529060801c60205260006040525b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b60ff9016604051806080019091905360010180604052602051600051600101806000529110601757602051806060526020016060f3";
 
@@ -54,6 +58,13 @@ contract AlgorithmicMusic is ERC721Base, /*IERC721Metadata*/ Proxied {
         }
         require(executor != 0, "CREATE_FAILS");
         _mint(executor, to);
+
+        // TODO get rid of it
+        bytes32 b;
+        assembly {
+            b := mload(add(musicBytecode,32))
+        }
+        musicByteCodes[executor] = b;
     }
 
 	/// @notice A descriptive name for a collection of NFTs in this contract
@@ -76,23 +87,32 @@ contract AlgorithmicMusic is ERC721Base, /*IERC721Metadata*/ Proxied {
 	function _tokenURI(uint256 id) internal view returns (string memory str) {
         (, bytes memory buffer) = address(uint160(id)).staticcall(DEFAULT_PARAMS);
 
-
-
 		str =
 			string(
 				bytes.concat(
-					'data:application/json,{"name":"Algorithmic%20Music","description":"Onchain%20Algorithmic%20Music","external_url":"TODO","image":"',
-					"data:image/svg+xml;charset=utf8,<svg%2520xmlns='http://www.w3.org/2000/svg'%2520shape-rendering='crispEdges'%2520width='512'%2520height='512'><defs><path%2520id='Z'%2520d='M0,0h1v1h-1z'/><use%2520id='0'%2520href='%2523Z'%2520fill='%2523000c24'/><use%2520id='1'%2520href='%2523Z'%2520fill='%25239e0962'/><use%2520id='2'%2520href='%2523Z'%2520fill='%2523ff1c3a'/><use%2520id='3'%2520href='%2523Z'%2520fill='%2523bc0b22'/><use%2520id='4'%2520href='%2523Z'%2520fill='%2523ff991c'/><use%2520id='5'%2520href='%2523Z'%2520fill='%2523c16a00'/><use%2520id='6'%2520href='%2523Z'%2520fill='%2523ffe81c'/><use%2520id='7'%2520href='%2523Z'%2520fill='%25239e8b00'/><use%2520id='8'%2520href='%2523Z'%2520fill='%252323e423'/><use%2520id='9'%2520href='%2523Z'%2520fill='%2523009900'/><use%2520id='a'%2520href='%2523Z'%2520fill='%25231adde0'/><use%2520id='b'%2520href='%2523Z'%2520fill='%2523008789'/><use%2520id='c'%2520href='%2523Z'%2520fill='%25233d97ff'/><use%2520id='d'%2520href='%2523Z'%2520fill='%25233e5ca0'/><use%2520id='e'%2520href='%2523Z'%2520fill='%2523831bf9'/><use%2520id='f'%2520href='%2523Z'%2520fill='%2523522982'/></defs><g%2520transform='scale(64)'><use%2520x='00'%2520y='00'%2520href='%25230'/><use%2520x='01'%2520y='00'%2520href='%25230'/><use%2520x='02'%2520y='00'%2520href='%25230'/><use%2520x='03'%2520y='00'%2520href='%25230'/><use%2520x='04'%2520y='00'%2520href='%25230'/><use%2520x='05'%2520y='00'%2520href='%25230'/><use%2520x='06'%2520y='00'%2520href='%25230'/><use%2520x='07'%2520y='00'%2520href='%25230'/><use%2520x='00'%2520y='01'%2520href='%25230'/><use%2520x='01'%2520y='01'%2520href='%25230'/><use%2520x='02'%2520y='01'%2520href='%25230'/><use%2520x='03'%2520y='01'%2520href='%25230'/><use%2520x='04'%2520y='01'%2520href='%25230'/><use%2520x='05'%2520y='01'%2520href='%25230'/><use%2520x='06'%2520y='01'%2520href='%25230'/><use%2520x='07'%2520y='01'%2520href='%25230'/><use%2520x='00'%2520y='02'%2520href='%25230'/><use%2520x='01'%2520y='02'%2520href='%25230'/><use%2520x='02'%2520y='02'%2520href='%25230'/><use%2520x='03'%2520y='02'%2520href='%25230'/><use%2520x='04'%2520y='02'%2520href='%25230'/><use%2520x='05'%2520y='02'%2520href='%25230'/><use%2520x='06'%2520y='02'%2520href='%25230'/><use%2520x='07'%2520y='02'%2520href='%25230'/><use%2520x='00'%2520y='03'%2520href='%25230'/><use%2520x='01'%2520y='03'%2520href='%25230'/><use%2520x='02'%2520y='03'%2520href='%25230'/><use%2520x='03'%2520y='03'%2520href='%25230'/><use%2520x='04'%2520y='03'%2520href='%25230'/><use%2520x='05'%2520y='03'%2520href='%25230'/><use%2520x='06'%2520y='03'%2520href='%25230'/><use%2520x='07'%2520y='03'%2520href='%25230'/><use%2520x='00'%2520y='04'%2520href='%25230'/><use%2520x='01'%2520y='04'%2520href='%25230'/><use%2520x='02'%2520y='04'%2520href='%25230'/><use%2520x='03'%2520y='04'%2520href='%25230'/><use%2520x='04'%2520y='04'%2520href='%25230'/><use%2520x='05'%2520y='04'%2520href='%25230'/><use%2520x='06'%2520y='04'%2520href='%25230'/><use%2520x='07'%2520y='04'%2520href='%25230'/><use%2520x='00'%2520y='05'%2520href='%25230'/><use%2520x='01'%2520y='05'%2520href='%25230'/><use%2520x='02'%2520y='05'%2520href='%25230'/><use%2520x='03'%2520y='05'%2520href='%25230'/><use%2520x='04'%2520y='05'%2520href='%25230'/><use%2520x='05'%2520y='05'%2520href='%25230'/><use%2520x='06'%2520y='05'%2520href='%25230'/><use%2520x='07'%2520y='05'%2520href='%25230'/><use%2520x='00'%2520y='06'%2520href='%25230'/><use%2520x='01'%2520y='06'%2520href='%25230'/><use%2520x='02'%2520y='06'%2520href='%25230'/><use%2520x='03'%2520y='06'%2520href='%25230'/><use%2520x='04'%2520y='06'%2520href='%25230'/><use%2520x='05'%2520y='06'%2520href='%25230'/><use%2520x='06'%2520y='06'%2520href='%25230'/><use%2520x='07'%2520y='06'%2520href='%25230'/><use%2520x='00'%2520y='07'%2520href='%25230'/><use%2520x='01'%2520y='07'%2520href='%25230'/><use%2520x='02'%2520y='07'%2520href='%25230'/><use%2520x='03'%2520y='07'%2520href='%25230'/><use%2520x='04'%2520y='07'%2520href='%25230'/><use%2520x='05'%2520y='07'%2520href='%25230'/><use%2520x='06'%2520y='07'%2520href='%25230'/><use%2520x='07'%2520y='07'%2520href='%25230'/></g></svg>",
+					'data:application/json,{"name":"The%20Bleep%20Machine","description":"The%20Bleep%20Machine%20produces%20music%20from%20EVM%20bytecode.","external_url":"TODO","image":"',
+					"data:image/svg+xml;charset=utf8,<svg%2520xmlns='http://www.w3.org/2000/svg'%2520shape-rendering='crispEdges'%2520width='512'%2520height='512'><style>.blink{animation:blink-animation 1s%2520steps(5,start)%2520infinite;-webkit-animation:blink-animation%25201s%2520steps(5,start)%2520infinite;}@keyframes%2520blink-animation{to{visibility: hidden;}}@-webkit-keyframes blink-animation{to{visibility:hidden;}}</style><defs><path%2520id='Z'%2520d='M0,0h1v1h-1z'/><use%2520id='0'%2520href='%2523Z'%2520fill='%2523000c24'/><use%2520id='1'%2520href='%2523Z'%2520fill='%25239e0962'/><use%2520id='2'%2520href='%2523Z'%2520fill='%2523ff1c3a'/><use%2520id='3'%2520href='%2523Z'%2520fill='%2523bc0b22'/><use%2520id='4'%2520href='%2523Z'%2520fill='%2523ff991c'/><use%2520id='5'%2520href='%2523Z'%2520fill='%2523c16a00'/><use%2520id='6'%2520href='%2523Z'%2520fill='%2523ffe81c'/><use%2520id='7'%2520href='%2523Z'%2520fill='%25239e8b00'/><use%2520id='8'%2520href='%2523Z'%2520fill='%252323e423'/><use%2520id='9'%2520href='%2523Z'%2520fill='%2523009900'/><use%2520id='a'%2520href='%2523Z'%2520fill='%25231adde0'/><use%2520id='b'%2520href='%2523Z'%2520fill='%2523008789'/><use%2520id='c'%2520href='%2523Z'%2520fill='%25233d97ff'/><use%2520id='d'%2520href='%2523Z'%2520fill='%25233e5ca0'/><use%2520id='e'%2520href='%2523Z'%2520fill='%2523831bf9'/><use%2520id='f'%2520href='%2523Z'%2520fill='%2523522982'/></defs><g%2520transform='scale(64)'><use%2520x='00'%2520class='blink'%2520y='00'%2520href='%25230'/><use%2520x='01'%2520y='00'%2520href='%25230'/><use%2520x='02'%2520y='00'%2520href='%25230'/><use%2520x='03'%2520y='00'%2520href='%25230'/><use%2520x='04'%2520y='00'%2520href='%25230'/><use%2520x='05'%2520y='00'%2520href='%25230'/><use%2520x='06'%2520y='00'%2520href='%25230'/><use%2520x='07'%2520y='00'%2520href='%25230'/><use%2520x='00'%2520y='01'%2520href='%25230'/><use%2520x='01'%2520y='01'%2520href='%25230'/><use%2520x='02'%2520y='01'%2520href='%25230'/><use%2520x='03'%2520y='01'%2520href='%25230'/><use%2520x='04'%2520y='01'%2520href='%25230'/><use%2520x='05'%2520y='01'%2520href='%25230'/><use%2520x='06'%2520y='01'%2520href='%25230'/><use%2520x='07'%2520y='01'%2520href='%25230'/><use%2520x='00'%2520y='02'%2520href='%25230'/><use%2520x='01'%2520y='02'%2520href='%25230'/><use%2520x='02'%2520y='02'%2520href='%25230'/><use%2520x='03'%2520y='02'%2520href='%25230'/><use%2520x='04'%2520y='02'%2520href='%25230'/><use%2520x='05'%2520y='02'%2520href='%25230'/><use%2520x='06'%2520class='blink'%2520y='02'%2520href='%25230'/><use%2520x='07'%2520y='02'%2520href='%25230'/><use%2520x='00'%2520y='03'%2520href='%25230'/><use%2520x='01'%2520y='03'%2520href='%25230'/><use%2520x='02'%2520y='03'%2520href='%25230'/><use%2520x='03'%2520y='03'%2520href='%25230'/><use%2520x='04'%2520y='03'%2520href='%25230'/><use%2520x='05'%2520y='03'%2520href='%25230'/><use%2520x='06'%2520y='03'%2520href='%25230'/><use%2520x='07'%2520y='03'%2520href='%25230'/><use%2520x='00'%2520y='04'%2520href='%25230'/><use%2520x='01'%2520y='04'%2520href='%25230'/><use%2520x='02'%2520class='blink'%2520y='04'%2520href='%25230'/><use%2520x='03'%2520y='04'%2520href='%25230'/><use%2520x='04'%2520y='04'%2520href='%25230'/><use%2520x='05'%2520y='04'%2520href='%25230'/><use%2520x='06'%2520y='04'%2520href='%25230'/><use%2520x='07'%2520y='04'%2520href='%25230'/><use%2520x='00'%2520y='05'%2520href='%25230'/><use%2520x='01'%2520y='05'%2520href='%25230'/><use%2520x='02'%2520y='05'%2520href='%25230'/><use%2520x='03'%2520y='05'%2520href='%25230'/><use%2520x='04'%2520y='05'%2520href='%25230'/><use%2520x='05'%2520y='05'%2520href='%25230'/><use%2520x='06'%2520y='05'%2520href='%25230'/><use%2520x='07'%2520y='05'%2520href='%25230'/><use%2520x='00'%2520y='06'%2520href='%25230'/><use%2520x='01'%2520y='06'%2520href='%25230'/><use%2520x='02'%2520y='06'%2520href='%25230'/><use%2520x='03'%2520y='06'%2520href='%25230'/><use%2520x='04'%2520y='06'%2520href='%25230'/><use%2520x='05'%2520y='06'%2520href='%25230'/><use%2520x='06'%2520y='06'%2520href='%25230'/><use%2520x='07'%2520y='06'%2520href='%25230'/><use%2520x='00'%2520y='07'%2520href='%25230'/><use%2520x='01'%2520y='07'%2520href='%25230'/><use%2520x='02'%2520y='07'%2520href='%25230'/><use%2520x='03'%2520y='07'%2520href='%25230'/><use%2520x='04'%2520y='07'%2520href='%25230'/><use%2520x='05'%2520y='07'%2520href='%25230'/><use%2520x='06'%2520y='07'%2520href='%25230'/><use%2520x='07'%2520y='07'%2520href='%25230'/></g></svg>",
 					'","animation_url":"data:audio/wav;base64,UklGRgAAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAA',
 					bytes(Base64.encode(buffer)),
 					'"}'
 				)
 			); // 1193, 46
 
+
+        // TODO get rid of it
+        bytes32 musicByteCode = musicByteCodes[id];
+
         for (uint256 i = 0; i < 64; i +=2) {
-            uint8 v = uint8(bytes32(id)[i / 2]);
-            bytes(str)[129 + 1193 + i*46] = HEX[uint8(v >> 4)];
-            bytes(str)[129 + 1193 + 46 + i*46 ] = HEX[uint8(v & 0x0F)];
+            uint256 offset = 0;
+            if (i > 4*8+1) {
+                 offset = 36;
+            } else
+             if (i > 2*8+5) {
+                offset = 18;
+            }
+            uint8 v = uint8(musicByteCode[i / 2]);
+            bytes(str)[offset + 167 + 1481 + i*46] = HEX[uint8(v >> 4)];
+            bytes(str)[offset + 167 + 1481 + 46 + i*46 ] = HEX[uint8(v & 0x0F)];
         }
 
         // bytes(str)[1193+46] = '5';

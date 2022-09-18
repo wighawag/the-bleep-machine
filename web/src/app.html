@@ -5,7 +5,20 @@
 		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
 		<meta name="viewport" content="width=device-width" />
 		%sveltekit.head%
+		<link
+			rel="stylesheet"
+			href="//cdn.jsdelivr.net/npm/hack-font@3.3.0/build/web/hack-subset.css"
+		/>
 		<script src="/asm-bundle.js"></script>
+		<style>
+			* {
+				background-color: #111111;
+				color: wheat;
+				margin: 0;
+				padding: 0;
+				font-family: Hack, monospace;
+			}
+		</style>
 	</head>
 	<body>
 		<div>%sveltekit.body%</div>
