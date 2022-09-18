@@ -70,23 +70,66 @@ MUL
 </script>
 
 <WalletAccess>
-	<textarea bind:value={algorithm} rows="30" cols="50" placeholder="Type your code" />
-</WalletAccess>
+	<div id="wrapper">
+		<h1 id="nft-title">The Bleep Machine</h1>
+		<p id="nft-description">The Bleep Machine produces music from EVM bytecode.</p>
+		<center>
+			<textarea bind:value={algorithm} rows="30" cols="50" placeholder="Type your code" /></center
+		>
+		<p />
 
-{#if music}
-	<audio src={music} autoplay controls />
-	<br />
-	<button on:click={() => mint()}>mint</button>
-	<button on:click={() => (music = undefined)}>clear</button>
-{:else}
-	{#if musicBytecode}
-		<button on:click={() => mint()}>mint</button>
-	{/if}
-	<button on:click={() => play()}>play</button>
-{/if}
+		{#if music}
+			<audio src={music} autoplay controls />
+			<br />
+			<button on:click={() => mint()}>mint</button>
+			<button on:click={() => (music = undefined)}>clear</button>
+		{:else}
+			{#if musicBytecode}
+				<button on:click={() => mint()}>mint</button>
+			{/if}
+			<button on:click={() => play()}>play</button>
+		{/if}
+	</div>
+</WalletAccess>
 
 <style>
 	textarea {
 		display: block;
+		font-size: large;
+	}
+
+	* {
+		background-color: #111111;
+		color: wheat;
+		margin: 0;
+		padding: 0;
+		font-family: Hack, monospace;
+	}
+	p,
+	h1 {
+		margin: 1em 1em 1em 1em;
+	}
+	:root {
+		--width: 80vw;
+	}
+
+	button {
+		font-size: 1em;
+		border: 0.1em solid;
+		padding: 0.3em;
+		cursor: pointer;
+	}
+	#wrapper {
+		text-align: center;
+		height: 100%;
+		margin: 0;
+	}
+
+	#nft-title {
+		margin-top: 1em;
+	}
+
+	#nft-description {
+		margin-bottom: 2em;
 	}
 </style>
