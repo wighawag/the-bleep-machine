@@ -1,9 +1,9 @@
 {
-  "name": "localhost",
-  "chainId": "1337",
+  "name": "goerli",
+  "chainId": "5",
   "contracts": {
     "AlgorithmicMusic": {
-      "address": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
+      "address": "0x73a8C9369D69C76c8F2aFcc2278E55Bb75584836",
       "abi": [
         {
           "anonymous": false,
@@ -553,7 +553,7 @@
       ]
     },
     "AlgorithmicMusic_Implementation": {
-      "address": "0x71089Ba41e478702e1904692385Be3972B2cBf9e",
+      "address": "0xCD741FaD2969Bd70e07453e93dAFC69D37797B4f",
       "abi": [
         {
           "inputs": [],
@@ -984,7 +984,7 @@
       ]
     },
     "AlgorithmicMusic_Proxy": {
-      "address": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
+      "address": "0x73a8C9369D69C76c8F2aFcc2278E55Bb75584836",
       "abi": [
         {
           "inputs": [

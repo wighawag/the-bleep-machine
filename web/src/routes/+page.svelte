@@ -69,6 +69,8 @@ MUL
 	}
 </script>
 
+<a style="top:1em;right:1em;position:absolute;" id="about" href="about/">Info</a>
+
 <WalletAccess>
 	<div id="wrapper">
 		<h1 id="nft-title">The Bleep Machine</h1>
@@ -81,11 +83,23 @@ MUL
 		{#if music}
 			<audio src={music} autoplay controls />
 			<br />
-			<button on:click={() => mint()}>mint</button>
+			<button on:click={() => mint()}>mint (on goerli)</button>
 			<button on:click={() => (music = undefined)}>clear</button>
+			<p>
+				Once minted, you can find it on <a
+					href="https://testnets.opensea.io/collection/algorithmic-music-juhg3dsjqb"
+					target="_blank">opensea</a
+				>
+			</p>
 		{:else}
 			{#if musicBytecode}
-				<button on:click={() => mint()}>mint</button>
+				<button on:click={() => mint()}>mint (on goerli)</button>
+				<p>
+					Once minted, you can find it on <a
+						href="https://testnets.opensea.io/collection/algorithmic-music-juhg3dsjqb"
+						target="_blank">opensea</a
+					>
+				</p>
 			{/if}
 			<button on:click={() => play()}>play</button>
 		{/if}

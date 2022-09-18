@@ -91,7 +91,9 @@ importers:
       '@ethersproject/contracts': ^5.7.0
       '@ethersproject/providers': ^5.7.1
       '@sveltejs/adapter-auto': next
+      '@sveltejs/adapter-static': 1.0.0-next.43
       '@sveltejs/kit': next
+      ipfs-gateway-emulator: 4.2.1-ipfs.2
       named-logs: ^0.2.0
       prettier: ^2.6.2
       prettier-plugin-svelte: ^2.7.0
@@ -111,7 +113,9 @@ importers:
       '@ethersproject/contracts': 5.7.0
       '@ethersproject/providers': 5.7.1
       '@sveltejs/adapter-auto': 1.0.0-next.75
+      '@sveltejs/adapter-static': 1.0.0-next.43
       '@sveltejs/kit': 1.0.0-next.484_svelte@3.50.1+vite@3.1.2
+      ipfs-gateway-emulator: 4.2.1-ipfs.2
       prettier: 2.7.1
       prettier-plugin-svelte: 2.7.0_nk6d2fkgcllkkdynqbuearcure
       svelte: 3.50.1
@@ -957,6 +961,10 @@ packages:
       '@iarna/toml': 2.2.5
       esbuild: 0.15.7
       set-cookie-parser: 2.5.1
+    dev: true
+
+  /@sveltejs/adapter-static/1.0.0-next.43:
+    resolution: {integrity: sha512-PAgSp1GA8HkYE4p30/sBvJme2nefhcTBJafqQdMNoUksWZF2WzuL8OEO8wa9ndE6cghcGk3j6Ve0Oskg/wtTOw==}
     dev: true
 
   /@sveltejs/adapter-vercel/1.0.0-next.76:
