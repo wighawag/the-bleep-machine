@@ -84,7 +84,7 @@ contract BleepBeats is
 		unchecked {
 			shift = (Utils.numLeadingZeroes(id) / 8) * 8;
 		}
-        id = id << shift;
+		id = id << shift;
 		bytes memory musicBytecode = new bytes((256 - shift) / 8);
 		assembly {
 			mstore(add(musicBytecode, 32), id)

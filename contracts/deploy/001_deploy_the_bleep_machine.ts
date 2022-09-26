@@ -14,6 +14,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 	await deploy('TheBleepMachine', {
 		from: deployer,
 		log: true,
+		deterministicDeployment: true,
 		// proxy: dev ? 'postUpgrade' : false,
 		autoMine: true,
 		skipIfAlreadyDeployed: !dev
