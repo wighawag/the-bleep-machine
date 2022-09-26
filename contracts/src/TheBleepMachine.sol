@@ -45,7 +45,7 @@ contract TheBleepMachine {
 		uint256 start,
 		uint256 length
 	) external returns (bytes memory) {
-		return _wrapInWAV(samples(musicBytecode, start, length));
+		return _wrapInWAV(generate(musicBytecode, start, length));
 	}
 
 	/// @notice Generates raw 8 bits samples from EVM bytecode (`musicBytecode`) with a specific offset and length.
@@ -53,7 +53,7 @@ contract TheBleepMachine {
 	/// @param start sample offset at which the music starts.
 	/// @param length the number of samples to generate.
 	/// @return 8bit samples buffer.
-	function samples(
+	function generate(
 		bytes memory musicBytecode,
 		uint256 start,
 		uint256 length
@@ -81,7 +81,7 @@ contract TheBleepMachine {
 
 	/// @dev Creates a new contract that generate the music from a given start offset and length.
 	/// @param musicBytecode the evm bytecode the Bleep Machine will execute in a loop.
-	/// @return executor: address of the contract that will generate samples when executed.
+	/// @return executor address of the contract that will generate samples when executed.
 	function _create(bytes memory musicBytecode) public returns (address executor) {
 		// This code generates a contract creation-code that loops over the provided `musicBytecode`.
 
