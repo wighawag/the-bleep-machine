@@ -36,10 +36,10 @@ error MusicContractCreationFailure();
 error MusicExecutionFailure();
 
 contract TheBleepMachine {
-	/// @notice generate a wav file from EVM bytecode (`musicBytecode`) with a specific offset and length
-	/// @param musicBytecode the evm bytecode the Bleep Machine will execute in a loop
-	/// @param start sample offset at whcih the music start
-	/// @param length the number of sample to generate
+	/// @notice Generates a WAV file from EVM bytecode (`musicBytecode`) with a specific offset and length.
+	/// @param musicBytecode the evm bytecode that the Bleep Machine will execute in a loop.
+	/// @param start sample offset at which the music starts.
+	/// @param length the number of samples to generate.
 	function wav(
 		bytes memory musicBytecode,
 		uint256 start,
@@ -49,10 +49,10 @@ contract TheBleepMachine {
 		return _wrapInWAV(samples);
 	}
 
-	/// @notice generate a wav file from a contract pre-created and a specific offset and length
-	/// @param executor the generated contract that perform the Bleep Machine loop (see `create`)
-	/// @param start sample offset at whcih the music start
-	/// @param length the number of sample to generate
+	/// @notice Generates a WAV file from a contract already created and a specific offset and length.
+	/// @param executor the generated contract that perform the Bleep Machine's loop (see `create`).
+	/// @param start sample offset at which the music starts.
+	/// @param length the number of samples to generate.
 	function wav(
 		address executor,
 		uint256 start,
@@ -62,8 +62,8 @@ contract TheBleepMachine {
 		return _wrapInWAV(samples);
 	}
 
-	/// @notice create a contract that generate the music from a given start offset and length
-	/// @param musicBytecode the evm bytecode the Bleep Machine will execute in a loop
+	/// @notice Creates a new contract that generate the music from a given start offset and length.
+	/// @param musicBytecode the evm bytecode the Bleep Machine will execute in a loop.
 	function create(bytes memory musicBytecode) public returns (address executor) {
 		// This code generate a contract creation-code that loop over the provided `musicBytecode`
 		//
@@ -83,7 +83,7 @@ contract TheBleepMachine {
 		);
 		uint256 len = musicBytecode.length;
 
-		// we make sure the generated code length can be encoded in the PUSH2
+		// We make sure the generated code length can be encoded in the PUSH2.
 		uint256 codeLen;
 		unchecked {
 			codeLen = 0x4d + len;
@@ -92,46 +92,49 @@ contract TheBleepMachine {
 			revert MusicByteCodeTooLarge();
 		}
 
-		// we store the generated creationCode length so that the creationCode work with its new length
+		// We store the generated creationCode length so that the creationCode work with its new length.
 		assembly {
 			mstore8(add(executorCreation, 33), shr(8, codeLen))
 			mstore8(add(executorCreation, 34), and(codeLen, 0xFF))
 		}
 
-		// we create the contract
+		// We create the contract.
 		assembly {
+            // TODO create 2 + only create if not already created.
 			executor := create(0, add(executorCreation, 32), mload(executorCreation))
 		}
 
-		// if there is any error, we revert
+		// If there is any error, we revert.
 		if (executor == address(0)) {
 			revert MusicContractCreationFailure();
 		}
 	}
 
-	/// @notice generate a raw 8 bits samples from a contract pre-created and a specific offset and length
-	/// @param musicBytecode the evm bytecode the Bleep Machine will execute in a loop
-	/// @param start sample offset at whcih the music start
-	/// @param length the number of sample to generate
+	/// @notice Generates raw 8 bits samples from EVM bytecode (`musicBytecode`) with a specific offset and length.
+	/// @param musicBytecode the evm bytecode that the Bleep Machine will execute in a loop.
+	/// @param start sample offset at which the music starts.
+	/// @param length the number of samples to generate.
 	function execute(
 		bytes memory musicBytecode,
 		uint256 start,
 		uint256 length
 	) public returns (bytes memory) {
+        // We create the contract from the music bytecode.
 		address executor = create(musicBytecode);
+        // We execute it with the start and length specified.
 		return execute(executor, start, length);
 	}
 
-	/// @notice generate a raw 8 bits samples from EVM bytecode (`musicBytecode`) with a specific offset and length
-	/// @param executor the generated contract that perform the Bleep Machine loop (see `create`)
-	/// @param start sample offset at whcih the music start
-	/// @param length the number of sample to generate
+	/// @notice Generates raw 8 bits samples from a contract already created and a specific offset and length.
+	/// @param executor the generated contract that perform the Bleep Machine loop (see `create`).
+	/// @param start sample offset at which the music starts.
+	/// @param length the number of samples to generate.
 	function execute(
 		address executor,
 		uint256 start,
 		uint256 length
 	) public view returns (bytes memory) {
-		// We execute the generated contract
+		// Execute a call on the generated contract.
 		// if the music bytecode behaves, it will create a buffer of length `length`
 		(bool success, bytes memory buffer) = executor.staticcall(
 			abi.encode((start & 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF) | (length << 128))
@@ -143,6 +146,7 @@ contract TheBleepMachine {
 		return buffer;
 	}
 
+    /// @dev Prepends the WAV file header for 8bits, 8000Hz, mono sounds.
 	function _wrapInWAV(bytes memory samples) internal pure returns (bytes memory) {
 		// WAV file header, 8 bits, 8000Hz, mono, zero length
 		bytes
@@ -150,23 +154,23 @@ contract TheBleepMachine {
 
 		uint256 length = samples.length;
 		assembly {
-			// top header length is length of data + 36
-			// more precisely: (4 + (8 + SubChunk1Size) + (8 + SubChunk2Size))
-			// where SubChunk1Size is 16 (for PCM) and SubChunk2Size is the length of the data
+			// Top header length is length of data + 36 bytes.
+			// More precisely: (4 + (8 + SubChunk1Size) + (8 + SubChunk2Size)).
+			// Where SubChunk1Size is 16 (for PCM) and SubChunk2Size is the length of the data.
 			let t := add(length, 36)
 
-			// we write that in the top header  (in little endian)
+			// We write that in the top header  (in little endian).
 			mstore8(add(dynHeader, 36), and(t, 0xFF))
 			mstore8(add(dynHeader, 37), and(shr(8, t), 0xFF))
 			mstore8(add(dynHeader, 38), and(shr(16, t), 0xFF))
 
-			// we also write the data length just before the data stream as per WAV file format spec (in little endian)
+			// We also write the data length just before the data stream as per WAV file format spec (in little endian).
 			mstore8(add(dynHeader, 72), and(length, 0xFF))
 			mstore8(add(dynHeader, 73), and(shr(8, length), 0xFF))
 			mstore8(add(dynHeader, 74), and(shr(16, length), 0xFF))
 		}
 
-		// We concatenate the buffer we got from computing the music with the header above
+		// We concatenate the samples buffer we got from computing the music with the header above.
 		return bytes.concat(dynHeader, samples);
 	}
 }
