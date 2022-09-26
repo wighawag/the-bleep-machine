@@ -167,12 +167,14 @@ abstract contract ERC721 is IERC721, ImplementingERC721Internal {
     /// @notice Check if the contract supports an interface.
     /// @param id The id of the interface.
     /// @return Whether the interface is supported.
-    function supportsInterface(bytes4 id) public view virtual override(IERC165, ImplementingERC721Internal) returns (bool) {
+    function supportsInterface(bytes4 id) public view virtual override returns (bool) {
         /// 0x01ffc9a7 is ERC165.
         /// 0x80ac58cd is ERC721
         /// 0x5b5e139f is for ERC721 metadata
         return id == 0x01ffc9a7 || id == 0x80ac58cd || id == 0x5b5e139f;
     }
+
+    function tokenURI(uint256 id) external view virtual returns (string memory);
 
     function _safeTransferFrom(
         address from,

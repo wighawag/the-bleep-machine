@@ -2,6 +2,7 @@
 pragma solidity 0.8.16;
 
 import "../../implementations/ImplementingERC721Internal.sol";
+import "../../../ERC165/UsingERC165Internal.sol";
 import "../interfaces/IERC4494.sol";
 import "../../../ERC712/implementations/UsingERC712WithDynamicChainId.sol";
 import "../../../ERC712/implementations/ImplementingExternalDomainSeparator.sol";
@@ -11,6 +12,7 @@ import "@openzeppelin/contracts/utils/Address.sol";
 
 abstract contract UsingERC4494Permit is IERC4494,
 	ImplementingERC721Internal,
+    UsingERC165Internal,
 	ImplementingExternalDomainSeparator,
 	UsingERC712
 {
@@ -79,7 +81,7 @@ abstract contract UsingERC4494Permit is IERC4494,
     /// @notice Check if the contract supports an interface.
     /// @param id The id of the interface.
     /// @return Whether the interface is supported.
-    function supportsInterface(bytes4 id) public view virtual override(IERC165, ImplementingERC721Internal) returns (bool) {
+    function supportsInterface(bytes4 id) public view virtual override(IERC165, UsingERC165Internal) returns (bool) {
         return
             super.supportsInterface(id) ||
             id == type(IERC4494).interfaceId ||

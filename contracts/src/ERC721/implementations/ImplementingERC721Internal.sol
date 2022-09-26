@@ -18,7 +18,4 @@ abstract contract ImplementingERC721Internal {
         bool approved
     ) internal virtual;
 
-
-    function supportsInterface(bytes4) public view virtual returns(bool) {return false;}
-
 }
