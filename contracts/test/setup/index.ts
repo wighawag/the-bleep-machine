@@ -1,11 +1,11 @@
 import {ethers, deployments, getUnnamedAccounts} from 'hardhat';
 import {setupUsers} from '../utils/users';
-import {BleepMachine} from '../../typechain';
+import {BleepBeats} from '../../typechain';
 
 export const setup = deployments.createFixture(async () => {
-	await deployments.fixture('BleepMachine');
+	await deployments.fixture('BleepBeats');
 	const contracts = {
-		BleepMachine: <BleepMachine>await ethers.getContract('BleepMachine')
+		BleepBeats: <BleepBeats>await ethers.getContract('BleepBeats')
 	};
 	const users = await setupUsers(await getUnnamedAccounts(), contracts);
 
