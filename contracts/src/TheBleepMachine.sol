@@ -47,32 +47,22 @@ contract TheBleepMachine {
 		uint256 start,
 		uint256 length
 	) external returns (bytes memory) {
-
-        // WAV file header, 8 bits, 8000Hz, mono, zero length
-		bytes
-			memory dynHeader = hex"524946460000000057415645666d74201000000001000100401f0000401f0000010008006461746100000000";
-
-		assembly {
-            // top header length is length of data + 36
-            // more precisely: (4 + (8 + SubChunk1Size) + (8 + SubChunk2Size))
-            // where SubChunk1Size is 16 (for PCM) and SubChunk2Size is the length of the data
-			let t := add(length, 36)
-
-            // we write that in the top header  (in little endian)
-			mstore8(add(dynHeader, 36), and(t, 0xFF))
-			mstore8(add(dynHeader, 37), and(shr(8, t), 0xFF))
-			mstore8(add(dynHeader, 38), and(shr(16, t), 0xFF))
-
-            // we also write the data length just before the data stream as per WAV file format spec (in little endian)
-			mstore8(add(dynHeader, 72), and(length, 0xFF))
-			mstore8(add(dynHeader, 73), and(shr(8, length), 0xFF))
-			mstore8(add(dynHeader, 74), and(shr(16, length), 0xFF))
-		}
-
-        // We concatenate the buffer we got from computing the music with the header above
-		return bytes.concat(dynHeader, execute(musicBytecode, start, length));
+        bytes memory samples = execute(musicBytecode, start, length);
+		return _wrapInWAV(samples);
 	}
 
+    /// @notice generate a wav file from a contract pre-created and a specific offset and length
+    /// @param executor the generated contract that perform the Bleep Machine loop (see `create`)
+    /// @param start sample offset at whcih the music start
+    /// @param length the number of sample to generate
+    function wav(
+        address executor,
+		uint256 start,
+		uint256 length
+    ) external returns (bytes memory) {
+        bytes memory samples = execute(executor, start, length);
+		return _wrapInWAV(samples);
+	}
 
     /// @notice create a contract that generate the music from a given start offset and length
     /// @param musicBytecode the evm bytecode the Bleep Machine will execute in a loop
@@ -124,7 +114,7 @@ contract TheBleepMachine {
 		}
     }
 
-    /// @notice generate a raw 8 bits samples from EVM bytecode (`musicBytecode`) with a specific offset and length
+    /// @notice generate a raw 8 bits samples from a contract pre-created and a specific offset and length
     /// @param musicBytecode the evm bytecode the Bleep Machine will execute in a loop
     /// @param start sample offset at whcih the music start
     /// @param length the number of sample to generate
@@ -134,14 +124,53 @@ contract TheBleepMachine {
 		uint256 length
 	) public returns (bytes memory) {
         address executor = create(musicBytecode);
+        return execute(executor, start , length);
+	}
 
-        // W execute the generated contract
+    /// @notice generate a raw 8 bits samples from EVM bytecode (`musicBytecode`) with a specific offset and length
+    /// @param executor the generated contract that perform the Bleep Machine loop (see `create`)
+    /// @param start sample offset at whcih the music start
+    /// @param length the number of sample to generate
+	function execute(
+		address executor,
+		uint256 start,
+		uint256 length
+	) public view returns (bytes memory) {
+        // We execute the generated contract
         // if the music bytecode behaves, it will create a buffer of length `length`
-		(bool success, bytes memory buffer) = executor.staticcall(abi.encode((start && 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF) | (length << 128)));
+		(bool success, bytes memory buffer) = executor.staticcall(abi.encode((start & 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF) | (length << 128)));
 		if (!success) {
 			revert MusicExecutionFailure();
 		}
 
 		return buffer;
 	}
+
+
+    function _wrapInWAV(bytes memory samples) internal pure returns(bytes memory) {
+         // WAV file header, 8 bits, 8000Hz, mono, zero length
+		bytes
+			memory dynHeader = hex"524946460000000057415645666d74201000000001000100401f0000401f0000010008006461746100000000";
+
+        uint256 length = samples.length;
+		assembly {
+            // top header length is length of data + 36
+            // more precisely: (4 + (8 + SubChunk1Size) + (8 + SubChunk2Size))
+            // where SubChunk1Size is 16 (for PCM) and SubChunk2Size is the length of the data
+			let t := add(length, 36)
+
+            // we write that in the top header  (in little endian)
+			mstore8(add(dynHeader, 36), and(t, 0xFF))
+			mstore8(add(dynHeader, 37), and(shr(8, t), 0xFF))
+			mstore8(add(dynHeader, 38), and(shr(16, t), 0xFF))
+
+            // we also write the data length just before the data stream as per WAV file format spec (in little endian)
+			mstore8(add(dynHeader, 72), and(length, 0xFF))
+			mstore8(add(dynHeader, 73), and(shr(8, length), 0xFF))
+			mstore8(add(dynHeader, 74), and(shr(16, length), 0xFF))
+		}
+
+        // We concatenate the buffer we got from computing the music with the header above
+		return bytes.concat(dynHeader, samples);
+    }
 }

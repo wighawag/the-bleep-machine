@@ -2012,7 +2012,7 @@
       ]
     },
     "TheBleepMachine": {
-      "address": "0xB377a2EeD7566Ac9fCb0BA673604F9BF875e2Bab",
+      "address": "0x74Cf9087AD26D541930BaC724B7ab21bA8F00a27",
       "abi": [
         {
           "inputs": [],
@@ -2080,9 +2080,67 @@
         {
           "inputs": [
             {
+              "internalType": "address",
+              "name": "executor",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "start",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "length",
+              "type": "uint256"
+            }
+          ],
+          "name": "execute",
+          "outputs": [
+            {
+              "internalType": "bytes",
+              "name": "",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
               "internalType": "bytes",
               "name": "musicBytecode",
               "type": "bytes"
+            },
+            {
+              "internalType": "uint256",
+              "name": "start",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "length",
+              "type": "uint256"
+            }
+          ],
+          "name": "wav",
+          "outputs": [
+            {
+              "internalType": "bytes",
+              "name": "",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "executor",
+              "type": "address"
             },
             {
               "internalType": "uint256",
