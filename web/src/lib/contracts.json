@@ -2,57 +2,8 @@
   "name": "goerli",
   "chainId": "5",
   "contracts": {
-    "TheBleepMachine": {
-      "address": "0x047cf11753517792d53455DF9Eec7aBeB1bBee5E",
-      "abi": [
-        {
-          "inputs": [],
-          "name": "MusicByteCodeTooLarge",
-          "type": "error"
-        },
-        {
-          "inputs": [],
-          "name": "MusicContractCreationFailure",
-          "type": "error"
-        },
-        {
-          "inputs": [],
-          "name": "MusicExecutionFailure",
-          "type": "error"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "bytes",
-              "name": "musicBytecode",
-              "type": "bytes"
-            },
-            {
-              "internalType": "uint256",
-              "name": "start",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "length",
-              "type": "uint256"
-            }
-          ],
-          "name": "play",
-          "outputs": [
-            {
-              "internalType": "string",
-              "name": "",
-              "type": "string"
-            }
-          ],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        }
-      ]
-    },
     "BleepBeats": {
-      "address": "0x285B6B2F8800537b8a8d209c582d1896699A6219",
+      "address": "0x4ffE8B94B90298e90a322BAae570574d65e02343",
       "abi": [
         {
           "inputs": [
@@ -926,6 +877,55 @@
           ],
           "name": "transferFrom",
           "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        }
+      ]
+    },
+    "TheBleepMachine": {
+      "address": "0xf91d518A093978851DE05458C33B92B11c6f778A",
+      "abi": [
+        {
+          "inputs": [],
+          "name": "MusicByteCodeTooLarge",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "MusicContractCreationFailure",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "MusicExecutionFailure",
+          "type": "error"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "bytes",
+              "name": "musicBytecode",
+              "type": "bytes"
+            },
+            {
+              "internalType": "uint256",
+              "name": "start",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "length",
+              "type": "uint256"
+            }
+          ],
+          "name": "play",
+          "outputs": [
+            {
+              "internalType": "string",
+              "name": "",
+              "type": "string"
+            }
+          ],
           "stateMutability": "nonpayable",
           "type": "function"
         }
