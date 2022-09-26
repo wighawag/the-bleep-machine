@@ -2,8 +2,13 @@
 pragma solidity 0.8.16;
 
 import "base64-sol/base64.sol";
+import "hardhat-deploy/solc_0.8/proxy/Proxied.sol";
 
-contract TheBleepMachine {
+contract TheBleepMachine is Proxied{
+
+    constructor() {}
+    function postUpgrade() external proxied {}
+
 	function play(
 		bytes memory musicBytecode,
 		uint256 start,
@@ -36,29 +41,53 @@ contract TheBleepMachine {
 		uint256 start,
 		uint256 length
 	) internal returns (bytes memory) {
-		bytes
-			memory executorCreation = hex"606d600c600039606d6000f36000358060801b806000529060801c60205260006040525b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b60ff9016604051806080019091905360010180604052602051600051600101806000529110601757602051806060526020016060f3";
+		bytes memory executorCreation = bytes.concat(
+            hex"61006d600e60003961006d6000f36000358060801b806000529060801c60205260006040525b",
+			musicBytecode,
+			hex"60ff9016604051806080019091905360010180604052602051600051600101806000529110601757602051806060526020016060f3"
+		);
+        uint256 len = musicBytecode.length;
 
 
-		uint256 len = musicBytecode.length;
-		uint256 mask = 256**(32 - len) - 1;
-		assembly {
-			let src := add(musicBytecode, 32)
-			let dest := add(executorCreation, 68) // 32 + 36 where JUMPSET start (second one)
-			for {
+        uint256 codeLen = 0x4d + len;
+        require(codeLen <= 0xFFFF, "TOO_LONG");
+        assembly {
+			mstore8(add(executorCreation, 34), and(codeLen, 0xFF))
+			mstore8(add(executorCreation, 33), and(shr(8, codeLen), 0xFF))
 
-			} gt(len, 31) {
-				len := sub(len, 32)
-				dest := add(dest, 32)
-				src := add(src, 32)
-			} {
-				mstore(dest, mload(src))
-			}
-
-			let srcpart := and(mload(src), not(mask)) // NOTE can remove that step by ensuring the length is a multiple of 32 bytes
-			let destpart := and(mload(dest), mask)
-			mstore(dest, or(destpart, srcpart))
+			mstore8(add(executorCreation, 42), and(codeLen, 0xFF))
+			mstore8(add(executorCreation, 41), and(shr(8, codeLen), 0xFF))
 		}
+
+
+        // ------------------------------------------------------------------------------------------------------------
+        // OLD IMPL
+        // ------------------------------------------------------------------------------------------------------------
+        // bytes
+        // memory executorCreation = hex"606d600c600039606d6000f36000358060801b806000529060801c60205260006040525b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b60ff9016604051806080019091905360010180604052602051600051600101806000529110601757602051806060526020016060f3";
+
+
+		// uint256 len = musicBytecode.length;
+		// uint256 mask = 256**(32 - len) - 1;
+		// assembly {
+		// 	let src := add(musicBytecode, 32)
+		// 	let dest := add(executorCreation, 68) // 32 + 36 where JUMPSET start (second one)
+		// 	for {
+
+		// 	} gt(len, 31) {
+		// 		len := sub(len, 32)
+		// 		dest := add(dest, 32)
+		// 		src := add(src, 32)
+		// 	} {
+		// 		mstore(dest, mload(src))
+		// 	}
+
+		// 	let srcpart := and(mload(src), not(mask)) // NOTE can remove that step by ensuring the length is a multiple of 32 bytes
+		// 	let destpart := and(mload(dest), mask)
+		// 	mstore(dest, or(destpart, srcpart))
+		// }
+        // ------------------------------------------------------------------------------------------------------------
+
 
 		address executor;
 		assembly {
