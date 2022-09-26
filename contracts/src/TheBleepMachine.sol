@@ -37,6 +37,11 @@ error MusicContractCreationFailure();
 error MusicExecutionFailure();
 
 contract TheBleepMachine {
+
+    /// @notice generate a wav file from EVM bytecode (`musicBytecode`) with a specific offset and length
+    /// @param musicBytecode the evm bytecode the Bleep Machine will execute in a loop
+    /// @param start sample offset at whcih the music start
+    /// @param length the number of sample to generate
 	function wav(
 		bytes memory musicBytecode,
 		uint256 start,
@@ -68,11 +73,12 @@ contract TheBleepMachine {
 		return bytes.concat(dynHeader, execute(musicBytecode, start, length));
 	}
 
-	function execute(
-		bytes memory musicBytecode,
-		uint256 start,
-		uint256 length
-	) public returns (bytes memory) {
+
+    /// @notice create a contract that generate the music from a given start offset and length
+    /// @param musicBytecode the evm bytecode the Bleep Machine will execute in a loop
+    function create(
+		bytes memory musicBytecode
+	) public returns (address executor) {
 
         // This code generate a contract creation-code that loop over the provided `musicBytecode`
         //
@@ -108,7 +114,6 @@ contract TheBleepMachine {
 		}
 
         // we create the contract
-		address executor;
 		assembly {
 			executor := create(0, add(executorCreation, 32), mload(executorCreation))
 		}
@@ -117,10 +122,22 @@ contract TheBleepMachine {
 		if (executor == address(0)) {
 			revert MusicContractCreationFailure();
 		}
+    }
 
-        // we finally execute the generated contract
+    /// @notice generate a raw 8 bits samples from EVM bytecode (`musicBytecode`) with a specific offset and length
+    /// @param musicBytecode the evm bytecode the Bleep Machine will execute in a loop
+    /// @param start sample offset at whcih the music start
+    /// @param length the number of sample to generate
+	function execute(
+		bytes memory musicBytecode,
+		uint256 start,
+		uint256 length
+	) public returns (bytes memory) {
+        address executor = create(musicBytecode);
+
+        // W execute the generated contract
         // if the music bytecode behaves, it will create a buffer of length `length`
-		(bool success, bytes memory buffer) = executor.staticcall(abi.encode(start | (length << 128)));
+		(bool success, bytes memory buffer) = executor.staticcall(abi.encode((start && 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF) | (length << 128)));
 		if (!success) {
 			revert MusicExecutionFailure();
 		}
