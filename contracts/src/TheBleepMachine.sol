@@ -100,12 +100,20 @@ contract TheBleepMachine {
 
 		// We create the contract.
 		assembly {
-            // TODO create 2 + only create if not already created.
-			executor := create(0, add(executorCreation, 32), mload(executorCreation))
+			executor := create2(0, add(executorCreation, 32), mload(executorCreation), 0)
 		}
 
 		// If there is any error, we revert.
 		if (executor == address(0)) {
+            // // unless the contract already exists.
+            // address existing = address(uint160(uint256(keccak256(abi.encodePacked(0xff,addrss(this),bytes32(0), keccak256(executorCreation))[12:])));
+            // uint256 size;
+            // assembly {
+            //     size:= extcodesize(addr)
+            // }
+            // if (size > 0) {
+            //     return existing;
+            // }
 			revert MusicContractCreationFailure();
 		}
 	}
@@ -119,9 +127,9 @@ contract TheBleepMachine {
 		uint256 start,
 		uint256 length
 	) public returns (bytes memory) {
-        // We create the contract from the music bytecode.
+		// We create the contract from the music bytecode.
 		address executor = create(musicBytecode);
-        // We execute it with the start and length specified.
+		// We execute it with the start and length specified.
 		return execute(executor, start, length);
 	}
 
@@ -146,7 +154,7 @@ contract TheBleepMachine {
 		return buffer;
 	}
 
-    /// @dev Prepends the WAV file header for 8bits, 8000Hz, mono sounds.
+	/// @dev Prepends the WAV file header for 8 bits samples at 8000Hz, mono sounds.
 	function _wrapInWAV(bytes memory samples) internal pure returns (bytes memory) {
 		// WAV file header, 8 bits, 8000Hz, mono, zero length
 		bytes
