@@ -66,9 +66,16 @@ contract BleepBeats is
 		return super.supportsInterface(id);
 	}
 
-	function mint(address to, bytes32 musicBytecode) external {
+	function mint(address to, bytes memory musicBytecode) external {
+        uint256 len = musicBytecode.length;
+        require(len > 32, "TOO_LONG");
+        uint256 id;
+        assembly {
+            id := shr(mul(sub(32,len),8),mload(musicBytecode))
+        }
+
 		// TODO require(msg.sender == minter, "NOT_AUTHORIZED");
-		_mint(uint256(musicBytecode), to);
+		_mint(id, to);
 	}
 
 	function tokenURI(uint256 id) external returns (string memory str) {
