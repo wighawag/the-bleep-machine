@@ -11,6 +11,7 @@ import "./ERC721/implementations/UsingExternalMinter.sol";
 import "./ERC2981/implementations/UsingGlobalRoyalties.sol";
 import "./Guardian/implementations/UsingGuardian.sol";
 import "./TheBleepMachine.sol";
+import "./Utils.sol";
 
 contract BleepBeats is
 	ERC721,
@@ -67,12 +68,12 @@ contract BleepBeats is
 	}
 
 	function mint(address to, bytes memory musicBytecode) external {
-        uint256 len = musicBytecode.length;
-        require(len > 32, "TOO_LONG");
-        uint256 id;
-        assembly {
-            id := shr(mul(sub(32,len),8),mload(musicBytecode))
-        }
+		uint256 len = musicBytecode.length;
+		require(len <= 32, "TOO_LONG");
+		uint256 id;
+		assembly {
+			id := shr(mul(sub(32, len), 8), mload(add(musicBytecode, 32)))
+		}
 
 		// TODO require(msg.sender == minter, "NOT_AUTHORIZED");
 		_mint(id, to);
@@ -81,7 +82,7 @@ contract BleepBeats is
 	function tokenURI(uint256 id) external returns (string memory str) {
 		uint256 shift;
 		unchecked {
-			shift = (numLeadingZeroes(id) / 8) * 8;
+			shift = (Utils.numLeadingZeroes(id) / 8) * 8;
 		}
 		bytes memory musicBytecode = new bytes((256 - shift) / 8);
 		assembly {
@@ -112,51 +113,5 @@ contract BleepBeats is
 		address owner = _ownerOf(id);
 		require(owner == address(0), "ALREADY_CREATED");
 		_safeTransferFrom(address(0), to, id, "");
-	}
-
-	function numLeadingZeroes(uint256 x) internal pure returns (uint256) {
-		uint256 y;
-		uint256 n = 256;
-		unchecked {
-			y = x >> 128;
-			if (y != 0) {
-				n = n - 128;
-				x = y;
-			}
-			y = x >> 64;
-			if (y != 0) {
-				n = n - 64;
-				x = y;
-			}
-			y = x >> 32;
-			if (y != 0) {
-				n = n - 32;
-				x = y;
-			}
-			y = x >> 16;
-			if (y != 0) {
-				n = n - 16;
-				x = y;
-			}
-			y = x >> 8;
-			if (y != 0) {
-				n = n - 8;
-				x = y;
-			}
-			y = x >> 4;
-			if (y != 0) {
-				n = n - 4;
-				x = y;
-			}
-			y = x >> 2;
-			if (y != 0) {
-				n = n - 2;
-				x = y;
-			}
-			y = x >> 1;
-			if (y != 0) return n - 2;
-		}
-
-		return n - x;
 	}
 }
