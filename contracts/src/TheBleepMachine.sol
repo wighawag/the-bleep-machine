@@ -12,7 +12,7 @@
 // Try it.
 // Note, this requires [cast](https://github.com/foundry-rs/foundry/tree/master/cast) + a working ethereum rpc node
 
-// cast call --rpc-url https://rpc.bleeps.art machine.bleeps.eth "wav(bytes,uint256,uint256)(bytes)" 0x808060081c9160091c600e1661ca98901c600f160217  0 100000 | xxd -r -p | aplay
+// cast call --rpc-url https://rpc.bleeps.art machine.bleeps.eth "WAV(bytes,uint256,uint256)(bytes)" 0x808060081c9160091c600e1661ca98901c600f160217  0 100000 | xxd -r -p | aplay
 
 // Copyright (C) 2022 Ronan Sandford
 
@@ -36,35 +36,52 @@ error MusicContractCreationFailure();
 error MusicExecutionFailure();
 
 contract TheBleepMachine {
-	/// @notice Generates a WAV file from EVM bytecode (`musicBytecode`) with a specific offset and length.
+	/// @notice Generates a WAV file (8 bits, 8000Hz, mono) from EVM bytecode (`musicBytecode`) with a specific offset and length.
 	/// @param musicBytecode the evm bytecode that the Bleep Machine will execute in a loop.
 	/// @param start sample offset at which the music starts.
 	/// @param length the number of samples to generate.
-	function wav(
+    /// @return WAV file (8 bits, 8000Hz, mono).
+	function WAV(
 		bytes memory musicBytecode,
 		uint256 start,
 		uint256 length
 	) external returns (bytes memory) {
-		bytes memory samples = execute(musicBytecode, start, length);
-		return _wrapInWAV(samples);
+		return _wrapInWAV(samples(musicBytecode, start, length));
 	}
 
-	/// @notice Generates a WAV file from a contract already created and a specific offset and length.
-	/// @param executor the generated contract that perform the Bleep Machine's loop (see `create`).
+	/// @notice Generates raw 8 bits samples from EVM bytecode (`musicBytecode`) with a specific offset and length.
+	/// @param musicBytecode the evm bytecode that the Bleep Machine will execute in a loop.
 	/// @param start sample offset at which the music starts.
 	/// @param length the number of samples to generate.
-	function wav(
-		address executor,
+    /// @return 8bit samples buffer.
+	function samples(
+		bytes memory musicBytecode,
 		uint256 start,
 		uint256 length
-	) external view returns (bytes memory) {
-		bytes memory samples = execute(executor, start, length);
-		return _wrapInWAV(samples);
+	) public returns (bytes memory) {
+		// We create the contract from the music bytecode.
+		address executor = _create(musicBytecode);
+
+		// Execute a call on the generated contract with the start and length specified.
+		// if the music bytecode behaves, it will create a buffer of length `length`
+		(bool success, bytes memory buffer) = executor.staticcall(
+			abi.encode((start & 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF) | (length << 128))
+		);
+		if (!success) {
+			revert MusicExecutionFailure();
+		}
+
+		return buffer;
 	}
 
-	/// @notice Creates a new contract that generate the music from a given start offset and length.
+	// ----------------------------------------------------------------------------------------------------------------
+	// INTERNAL
+	// ----------------------------------------------------------------------------------------------------------------
+
+	/// @dev Creates a new contract that generate the music from a given start offset and length.
 	/// @param musicBytecode the evm bytecode the Bleep Machine will execute in a loop.
-	function create(bytes memory musicBytecode) public returns (address executor) {
+    /// @return executor address of the contract that generate samples when executed.
+	function _create(bytes memory musicBytecode) public returns (address executor) {
 		// This code generate a contract creation-code that loop over the provided `musicBytecode`
 		//
 		// 61006d600081600b8239f3 simply copy the code after it
@@ -100,61 +117,18 @@ contract TheBleepMachine {
 
 		// We create the contract.
 		assembly {
-			executor := create2(0, add(executorCreation, 32), mload(executorCreation), 0)
+			executor := create(0, add(executorCreation, 32), mload(executorCreation))
 		}
 
 		// If there is any error, we revert.
 		if (executor == address(0)) {
-            // // unless the contract already exists.
-            // address existing = address(uint160(uint256(keccak256(abi.encodePacked(0xff,addrss(this),bytes32(0), keccak256(executorCreation))[12:])));
-            // uint256 size;
-            // assembly {
-            //     size:= extcodesize(addr)
-            // }
-            // if (size > 0) {
-            //     return existing;
-            // }
 			revert MusicContractCreationFailure();
 		}
 	}
 
-	/// @notice Generates raw 8 bits samples from EVM bytecode (`musicBytecode`) with a specific offset and length.
-	/// @param musicBytecode the evm bytecode that the Bleep Machine will execute in a loop.
-	/// @param start sample offset at which the music starts.
-	/// @param length the number of samples to generate.
-	function execute(
-		bytes memory musicBytecode,
-		uint256 start,
-		uint256 length
-	) public returns (bytes memory) {
-		// We create the contract from the music bytecode.
-		address executor = create(musicBytecode);
-		// We execute it with the start and length specified.
-		return execute(executor, start, length);
-	}
-
-	/// @notice Generates raw 8 bits samples from a contract already created and a specific offset and length.
-	/// @param executor the generated contract that perform the Bleep Machine loop (see `create`).
-	/// @param start sample offset at which the music starts.
-	/// @param length the number of samples to generate.
-	function execute(
-		address executor,
-		uint256 start,
-		uint256 length
-	) public view returns (bytes memory) {
-		// Execute a call on the generated contract.
-		// if the music bytecode behaves, it will create a buffer of length `length`
-		(bool success, bytes memory buffer) = executor.staticcall(
-			abi.encode((start & 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF) | (length << 128))
-		);
-		if (!success) {
-			revert MusicExecutionFailure();
-		}
-
-		return buffer;
-	}
-
 	/// @dev Prepends the WAV file header for 8 bits samples at 8000Hz, mono sounds.
+	/// @param samples 8 bits samples representing 8000Hz, mono sounds.
+    /// @return WAV file (8 bits, 8000Hz, mono) made of the samples given.
 	function _wrapInWAV(bytes memory samples) internal pure returns (bytes memory) {
 		// WAV file header, 8 bits, 8000Hz, mono, zero length
 		bytes
