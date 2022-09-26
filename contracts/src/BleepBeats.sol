@@ -4,7 +4,6 @@ pragma solidity 0.8.16;
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "base64-sol/base64.sol";
 
-
 import "./ERC721/implementations/ERC721.sol";
 import "./ERC721/ERC4494/implementations/UsingERC4494PermitWithDynamicChainId.sol";
 import "./Multicall/UsingMulticall.sol";
@@ -23,7 +22,7 @@ contract BleepBeats is
 {
 	TheBleepMachine public immutable theBleepMachine;
 
-    bytes32 constant HEX = "0123456789abcdef0000000000000000";
+	bytes32 constant HEX = "0123456789abcdef0000000000000000";
 
 	/// @dev Setup the roles
 	/// @param bleepMachine the Bleep Machine that generate the music
@@ -44,8 +43,8 @@ contract BleepBeats is
 		UsingGlobalRoyalties(initialRoyaltyReceiver, imitialRoyaltyPer10Thousands, initialRoyaltyAdmin)
 		UsingGuardian(initialGuardian)
 	{
-        theBleepMachine = bleepMachine;
-    }
+		theBleepMachine = bleepMachine;
+	}
 
 	/// @notice A descriptive name for a collection of NFTs in this contract.
 	function name() public pure override returns (string memory) {
@@ -72,31 +71,14 @@ contract BleepBeats is
 		_mint(uint256(musicBytecode), to);
 	}
 
-    function numLeadingZeroes(uint256 x) internal pure returns (uint256) {
-        uint256 y;
-        uint256 n = 256;
-        unchecked {
-            y = x >> 128; if (y != 0) {n = n - 128; x = y;}
-            y = x >> 64; if (y != 0) {n = n - 64; x = y;}
-            y = x >> 32; if (y != 0) {n = n - 32; x = y;}
-            y = x >> 16; if (y != 0) {n = n - 16; x = y;}
-            y = x >> 8; if (y != 0) {n = n - 8; x = y;}
-            y = x >> 4; if (y != 0) {n = n - 4; x = y;}
-            y = x >> 2; if (y != 0) {n = n - 2; x = y;}
-            y = x >> 1; if (y != 0) return n - 2;
-        }
-
-        return n - x;
-    }
-
 	function tokenURI(uint256 id) external returns (string memory str) {
-        uint256 shift;
-        unchecked {
-            shift = (numLeadingZeroes(id) / 8) * 8;
-        }
-        bytes memory musicBytecode = new bytes((256 - shift) / 8);
+		uint256 shift;
+		unchecked {
+			shift = (numLeadingZeroes(id) / 8) * 8;
+		}
+		bytes memory musicBytecode = new bytes((256 - shift) / 8);
 		assembly {
-			mstore(add(musicBytecode,32), shl(shift, id))
+			mstore(add(musicBytecode, 32), shl(shift, id))
 		}
 
 		str = string(
@@ -123,5 +105,51 @@ contract BleepBeats is
 		address owner = _ownerOf(id);
 		require(owner == address(0), "ALREADY_CREATED");
 		_safeTransferFrom(address(0), to, id, "");
+	}
+
+	function numLeadingZeroes(uint256 x) internal pure returns (uint256) {
+		uint256 y;
+		uint256 n = 256;
+		unchecked {
+			y = x >> 128;
+			if (y != 0) {
+				n = n - 128;
+				x = y;
+			}
+			y = x >> 64;
+			if (y != 0) {
+				n = n - 64;
+				x = y;
+			}
+			y = x >> 32;
+			if (y != 0) {
+				n = n - 32;
+				x = y;
+			}
+			y = x >> 16;
+			if (y != 0) {
+				n = n - 16;
+				x = y;
+			}
+			y = x >> 8;
+			if (y != 0) {
+				n = n - 8;
+				x = y;
+			}
+			y = x >> 4;
+			if (y != 0) {
+				n = n - 4;
+				x = y;
+			}
+			y = x >> 2;
+			if (y != 0) {
+				n = n - 2;
+				x = y;
+			}
+			y = x >> 1;
+			if (y != 0) return n - 2;
+		}
+
+		return n - x;
 	}
 }
