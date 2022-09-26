@@ -2012,129 +2012,22 @@
       ]
     },
     "TheBleepMachine": {
-      "address": "0x7A9Ec1d04904907De0ED7b6839CcdD59c3716AC9",
+      "address": "0x38a024C0b412B9d1db8BC398140D00F5Af3093D4",
       "abi": [
         {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "previousOwner",
-              "type": "address"
-            },
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "newOwner",
-              "type": "address"
-            }
-          ],
-          "name": "OwnershipTransferred",
-          "type": "event"
-        },
-        {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "previousImplementation",
-              "type": "address"
-            },
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "newImplementation",
-              "type": "address"
-            }
-          ],
-          "name": "ProxyImplementationUpdated",
-          "type": "event"
-        },
-        {
-          "stateMutability": "payable",
-          "type": "fallback"
+          "inputs": [],
+          "name": "MusicByteCodeTooLarge",
+          "type": "error"
         },
         {
           "inputs": [],
-          "name": "owner",
-          "outputs": [
-            {
-              "internalType": "address",
-              "name": "",
-              "type": "address"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
+          "name": "MusicContractCreationFailure",
+          "type": "error"
         },
         {
-          "inputs": [
-            {
-              "internalType": "bytes4",
-              "name": "id",
-              "type": "bytes4"
-            }
-          ],
-          "name": "supportsInterface",
-          "outputs": [
-            {
-              "internalType": "bool",
-              "name": "",
-              "type": "bool"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "address",
-              "name": "newOwner",
-              "type": "address"
-            }
-          ],
-          "name": "transferOwnership",
-          "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "address",
-              "name": "newImplementation",
-              "type": "address"
-            }
-          ],
-          "name": "upgradeTo",
-          "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "address",
-              "name": "newImplementation",
-              "type": "address"
-            },
-            {
-              "internalType": "bytes",
-              "name": "data",
-              "type": "bytes"
-            }
-          ],
-          "name": "upgradeToAndCall",
-          "outputs": [],
-          "stateMutability": "payable",
-          "type": "function"
-        },
-        {
-          "stateMutability": "payable",
-          "type": "receive"
+          "inputs": [],
+          "name": "MusicExecutionFailure",
+          "type": "error"
         },
         {
           "inputs": [
@@ -2164,39 +2057,11 @@
           ],
           "stateMutability": "nonpayable",
           "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "postUpgrade",
-          "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "address",
-              "name": "implementationAddress",
-              "type": "address"
-            },
-            {
-              "internalType": "address",
-              "name": "ownerAddress",
-              "type": "address"
-            },
-            {
-              "internalType": "bytes",
-              "name": "data",
-              "type": "bytes"
-            }
-          ],
-          "stateMutability": "payable",
-          "type": "constructor"
         }
       ]
     },
     "TheBleepMachine_Implementation": {
-      "address": "0xc96304e3c037f81dA488ed9dEa1D8F2a48278a75",
+      "address": "0x457cCf29090fe5A24c19c1bc95F492168C0EaFdb",
       "abi": [
         {
           "inputs": [],
