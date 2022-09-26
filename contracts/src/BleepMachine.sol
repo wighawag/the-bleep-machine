@@ -4,35 +4,28 @@ pragma solidity 0.8.16;
 import "./ERC721/implementations/ERC721.sol";
 import "./ERC721/ERC4494/implementations/UsingERC4494PermitWithDynamicChainId.sol";
 import "./Multicall/UsingMulticall.sol";
-import "./ERC721/TokenURI/interfaces/ITokenURI.sol";
+import "./ERC721/implementations/UsingExternalMinter.sol";
+import "./ERC2981/implementations/UsingGlobalRoyalties.sol";
 
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "base64-sol/base64.sol";
 
 
-contract BleepMachine is ERC721, UsingERC4494PermitWithDynamicChainId, UsingMulticall {
+contract BleepMachine is ERC721, UsingExternalMinter, UsingGlobalRoyalties, UsingERC4494PermitWithDynamicChainId, UsingMulticall {
 
     /// @dev Setup the roles
-    /// @param ens ENS address for the network the contract is deployed to
-    /// @param initialOwner address that can set the ENS name of the contract and that can witthdraw ERC20 tokens sent by mistake here.
-    /// @param initialTokenURIAdmin admin able to update the tokenURI contract.
     /// @param initialMinterAdmin admin able to set the minter contract.
     /// @param initialRoyaltyAdmin admin able to update the royalty receiver and rates.
     /// @param initialGuardian guardian able to immortalize rules
     /// @param initialRoyaltyReceiver receiver of royalties
     /// @param imitialRoyaltyPer10Thousands amount of royalty in 10,000 basis point
-    /// @param initialTokenURIContract initial tokenURI contract that generate the metadata including the wav file.
     constructor(
-        address ens,
-        address initialOwner,
-        address initialTokenURIAdmin,
         address initialMinterAdmin,
         address initialRoyaltyAdmin,
         address initialGuardian,
         address initialRoyaltyReceiver,
-        uint96 imitialRoyaltyPer10Thousands,
-        ITokenURI initialTokenURIContract
-    )  {
+        uint96 imitialRoyaltyPer10Thousands
+    ) UsingExternalMinter(initialMinterAdmin) UsingGlobalRoyalties(initialRoyaltyReceiver, imitialRoyaltyPer10Thousands, initialRoyaltyAdmin) {
 
     }
 
@@ -47,7 +40,7 @@ contract BleepMachine is ERC721, UsingERC4494PermitWithDynamicChainId, UsingMult
     }
 
 
-    function supportsInterface(bytes4 id) public view virtual override(ERC721, UsingERC4494Permit) returns (bool) {
+    function supportsInterface(bytes4 id) public view virtual override(ERC721, UsingERC4494Permit, UsingGlobalRoyalties) returns (bool) {
         return super.supportsInterface(id);
     }
 
@@ -72,6 +65,7 @@ contract BleepMachine is ERC721, UsingERC4494PermitWithDynamicChainId, UsingMult
 
 
     function mint(address to, bytes memory musicBytecode) external {
+        // TODO require(msg.sender == minter, "NOT_AUTHORIZED");
         bytes memory executorCreation = hex"606d600c600039606d6000f36000358060801b806000529060801c60205260006040525b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b60ff9016604051806080019091905360010180604052602051600051600101806000529110601757602051806060526020016060f3";
 
         uint256 len = musicBytecode.length;
