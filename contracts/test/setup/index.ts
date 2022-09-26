@@ -1,11 +1,11 @@
 import {ethers, deployments, getUnnamedAccounts} from 'hardhat';
 import {setupUsers} from '../utils/users';
-import {AlgorithmicMusic} from '../../typechain';
+import {BleepMachine} from '../../typechain';
 
 export const setup = deployments.createFixture(async () => {
-	await deployments.fixture('AlgorithmicMusic');
+	await deployments.fixture('BleepMachine');
 	const contracts = {
-		AlgorithmicMusic: <AlgorithmicMusic>await ethers.getContract('AlgorithmicMusic')
+		BleepMachine: <BleepMachine>await ethers.getContract('BleepMachine')
 	};
 	const users = await setupUsers(await getUnnamedAccounts(), contracts);
 

@@ -23,7 +23,11 @@ const config: HardhatUserConfig = {
 		]
 	},
 	namedAccounts: {
-		deployer: 0
+		deployer: 0,
+		initialGuardian: {1: null, default: 2},
+		initialRoyaltyReceiver: {1: null, default: 2},
+		initialMinterAdmin: {1: null, default: 1},
+		initialRoyaltyAdmin: {1: null, default: 1}
 	},
 	networks: addForkConfiguration({
 		hardhat: {

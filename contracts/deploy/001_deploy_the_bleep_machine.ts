@@ -6,32 +6,27 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 	const {deployments, getNamedAccounts} = hre;
 	const {deploy} = deployments;
 
-	const {deployer} = await getNamedAccounts();
+	const {deployer, initialGuardian, initialRoyaltyReceiver, initialMinterAdmin, initialRoyaltyAdmin} =
+		await getNamedAccounts();
 
 	const chainId = await getChainId();
 	const dev = chainId != '1'; //!hre.network.live; // TODO use tag
 
-	await deploy('AlgorithmicMusic', {
+	const imitialRoyaltyPer10Thousands = 50;
+	await deploy('BleepMachine', {
 		from: deployer,
 		log: true,
-		proxy: dev ? 'postUpgrade' : false,
+		args: [
+			initialGuardian,
+			initialMinterAdmin,
+			initialRoyaltyReceiver,
+			imitialRoyaltyPer10Thousands,
+			initialRoyaltyAdmin
+		],
+		// proxy: dev ? 'postUpgrade' : false,
 		autoMine: true,
 		skipIfAlreadyDeployed: !dev
 	});
-
-	// if (!hre.network.live) {
-	// 	try {
-	// 		await execute(
-	// 			'AlgorithmicMusic',
-	// 			{from: deployer, log: true},
-	// 			'mint',
-	// 			deployer,
-	// 			'0x808060081c9160091c600e1661ca98901c600f160217'
-	// 		);
-	// 	} catch (err) {
-	// 		console.error(err);
-	// 	}
-	// }
 };
 export default func;
-func.tags = ['AlgorithmicMusic', 'AlgorithmicMusic_deploy'];
+func.tags = ['BleepMachine', 'BleepMachine_deploy'];
