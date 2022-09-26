@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: AGPL-1.0
 pragma solidity 0.8.16;
 
 import "base64-sol/base64.sol";

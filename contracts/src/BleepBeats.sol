@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: AGPL-1.0
 pragma solidity 0.8.16;
 
 import "./ERC721/implementations/ERC721.sol";
