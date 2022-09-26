@@ -7,12 +7,11 @@
 // _____/\/\______/\/\__/\/\____/\/\/\/\______/\/\/\/\/\____/\/\/\____/\/\/\/\____/\/\/\/\__/\/\____________/\/\______/\/\__/\/\/\/\/\____/\/\/\/\__/\/\__/\/\__/\/\/\__/\/\__/\/\____/\/\/\/\_
 // _________________________________________________________________________________________/\/\_______________________________________________________________________________________________
 
-// The Bleep Machine Generates Music From Ethereum Bytecode
+// The Bleep Machine Generates Music From Ethereum Bytecode.
 
-// Try it.
-// Note, this requires [cast](https://github.com/foundry-rs/foundry/tree/master/cast) + a working ethereum rpc node
-
+// Try the following:
 // cast call --rpc-url https://rpc.bleeps.art machine.bleeps.eth "WAV(bytes,uint256,uint256)(bytes)" 0x808060081c9160091c600e1661ca98901c600f160217  0 100000 | xxd -r -p | aplay
+// Note: this requires cast (see: https://github.com/foundry-rs) + aplay + xxd + a working ethereum rpc node.
 
 // Copyright (C) 2022 Ronan Sandford
 
@@ -40,7 +39,7 @@ contract TheBleepMachine {
 	/// @param musicBytecode the evm bytecode that the Bleep Machine will execute in a loop.
 	/// @param start sample offset at which the music starts.
 	/// @param length the number of samples to generate.
-    /// @return WAV file (8 bits, 8000Hz, mono).
+	/// @return WAV file (8 bits, 8000Hz, mono).
 	function WAV(
 		bytes memory musicBytecode,
 		uint256 start,
@@ -53,7 +52,7 @@ contract TheBleepMachine {
 	/// @param musicBytecode the evm bytecode that the Bleep Machine will execute in a loop.
 	/// @param start sample offset at which the music starts.
 	/// @param length the number of samples to generate.
-    /// @return 8bit samples buffer.
+	/// @return 8bit samples buffer.
 	function samples(
 		bytes memory musicBytecode,
 		uint256 start,
@@ -63,10 +62,12 @@ contract TheBleepMachine {
 		address executor = _create(musicBytecode);
 
 		// Execute a call on the generated contract with the start and length specified.
-		// if the music bytecode behaves, it will create a buffer of length `length`
+		// If the music bytecode behaves, it will create a buffer of length `length`.
 		(bool success, bytes memory buffer) = executor.staticcall(
 			abi.encode((start & 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF) | (length << 128))
 		);
+
+		// If there is any error, we revert.
 		if (!success) {
 			revert MusicExecutionFailure();
 		}
@@ -80,19 +81,20 @@ contract TheBleepMachine {
 
 	/// @dev Creates a new contract that generate the music from a given start offset and length.
 	/// @param musicBytecode the evm bytecode the Bleep Machine will execute in a loop.
-    /// @return executor address of the contract that generate samples when executed.
+	/// @return executor: address of the contract that will generate samples when executed.
 	function _create(bytes memory musicBytecode) public returns (address executor) {
-		// This code generate a contract creation-code that loop over the provided `musicBytecode`
-		//
-		// 61006d600081600b8239f3 simply copy the code after it
-		//
-		// 6000358060801b806000529060801c60205260006040525b prepare the data
+		// This code generates a contract creation-code that loops over the provided `musicBytecode`.
+
+		// 61006d600081600b8239f3 => simply copy the code after it.
+
+		// 6000358060801b806000529060801c60205260006040525b => prepare the data
 		// In particular it parse the calldata to extract start and length parameters (Stored in 128bit each)
 		// it then ensure that starting time is on top of the stack before the loop start
 		// the last `5b` is a JUMPDEST that will be jump to each time
-		//
+
 		// 60ff9016604051806080019091905360010180604052602051600051600101806000529110601757602051806060526020016060f3
-		// performs the loop and when it ends (start + time >= length), it copy the generate buffer in return data
+		// => performs the loop and when it ends (start + time >= length), it copy the generate buffer in return data
+
 		bytes memory executorCreation = bytes.concat(
 			hex"61006d600081600b8239f36000358060801b806000529060801c60205260006040525b",
 			musicBytecode,
@@ -128,9 +130,9 @@ contract TheBleepMachine {
 
 	/// @dev Prepends the WAV file header for 8 bits samples at 8000Hz, mono sounds.
 	/// @param samples 8 bits samples representing 8000Hz, mono sounds.
-    /// @return WAV file (8 bits, 8000Hz, mono) made of the samples given.
+	/// @return WAV file (8 bits, 8000Hz, mono) made of the samples given.
 	function _wrapInWAV(bytes memory samples) internal pure returns (bytes memory) {
-		// WAV file header, 8 bits, 8000Hz, mono, zero length
+		// WAV file header, 8 bits, 8000Hz, mono, empty length.
 		bytes
 			memory dynHeader = hex"524946460000000057415645666d74201000000001000100401f0000401f0000010008006461746100000000";
 
@@ -141,12 +143,12 @@ contract TheBleepMachine {
 			// Where SubChunk1Size is 16 (for PCM) and SubChunk2Size is the length of the data.
 			let t := add(length, 36)
 
-			// We write that in the top header  (in little endian).
+			// We write that length info in the top header (in little endian).
 			mstore8(add(dynHeader, 36), and(t, 0xFF))
 			mstore8(add(dynHeader, 37), and(shr(8, t), 0xFF))
 			mstore8(add(dynHeader, 38), and(shr(16, t), 0xFF))
 
-			// We also write the data length just before the data stream as per WAV file format spec (in little endian).
+			// We also write the exact data length just before the data stream as per WAV file format spec (in little endian).
 			mstore8(add(dynHeader, 72), and(length, 0xFF))
 			mstore8(add(dynHeader, 73), and(shr(8, length), 0xFF))
 			mstore8(add(dynHeader, 74), and(shr(16, length), 0xFF))
