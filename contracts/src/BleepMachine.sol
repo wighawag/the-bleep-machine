@@ -6,12 +6,13 @@ import "./ERC721/ERC4494/implementations/UsingERC4494PermitWithDynamicChainId.so
 import "./Multicall/UsingMulticall.sol";
 import "./ERC721/implementations/UsingExternalMinter.sol";
 import "./ERC2981/implementations/UsingGlobalRoyalties.sol";
+import "./Guardian/implementations/UsingGuardian.sol";
 
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "base64-sol/base64.sol";
 
 
-contract BleepMachine is ERC721, UsingExternalMinter, UsingGlobalRoyalties, UsingERC4494PermitWithDynamicChainId, UsingMulticall {
+contract BleepMachine is ERC721, UsingERC4494PermitWithDynamicChainId, UsingMulticall, UsingGuardian, UsingExternalMinter, UsingGlobalRoyalties {
 
     /// @dev Setup the roles
     /// @param initialMinterAdmin admin able to set the minter contract.
@@ -20,12 +21,12 @@ contract BleepMachine is ERC721, UsingExternalMinter, UsingGlobalRoyalties, Usin
     /// @param initialRoyaltyReceiver receiver of royalties
     /// @param imitialRoyaltyPer10Thousands amount of royalty in 10,000 basis point
     constructor(
-        address initialMinterAdmin,
-        address initialRoyaltyAdmin,
         address initialGuardian,
+        address initialMinterAdmin,
         address initialRoyaltyReceiver,
-        uint96 imitialRoyaltyPer10Thousands
-    ) UsingExternalMinter(initialMinterAdmin) UsingGlobalRoyalties(initialRoyaltyReceiver, imitialRoyaltyPer10Thousands, initialRoyaltyAdmin) {
+        uint96 imitialRoyaltyPer10Thousands,
+        address initialRoyaltyAdmin
+    ) UsingExternalMinter(initialMinterAdmin) UsingGlobalRoyalties(initialRoyaltyReceiver, imitialRoyaltyPer10Thousands, initialRoyaltyAdmin) UsingGuardian(initialGuardian){
 
     }
 
