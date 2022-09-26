@@ -20,4 +20,4 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 	});
 };
 export default func;
-func.tags = ['BleepBeats', 'BleepBeats_deploy'];
+func.tags = ['TheBleepMachine', 'TheBleepMachine_deploy'];

@@ -173,7 +173,7 @@ abstract contract ERC721 is IERC721, ImplementingERC721Internal {
 		return id == 0x01ffc9a7 || id == 0x80ac58cd || id == 0x5b5e139f;
 	}
 
-	function tokenURI(uint256 id) external view virtual returns (string memory);
+	// TODO : function tokenURI(uint256 id) external view virtual returns (string memory);
 
 	function _safeTransferFrom(
 		address from,

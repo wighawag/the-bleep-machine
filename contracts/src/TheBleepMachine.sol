@@ -57,7 +57,7 @@ contract TheBleepMachine {
 		address executor,
 		uint256 start,
 		uint256 length
-	) external returns (bytes memory) {
+	) external view returns (bytes memory) {
 		bytes memory samples = execute(executor, start, length);
 		return _wrapInWAV(samples);
 	}

@@ -1132,10 +1132,15 @@
       ]
     },
     "BleepBeats": {
-      "address": "0xB82008565FdC7e44609fA118A4a681E92581e680",
+      "address": "0x5D42EBdBBa61412295D7b0302d6F50aC449Ddb4F",
       "abi": [
         {
           "inputs": [
+            {
+              "internalType": "contract TheBleepMachine",
+              "name": "bleepMachine",
+              "type": "address"
+            },
             {
               "internalType": "address",
               "name": "initialGuardian",
@@ -1494,9 +1499,9 @@
               "type": "address"
             },
             {
-              "internalType": "bytes",
+              "internalType": "bytes32",
               "name": "musicBytecode",
-              "type": "bytes"
+              "type": "bytes32"
             }
           ],
           "name": "mint",
@@ -1703,35 +1708,6 @@
           ],
           "name": "permitForAll",
           "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "bytes",
-              "name": "musicBytecode",
-              "type": "bytes"
-            },
-            {
-              "internalType": "uint256",
-              "name": "start",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "length",
-              "type": "uint256"
-            }
-          ],
-          "name": "play",
-          "outputs": [
-            {
-              "internalType": "string",
-              "name": "",
-              "type": "string"
-            }
-          ],
           "stateMutability": "nonpayable",
           "type": "function"
         },
@@ -1949,6 +1925,19 @@
           "type": "function"
         },
         {
+          "inputs": [],
+          "name": "theBleepMachine",
+          "outputs": [
+            {
+              "internalType": "contract TheBleepMachine",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
           "inputs": [
             {
               "internalType": "uint256",
@@ -1979,11 +1968,11 @@
           "outputs": [
             {
               "internalType": "string",
-              "name": "",
+              "name": "str",
               "type": "string"
             }
           ],
-          "stateMutability": "view",
+          "stateMutability": "nonpayable",
           "type": "function"
         },
         {
@@ -2012,7 +2001,7 @@
       ]
     },
     "TheBleepMachine": {
-      "address": "0x74Cf9087AD26D541930BaC724B7ab21bA8F00a27",
+      "address": "0xefAB0Beb0A557E452b398035eA964948c750b2Fd",
       "abi": [
         {
           "inputs": [],
@@ -2161,7 +2150,7 @@
               "type": "bytes"
             }
           ],
-          "stateMutability": "nonpayable",
+          "stateMutability": "view",
           "type": "function"
         }
       ]
