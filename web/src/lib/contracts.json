@@ -3,7 +3,7 @@
   "chainId": "5",
   "contracts": {
     "BleepBeats": {
-      "address": "0xB03802d320689e0f8B1c2312c55500f3e74fCDa0",
+      "address": "0x5aed6989B1D28d12D41E9437AA1a5b1cCa1B65f3",
       "abi": [
         {
           "inputs": [
@@ -872,7 +872,7 @@
       ]
     },
     "TheBleepMachine": {
-      "address": "0xf611cB9EB62dA165d3b83950BC476afeD9887E0B",
+      "address": "0x8A890126c932d49c2D761dcc6a8E9F7A7a8e40B5",
       "abi": [
         {
           "inputs": [],
@@ -895,9 +895,38 @@
               "internalType": "bytes",
               "name": "musicBytecode",
               "type": "bytes"
+            },
+            {
+              "internalType": "uint256",
+              "name": "start",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "length",
+              "type": "uint256"
             }
           ],
-          "name": "create",
+          "name": "WAV",
+          "outputs": [
+            {
+              "internalType": "bytes",
+              "name": "",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "bytes",
+              "name": "musicBytecode",
+              "type": "bytes"
+            }
+          ],
+          "name": "_create",
           "outputs": [
             {
               "internalType": "address",
@@ -926,7 +955,7 @@
               "type": "uint256"
             }
           ],
-          "name": "execute",
+          "name": "generate",
           "outputs": [
             {
               "internalType": "bytes",
@@ -935,93 +964,6 @@
             }
           ],
           "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "address",
-              "name": "executor",
-              "type": "address"
-            },
-            {
-              "internalType": "uint256",
-              "name": "start",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "length",
-              "type": "uint256"
-            }
-          ],
-          "name": "execute",
-          "outputs": [
-            {
-              "internalType": "bytes",
-              "name": "",
-              "type": "bytes"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "bytes",
-              "name": "musicBytecode",
-              "type": "bytes"
-            },
-            {
-              "internalType": "uint256",
-              "name": "start",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "length",
-              "type": "uint256"
-            }
-          ],
-          "name": "wav",
-          "outputs": [
-            {
-              "internalType": "bytes",
-              "name": "",
-              "type": "bytes"
-            }
-          ],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "address",
-              "name": "executor",
-              "type": "address"
-            },
-            {
-              "internalType": "uint256",
-              "name": "start",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "length",
-              "type": "uint256"
-            }
-          ],
-          "name": "wav",
-          "outputs": [
-            {
-              "internalType": "bytes",
-              "name": "",
-              "type": "bytes"
-            }
-          ],
-          "stateMutability": "view",
           "type": "function"
         }
       ]

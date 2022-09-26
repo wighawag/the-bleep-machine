@@ -1,5 +1,5 @@
 {
-  "address": "0xf611cB9EB62dA165d3b83950BC476afeD9887E0B",
+  "address": "0x8A890126c932d49c2D761dcc6a8E9F7A7a8e40B5",
   "abi": [
     {
       "inputs": [],
@@ -22,9 +22,38 @@
           "internalType": "bytes",
           "name": "musicBytecode",
           "type": "bytes"
+        },
+        {
+          "internalType": "uint256",
+          "name": "start",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "length",
+          "type": "uint256"
         }
       ],
-      "name": "create",
+      "name": "WAV",
+      "outputs": [
+        {
+          "internalType": "bytes",
+          "name": "",
+          "type": "bytes"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes",
+          "name": "musicBytecode",
+          "type": "bytes"
+        }
+      ],
+      "name": "_create",
       "outputs": [
         {
           "internalType": "address",
@@ -53,7 +82,7 @@
           "type": "uint256"
         }
       ],
-      "name": "execute",
+      "name": "generate",
       "outputs": [
         {
           "internalType": "bytes",
@@ -62,152 +91,61 @@
         }
       ],
       "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "executor",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "start",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "length",
-          "type": "uint256"
-        }
-      ],
-      "name": "execute",
-      "outputs": [
-        {
-          "internalType": "bytes",
-          "name": "",
-          "type": "bytes"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "bytes",
-          "name": "musicBytecode",
-          "type": "bytes"
-        },
-        {
-          "internalType": "uint256",
-          "name": "start",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "length",
-          "type": "uint256"
-        }
-      ],
-      "name": "wav",
-      "outputs": [
-        {
-          "internalType": "bytes",
-          "name": "",
-          "type": "bytes"
-        }
-      ],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "executor",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "start",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "length",
-          "type": "uint256"
-        }
-      ],
-      "name": "wav",
-      "outputs": [
-        {
-          "internalType": "bytes",
-          "name": "",
-          "type": "bytes"
-        }
-      ],
-      "stateMutability": "view",
       "type": "function"
     }
   ],
-  "transactionHash": "0xe23b3000db23193be2264f861640d8675fdbe7d6272bd562949b7c89f4a335dc",
+  "transactionHash": "0xc03d198e0751ed9e949f846a7e2a65eeb6211430a85888b5f39acb2147093bb8",
   "receipt": {
-    "to": null,
+    "to": "0x4e59b44847b379578588920cA78FbF26c0B4956C",
     "from": "0x61c461EcC993aaDEB7e4b47E96d1B8cC37314B20",
-    "contractAddress": "0xf611cB9EB62dA165d3b83950BC476afeD9887E0B",
-    "transactionIndex": 45,
-    "gasUsed": "435049",
+    "contractAddress": null,
+    "transactionIndex": 35,
+    "gasUsed": "395733",
     "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-    "blockHash": "0x0a98c7d8ac7ce1bebcc7d94e9e76934de232145e3a54375bbf6028bed4b9822a",
-    "transactionHash": "0xe23b3000db23193be2264f861640d8675fdbe7d6272bd562949b7c89f4a335dc",
+    "blockHash": "0x0be5f0f4ec1d8a04b65420a193bbf3ec7e578befc2072c2b4d5789856244c9d9",
+    "transactionHash": "0xc03d198e0751ed9e949f846a7e2a65eeb6211430a85888b5f39acb2147093bb8",
     "logs": [],
-    "blockNumber": 7664195,
-    "cumulativeGasUsed": "20405928",
+    "blockNumber": 7664636,
+    "cumulativeGasUsed": "29730137",
     "status": 1,
     "byzantium": true
   },
   "args": [],
-  "numDeployments": 1,
-  "solcInputHash": "63c10ad80977e9884e59b054bf3afff8",
-  "metadata": "{\"compiler\":{\"version\":\"0.8.16+commit.07a7930e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"name\":\"MusicByteCodeTooLarge\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"MusicContractCreationFailure\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"MusicExecutionFailure\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"musicBytecode\",\"type\":\"bytes\"}],\"name\":\"create\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"executor\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"musicBytecode\",\"type\":\"bytes\"},{\"internalType\":\"uint256\",\"name\":\"start\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"length\",\"type\":\"uint256\"}],\"name\":\"execute\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"executor\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"start\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"length\",\"type\":\"uint256\"}],\"name\":\"execute\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"musicBytecode\",\"type\":\"bytes\"},{\"internalType\":\"uint256\",\"name\":\"start\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"length\",\"type\":\"uint256\"}],\"name\":\"wav\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"executor\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"start\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"length\",\"type\":\"uint256\"}],\"name\":\"wav\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{\"create(bytes)\":{\"params\":{\"musicBytecode\":\"the evm bytecode the Bleep Machine will execute in a loop\"}},\"execute(address,uint256,uint256)\":{\"params\":{\"executor\":\"the generated contract that perform the Bleep Machine loop (see `create`)\",\"length\":\"the number of sample to generate\",\"start\":\"sample offset at whcih the music start\"}},\"execute(bytes,uint256,uint256)\":{\"params\":{\"length\":\"the number of sample to generate\",\"musicBytecode\":\"the evm bytecode the Bleep Machine will execute in a loop\",\"start\":\"sample offset at whcih the music start\"}},\"wav(address,uint256,uint256)\":{\"params\":{\"executor\":\"the generated contract that perform the Bleep Machine loop (see `create`)\",\"length\":\"the number of sample to generate\",\"start\":\"sample offset at whcih the music start\"}},\"wav(bytes,uint256,uint256)\":{\"params\":{\"length\":\"the number of sample to generate\",\"musicBytecode\":\"the evm bytecode the Bleep Machine will execute in a loop\",\"start\":\"sample offset at whcih the music start\"}}},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"create(bytes)\":{\"notice\":\"create a contract that generate the music from a given start offset and length\"},\"execute(address,uint256,uint256)\":{\"notice\":\"generate a raw 8 bits samples from EVM bytecode (`musicBytecode`) with a specific offset and length\"},\"execute(bytes,uint256,uint256)\":{\"notice\":\"generate a raw 8 bits samples from a contract pre-created and a specific offset and length\"},\"wav(address,uint256,uint256)\":{\"notice\":\"generate a wav file from a contract pre-created and a specific offset and length\"},\"wav(bytes,uint256,uint256)\":{\"notice\":\"generate a wav file from EVM bytecode (`musicBytecode`) with a specific offset and length\"}},\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/TheBleepMachine.sol\":\"TheBleepMachine\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":2000},\"remappings\":[]},\"sources\":{\"src/TheBleepMachine.sol\":{\"content\":\"// SPDX-License-Identifier: AGPL-3.0-or-later\\n\\n// _/\\\\/\\\\/\\\\/\\\\/\\\\/\\\\__/\\\\/\\\\________________________/\\\\/\\\\/\\\\/\\\\/\\\\____/\\\\/\\\\____________________________________________/\\\\/\\\\______/\\\\/\\\\__________________________/\\\\/\\\\________/\\\\/\\\\___________________________\\n// _____/\\\\/\\\\______/\\\\/\\\\__________/\\\\/\\\\/\\\\________/\\\\/\\\\____/\\\\/\\\\__/\\\\/\\\\______/\\\\/\\\\/\\\\______/\\\\/\\\\/\\\\____/\\\\/\\\\/\\\\/\\\\________/\\\\/\\\\/\\\\__/\\\\/\\\\/\\\\__/\\\\/\\\\/\\\\________/\\\\/\\\\/\\\\/\\\\__/\\\\/\\\\________________/\\\\/\\\\/\\\\/\\\\______/\\\\/\\\\/\\\\___\\n// _____/\\\\/\\\\______/\\\\/\\\\/\\\\/\\\\____/\\\\/\\\\/\\\\/\\\\/\\\\______/\\\\/\\\\/\\\\/\\\\/\\\\____/\\\\/\\\\____/\\\\/\\\\/\\\\/\\\\/\\\\__/\\\\/\\\\/\\\\/\\\\/\\\\__/\\\\/\\\\__/\\\\/\\\\______/\\\\/\\\\/\\\\/\\\\/\\\\/\\\\/\\\\______/\\\\/\\\\____/\\\\/\\\\________/\\\\/\\\\/\\\\/\\\\____/\\\\/\\\\____/\\\\/\\\\__/\\\\/\\\\__/\\\\/\\\\/\\\\/\\\\/\\\\_\\n// _____/\\\\/\\\\______/\\\\/\\\\__/\\\\/\\\\__/\\\\/\\\\____________/\\\\/\\\\____/\\\\/\\\\__/\\\\/\\\\____/\\\\/\\\\________/\\\\/\\\\________/\\\\/\\\\/\\\\/\\\\________/\\\\/\\\\__/\\\\__/\\\\/\\\\__/\\\\/\\\\/\\\\/\\\\____/\\\\/\\\\________/\\\\/\\\\__/\\\\/\\\\__/\\\\/\\\\____/\\\\/\\\\__/\\\\/\\\\__/\\\\/\\\\_______\\n// _____/\\\\/\\\\______/\\\\/\\\\__/\\\\/\\\\____/\\\\/\\\\/\\\\/\\\\______/\\\\/\\\\/\\\\/\\\\/\\\\____/\\\\/\\\\/\\\\____/\\\\/\\\\/\\\\/\\\\____/\\\\/\\\\/\\\\/\\\\__/\\\\/\\\\____________/\\\\/\\\\______/\\\\/\\\\__/\\\\/\\\\/\\\\/\\\\/\\\\____/\\\\/\\\\/\\\\/\\\\__/\\\\/\\\\__/\\\\/\\\\__/\\\\/\\\\/\\\\__/\\\\/\\\\__/\\\\/\\\\____/\\\\/\\\\/\\\\/\\\\_\\n// _________________________________________________________________________________________/\\\\/\\\\_______________________________________________________________________________________________\\n\\n// The Bleep Machine Generates Music From Ethereum Bytecode\\n\\n// Try it.\\n// Note, this requires [cast](https://github.com/foundry-rs/foundry/tree/master/cast) + a working ethereum rpc node\\n\\n// cast call --rpc-url https://rpc.bleeps.art machine.bleeps.eth \\\"wav(bytes,uint256,uint256)(bytes)\\\" 0x808060081c9160091c600e1661ca98901c600f160217  0 100000 | xxd -r -p | aplay\\n\\n// Copyright (C) 2022 Ronan Sandford\\n\\n// This program is free software: you can redistribute it and/or modify\\n// it under the terms of the GNU Affero General Public License as published by\\n// the Free Software Foundation, either version 3 of the License, or\\n// (at your option) any later version.\\n//\\n// This program is distributed in the hope that it will be useful,\\n// but WITHOUT ANY WARRANTY; without even the implied warranty of\\n// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\\n// GNU Affero General Public License for more details.\\n//\\n// You should have received a copy of the GNU Affero General Public License\\n// along with this program.  If not, see <https://www.gnu.org/licenses/>.\\n\\npragma solidity 0.8.16;\\n\\nerror MusicByteCodeTooLarge();\\nerror MusicContractCreationFailure();\\nerror MusicExecutionFailure();\\n\\ncontract TheBleepMachine {\\n\\t/// @notice generate a wav file from EVM bytecode (`musicBytecode`) with a specific offset and length\\n\\t/// @param musicBytecode the evm bytecode the Bleep Machine will execute in a loop\\n\\t/// @param start sample offset at whcih the music start\\n\\t/// @param length the number of sample to generate\\n\\tfunction wav(\\n\\t\\tbytes memory musicBytecode,\\n\\t\\tuint256 start,\\n\\t\\tuint256 length\\n\\t) external returns (bytes memory) {\\n\\t\\tbytes memory samples = execute(musicBytecode, start, length);\\n\\t\\treturn _wrapInWAV(samples);\\n\\t}\\n\\n\\t/// @notice generate a wav file from a contract pre-created and a specific offset and length\\n\\t/// @param executor the generated contract that perform the Bleep Machine loop (see `create`)\\n\\t/// @param start sample offset at whcih the music start\\n\\t/// @param length the number of sample to generate\\n\\tfunction wav(\\n\\t\\taddress executor,\\n\\t\\tuint256 start,\\n\\t\\tuint256 length\\n\\t) external view returns (bytes memory) {\\n\\t\\tbytes memory samples = execute(executor, start, length);\\n\\t\\treturn _wrapInWAV(samples);\\n\\t}\\n\\n\\t/// @notice create a contract that generate the music from a given start offset and length\\n\\t/// @param musicBytecode the evm bytecode the Bleep Machine will execute in a loop\\n\\tfunction create(bytes memory musicBytecode) public returns (address executor) {\\n\\t\\t// This code generate a contract creation-code that loop over the provided `musicBytecode`\\n\\t\\t//\\n\\t\\t// 61006d600081600b8239f3 simply copy the code after it\\n\\t\\t//\\n\\t\\t// 6000358060801b806000529060801c60205260006040525b prepare the data\\n\\t\\t// In particular it parse the calldata to extract start and length parameters (Stored in 128bit each)\\n\\t\\t// it then ensure that starting time is on top of the stack before the loop start\\n\\t\\t// the last `5b` is a JUMPDEST that will be jump to each time\\n\\t\\t//\\n\\t\\t// 60ff9016604051806080019091905360010180604052602051600051600101806000529110601757602051806060526020016060f3\\n\\t\\t// performs the loop and when it ends (start + time >= length), it copy the generate buffer in return data\\n\\t\\tbytes memory executorCreation = bytes.concat(\\n\\t\\t\\thex\\\"61006d600081600b8239f36000358060801b806000529060801c60205260006040525b\\\",\\n\\t\\t\\tmusicBytecode,\\n\\t\\t\\thex\\\"60ff9016604051806080019091905360010180604052602051600051600101806000529110601757602051806060526020016060f3\\\"\\n\\t\\t);\\n\\t\\tuint256 len = musicBytecode.length;\\n\\n\\t\\t// we make sure the generated code length can be encoded in the PUSH2\\n\\t\\tuint256 codeLen;\\n\\t\\tunchecked {\\n\\t\\t\\tcodeLen = 0x4d + len;\\n\\t\\t}\\n\\t\\tif (codeLen > 0xFFFF) {\\n\\t\\t\\trevert MusicByteCodeTooLarge();\\n\\t\\t}\\n\\n\\t\\t// we store the generated creationCode length so that the creationCode work with its new length\\n\\t\\tassembly {\\n\\t\\t\\tmstore8(add(executorCreation, 33), shr(8, codeLen))\\n\\t\\t\\tmstore8(add(executorCreation, 34), and(codeLen, 0xFF))\\n\\t\\t}\\n\\n\\t\\t// we create the contract\\n\\t\\tassembly {\\n\\t\\t\\texecutor := create(0, add(executorCreation, 32), mload(executorCreation))\\n\\t\\t}\\n\\n\\t\\t// if there is any error, we revert\\n\\t\\tif (executor == address(0)) {\\n\\t\\t\\trevert MusicContractCreationFailure();\\n\\t\\t}\\n\\t}\\n\\n\\t/// @notice generate a raw 8 bits samples from a contract pre-created and a specific offset and length\\n\\t/// @param musicBytecode the evm bytecode the Bleep Machine will execute in a loop\\n\\t/// @param start sample offset at whcih the music start\\n\\t/// @param length the number of sample to generate\\n\\tfunction execute(\\n\\t\\tbytes memory musicBytecode,\\n\\t\\tuint256 start,\\n\\t\\tuint256 length\\n\\t) public returns (bytes memory) {\\n\\t\\taddress executor = create(musicBytecode);\\n\\t\\treturn execute(executor, start, length);\\n\\t}\\n\\n\\t/// @notice generate a raw 8 bits samples from EVM bytecode (`musicBytecode`) with a specific offset and length\\n\\t/// @param executor the generated contract that perform the Bleep Machine loop (see `create`)\\n\\t/// @param start sample offset at whcih the music start\\n\\t/// @param length the number of sample to generate\\n\\tfunction execute(\\n\\t\\taddress executor,\\n\\t\\tuint256 start,\\n\\t\\tuint256 length\\n\\t) public view returns (bytes memory) {\\n\\t\\t// We execute the generated contract\\n\\t\\t// if the music bytecode behaves, it will create a buffer of length `length`\\n\\t\\t(bool success, bytes memory buffer) = executor.staticcall(\\n\\t\\t\\tabi.encode((start & 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF) | (length << 128))\\n\\t\\t);\\n\\t\\tif (!success) {\\n\\t\\t\\trevert MusicExecutionFailure();\\n\\t\\t}\\n\\n\\t\\treturn buffer;\\n\\t}\\n\\n\\tfunction _wrapInWAV(bytes memory samples) internal pure returns (bytes memory) {\\n\\t\\t// WAV file header, 8 bits, 8000Hz, mono, zero length\\n\\t\\tbytes\\n\\t\\t\\tmemory dynHeader = hex\\\"524946460000000057415645666d74201000000001000100401f0000401f0000010008006461746100000000\\\";\\n\\n\\t\\tuint256 length = samples.length;\\n\\t\\tassembly {\\n\\t\\t\\t// top header length is length of data + 36\\n\\t\\t\\t// more precisely: (4 + (8 + SubChunk1Size) + (8 + SubChunk2Size))\\n\\t\\t\\t// where SubChunk1Size is 16 (for PCM) and SubChunk2Size is the length of the data\\n\\t\\t\\tlet t := add(length, 36)\\n\\n\\t\\t\\t// we write that in the top header  (in little endian)\\n\\t\\t\\tmstore8(add(dynHeader, 36), and(t, 0xFF))\\n\\t\\t\\tmstore8(add(dynHeader, 37), and(shr(8, t), 0xFF))\\n\\t\\t\\tmstore8(add(dynHeader, 38), and(shr(16, t), 0xFF))\\n\\n\\t\\t\\t// we also write the data length just before the data stream as per WAV file format spec (in little endian)\\n\\t\\t\\tmstore8(add(dynHeader, 72), and(length, 0xFF))\\n\\t\\t\\tmstore8(add(dynHeader, 73), and(shr(8, length), 0xFF))\\n\\t\\t\\tmstore8(add(dynHeader, 74), and(shr(16, length), 0xFF))\\n\\t\\t}\\n\\n\\t\\t// We concatenate the buffer we got from computing the music with the header above\\n\\t\\treturn bytes.concat(dynHeader, samples);\\n\\t}\\n}\\n\",\"keccak256\":\"0xafd2b869817bf8d7ac10b8bc9b5a529e1e7e19221673e88c439b856921369e94\",\"license\":\"AGPL-3.0-or-later\"}},\"version\":1}",
-  "bytecode": "0x608060405234801561001057600080fd5b506106f2806100206000396000f3fe608060405234801561001057600080fd5b50600436106100675760003560e01c8063c52ab77811610050578063c52ab778146100a8578063cf5ba53f146100bb578063d0d33cbe146100f357600080fd5b8063701c89381461006c578063a981010114610095575b600080fd5b61007f61007a36600461045d565b610106565b60405161008c91906104cf565b60405180910390f35b61007f6100a336600461045d565b610129565b61007f6100b6366004610502565b610143565b6100ce6100c9366004610550565b610220565b60405173ffffffffffffffffffffffffffffffffffffffff909116815260200161008c565b61007f610101366004610502565b6102fb565b6060600061011385610220565b9050610120818585610143565b95945050505050565b60606000610138858585610106565b90506101208161030a565b60606000808573ffffffffffffffffffffffffffffffffffffffff16608085901b866fffffffffffffffffffffffffffffffff161760405160200161018a91815260200190565b60408051601f19818403018152908290526101a49161058d565b600060405180830381855afa9150503d80600081146101df576040519150601f19603f3d011682016040523d82523d6000602084013e6101e4565b606091505b509150915081610120576040517fdae8c31100000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6000808260405160200161023491906105a9565b60408051601f198184030181529190528351909150604d810161ffff811115610289576040517f90860d6000000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b8060081c602184015360ff811660228401538251602084016000f0935073ffffffffffffffffffffffffffffffffffffffff84166102f3576040517fd4cefffb00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b505050919050565b60606000610138858585610143565b606060006040518060600160405280602c8152602001610691602c913990506000835190506024810160ff8116602484015360ff8160081c16602584015360ff8160101c1660268401535060ff8116604883015360ff8160081c16604983015360ff8160101c16604a8301538184604051602001610389929190610661565b60405160208183030381529060405292505050919050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b600082601f8301126103e157600080fd5b813567ffffffffffffffff808211156103fc576103fc6103a1565b604051601f8301601f19908116603f01168101908282118183101715610424576104246103a1565b8160405283815286602085880101111561043d57600080fd5b836020870160208301376000602085830101528094505050505092915050565b60008060006060848603121561047257600080fd5b833567ffffffffffffffff81111561048957600080fd5b610495868287016103d0565b9660208601359650604090950135949350505050565b60005b838110156104c65781810151838201526020016104ae565b50506000910152565b60208152600082518060208401526104ee8160408501602087016104ab565b601f01601f19169190910160400192915050565b60008060006060848603121561051757600080fd5b833573ffffffffffffffffffffffffffffffffffffffff8116811461053b57600080fd5b95602085013595506040909401359392505050565b60006020828403121561056257600080fd5b813567ffffffffffffffff81111561057957600080fd5b610585848285016103d0565b949350505050565b6000825161059f8184602087016104ab565b9190910192915050565b7f61006d600081600b8239f36000358060801b806000529060801c60205260006081527f40525b00000000000000000000000000000000000000000000000000000000006020820152600082516106078160238501602087016104ab565b7f60ff90166040518060800190919053600101806040526020516000516001018060239390910192830152507f6000529110601757602051806060526020016060f300000000000000000000006043820152605801919050565b600083516106738184602088016104ab565b8351908301906106878183602088016104ab565b0194935050505056fe524946460000000057415645666d74201000000001000100401f0000401f0000010008006461746100000000a26469706673582212209ff3912672960e721b3ed2c778e03bb4ecb165523e3459225342ec252415c6a864736f6c63430008100033",
-  "deployedBytecode": "0x608060405234801561001057600080fd5b50600436106100675760003560e01c8063c52ab77811610050578063c52ab778146100a8578063cf5ba53f146100bb578063d0d33cbe146100f357600080fd5b8063701c89381461006c578063a981010114610095575b600080fd5b61007f61007a36600461045d565b610106565b60405161008c91906104cf565b60405180910390f35b61007f6100a336600461045d565b610129565b61007f6100b6366004610502565b610143565b6100ce6100c9366004610550565b610220565b60405173ffffffffffffffffffffffffffffffffffffffff909116815260200161008c565b61007f610101366004610502565b6102fb565b6060600061011385610220565b9050610120818585610143565b95945050505050565b60606000610138858585610106565b90506101208161030a565b60606000808573ffffffffffffffffffffffffffffffffffffffff16608085901b866fffffffffffffffffffffffffffffffff161760405160200161018a91815260200190565b60408051601f19818403018152908290526101a49161058d565b600060405180830381855afa9150503d80600081146101df576040519150601f19603f3d011682016040523d82523d6000602084013e6101e4565b606091505b509150915081610120576040517fdae8c31100000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6000808260405160200161023491906105a9565b60408051601f198184030181529190528351909150604d810161ffff811115610289576040517f90860d6000000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b8060081c602184015360ff811660228401538251602084016000f0935073ffffffffffffffffffffffffffffffffffffffff84166102f3576040517fd4cefffb00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b505050919050565b60606000610138858585610143565b606060006040518060600160405280602c8152602001610691602c913990506000835190506024810160ff8116602484015360ff8160081c16602584015360ff8160101c1660268401535060ff8116604883015360ff8160081c16604983015360ff8160101c16604a8301538184604051602001610389929190610661565b60405160208183030381529060405292505050919050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b600082601f8301126103e157600080fd5b813567ffffffffffffffff808211156103fc576103fc6103a1565b604051601f8301601f19908116603f01168101908282118183101715610424576104246103a1565b8160405283815286602085880101111561043d57600080fd5b836020870160208301376000602085830101528094505050505092915050565b60008060006060848603121561047257600080fd5b833567ffffffffffffffff81111561048957600080fd5b610495868287016103d0565b9660208601359650604090950135949350505050565b60005b838110156104c65781810151838201526020016104ae565b50506000910152565b60208152600082518060208401526104ee8160408501602087016104ab565b601f01601f19169190910160400192915050565b60008060006060848603121561051757600080fd5b833573ffffffffffffffffffffffffffffffffffffffff8116811461053b57600080fd5b95602085013595506040909401359392505050565b60006020828403121561056257600080fd5b813567ffffffffffffffff81111561057957600080fd5b610585848285016103d0565b949350505050565b6000825161059f8184602087016104ab565b9190910192915050565b7f61006d600081600b8239f36000358060801b806000529060801c60205260006081527f40525b00000000000000000000000000000000000000000000000000000000006020820152600082516106078160238501602087016104ab565b7f60ff90166040518060800190919053600101806040526020516000516001018060239390910192830152507f6000529110601757602051806060526020016060f300000000000000000000006043820152605801919050565b600083516106738184602088016104ab565b8351908301906106878183602088016104ab565b0194935050505056fe524946460000000057415645666d74201000000001000100401f0000401f0000010008006461746100000000a26469706673582212209ff3912672960e721b3ed2c778e03bb4ecb165523e3459225342ec252415c6a864736f6c63430008100033",
+  "numDeployments": 2,
+  "solcInputHash": "deb4a0f943399ab93cf846f577548e70",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.16+commit.07a7930e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"name\":\"MusicByteCodeTooLarge\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"MusicContractCreationFailure\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"MusicExecutionFailure\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"musicBytecode\",\"type\":\"bytes\"},{\"internalType\":\"uint256\",\"name\":\"start\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"length\",\"type\":\"uint256\"}],\"name\":\"WAV\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"musicBytecode\",\"type\":\"bytes\"}],\"name\":\"_create\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"executor\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"musicBytecode\",\"type\":\"bytes\"},{\"internalType\":\"uint256\",\"name\":\"start\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"length\",\"type\":\"uint256\"}],\"name\":\"generate\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{\"WAV(bytes,uint256,uint256)\":{\"params\":{\"length\":\"the number of samples to generate.\",\"musicBytecode\":\"the evm bytecode that the Bleep Machine will execute in a loop.\",\"start\":\"sample offset at which the music starts.\"},\"returns\":{\"_0\":\"WAV file (8 bits, 8000Hz, mono).\"}},\"_create(bytes)\":{\"details\":\"Creates a new contract that generate the music from a given start offset and length.\",\"params\":{\"musicBytecode\":\"the evm bytecode the Bleep Machine will execute in a loop.\"},\"returns\":{\"executor\":\"address of the contract that will generate samples when executed.\"}},\"generate(bytes,uint256,uint256)\":{\"params\":{\"length\":\"the number of samples to generate.\",\"musicBytecode\":\"the evm bytecode that the Bleep Machine will execute in a loop.\",\"start\":\"sample offset at which the music starts.\"},\"returns\":{\"_0\":\"8bit samples buffer.\"}}},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"WAV(bytes,uint256,uint256)\":{\"notice\":\"Generates a WAV file (8 bits, 8000Hz, mono) from EVM bytecode (`musicBytecode`) with a specific offset and length.\"},\"generate(bytes,uint256,uint256)\":{\"notice\":\"Generates raw 8 bits samples from EVM bytecode (`musicBytecode`) with a specific offset and length.\"}},\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/TheBleepMachine.sol\":\"TheBleepMachine\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":2000},\"remappings\":[]},\"sources\":{\"src/TheBleepMachine.sol\":{\"content\":\"// SPDX-License-Identifier: AGPL-3.0-or-later\\n\\n// _/\\\\/\\\\/\\\\/\\\\/\\\\/\\\\__/\\\\/\\\\________________________/\\\\/\\\\/\\\\/\\\\/\\\\____/\\\\/\\\\____________________________________________/\\\\/\\\\______/\\\\/\\\\__________________________/\\\\/\\\\________/\\\\/\\\\___________________________\\n// _____/\\\\/\\\\______/\\\\/\\\\__________/\\\\/\\\\/\\\\________/\\\\/\\\\____/\\\\/\\\\__/\\\\/\\\\______/\\\\/\\\\/\\\\______/\\\\/\\\\/\\\\____/\\\\/\\\\/\\\\/\\\\________/\\\\/\\\\/\\\\__/\\\\/\\\\/\\\\__/\\\\/\\\\/\\\\________/\\\\/\\\\/\\\\/\\\\__/\\\\/\\\\________________/\\\\/\\\\/\\\\/\\\\______/\\\\/\\\\/\\\\___\\n// _____/\\\\/\\\\______/\\\\/\\\\/\\\\/\\\\____/\\\\/\\\\/\\\\/\\\\/\\\\______/\\\\/\\\\/\\\\/\\\\/\\\\____/\\\\/\\\\____/\\\\/\\\\/\\\\/\\\\/\\\\__/\\\\/\\\\/\\\\/\\\\/\\\\__/\\\\/\\\\__/\\\\/\\\\______/\\\\/\\\\/\\\\/\\\\/\\\\/\\\\/\\\\______/\\\\/\\\\____/\\\\/\\\\________/\\\\/\\\\/\\\\/\\\\____/\\\\/\\\\____/\\\\/\\\\__/\\\\/\\\\__/\\\\/\\\\/\\\\/\\\\/\\\\_\\n// _____/\\\\/\\\\______/\\\\/\\\\__/\\\\/\\\\__/\\\\/\\\\____________/\\\\/\\\\____/\\\\/\\\\__/\\\\/\\\\____/\\\\/\\\\________/\\\\/\\\\________/\\\\/\\\\/\\\\/\\\\________/\\\\/\\\\__/\\\\__/\\\\/\\\\__/\\\\/\\\\/\\\\/\\\\____/\\\\/\\\\________/\\\\/\\\\__/\\\\/\\\\__/\\\\/\\\\____/\\\\/\\\\__/\\\\/\\\\__/\\\\/\\\\_______\\n// _____/\\\\/\\\\______/\\\\/\\\\__/\\\\/\\\\____/\\\\/\\\\/\\\\/\\\\______/\\\\/\\\\/\\\\/\\\\/\\\\____/\\\\/\\\\/\\\\____/\\\\/\\\\/\\\\/\\\\____/\\\\/\\\\/\\\\/\\\\__/\\\\/\\\\____________/\\\\/\\\\______/\\\\/\\\\__/\\\\/\\\\/\\\\/\\\\/\\\\____/\\\\/\\\\/\\\\/\\\\__/\\\\/\\\\__/\\\\/\\\\__/\\\\/\\\\/\\\\__/\\\\/\\\\__/\\\\/\\\\____/\\\\/\\\\/\\\\/\\\\_\\n// _________________________________________________________________________________________/\\\\/\\\\_______________________________________________________________________________________________\\n\\n// The Bleep Machine Generates Music From Ethereum Bytecode.\\n\\n// Try the following:\\n// cast call --rpc-url https://rpc.bleeps.art machine.bleeps.eth \\\"WAV(bytes,uint256,uint256)(bytes)\\\" 0x808060081c9160091c600e1661ca98901c600f160217  0 100000 | xxd -r -p | aplay\\n// Note: this requires cast (see: https://github.com/foundry-rs) + aplay + xxd + a working ethereum rpc node.\\n\\n// Copyright (C) 2022 Ronan Sandford\\n\\n// This program is free software: you can redistribute it and/or modify\\n// it under the terms of the GNU Affero General Public License as published by\\n// the Free Software Foundation, either version 3 of the License, or\\n// (at your option) any later version.\\n//\\n// This program is distributed in the hope that it will be useful,\\n// but WITHOUT ANY WARRANTY; without even the implied warranty of\\n// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\\n// GNU Affero General Public License for more details.\\n//\\n// You should have received a copy of the GNU Affero General Public License\\n// along with this program.  If not, see <https://www.gnu.org/licenses/>.\\n\\npragma solidity 0.8.16;\\n\\nerror MusicByteCodeTooLarge();\\nerror MusicContractCreationFailure();\\nerror MusicExecutionFailure();\\n\\ncontract TheBleepMachine {\\n\\t/// @notice Generates a WAV file (8 bits, 8000Hz, mono) from EVM bytecode (`musicBytecode`) with a specific offset and length.\\n\\t/// @param musicBytecode the evm bytecode that the Bleep Machine will execute in a loop.\\n\\t/// @param start sample offset at which the music starts.\\n\\t/// @param length the number of samples to generate.\\n\\t/// @return WAV file (8 bits, 8000Hz, mono).\\n\\tfunction WAV(\\n\\t\\tbytes memory musicBytecode,\\n\\t\\tuint256 start,\\n\\t\\tuint256 length\\n\\t) external returns (bytes memory) {\\n\\t\\treturn _wrapInWAV(generate(musicBytecode, start, length));\\n\\t}\\n\\n\\t/// @notice Generates raw 8 bits samples from EVM bytecode (`musicBytecode`) with a specific offset and length.\\n\\t/// @param musicBytecode the evm bytecode that the Bleep Machine will execute in a loop.\\n\\t/// @param start sample offset at which the music starts.\\n\\t/// @param length the number of samples to generate.\\n\\t/// @return 8bit samples buffer.\\n\\tfunction generate(\\n\\t\\tbytes memory musicBytecode,\\n\\t\\tuint256 start,\\n\\t\\tuint256 length\\n\\t) public returns (bytes memory) {\\n\\t\\t// We create the contract from the music bytecode.\\n\\t\\taddress executor = _create(musicBytecode);\\n\\n\\t\\t// Execute a call on the generated contract with the start and length specified.\\n\\t\\t// If the music bytecode behaves, it will create a buffer of length `length`.\\n\\t\\t(bool success, bytes memory buffer) = executor.staticcall(\\n\\t\\t\\tabi.encode((start & 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF) | (length << 128))\\n\\t\\t);\\n\\n\\t\\t// If there is any error, we revert.\\n\\t\\tif (!success) {\\n\\t\\t\\trevert MusicExecutionFailure();\\n\\t\\t}\\n\\n\\t\\treturn buffer;\\n\\t}\\n\\n\\t// ----------------------------------------------------------------------------------------------------------------\\n\\t// INTERNAL\\n\\t// ----------------------------------------------------------------------------------------------------------------\\n\\n\\t/// @dev Creates a new contract that generate the music from a given start offset and length.\\n\\t/// @param musicBytecode the evm bytecode the Bleep Machine will execute in a loop.\\n\\t/// @return executor address of the contract that will generate samples when executed.\\n\\tfunction _create(bytes memory musicBytecode) public returns (address executor) {\\n\\t\\t// This code generates a contract creation-code that loops over the provided `musicBytecode`.\\n\\n\\t\\t// 61006d600081600b8239f3 => simply copy the code after it.\\n\\n\\t\\t// 6000358060801b806000529060801c60205260006040525b => prepare the data\\n\\t\\t// In particular it parse the calldata to extract start and length parameters (Stored in 128bit each)\\n\\t\\t// it then ensure that starting time is on top of the stack before the loop start\\n\\t\\t// the last `5b` is a JUMPDEST that will be jump to each time\\n\\n\\t\\t// 60ff9016604051806080019091905360010180604052602051600051600101806000529110601757602051806060526020016060f3\\n\\t\\t// => performs the loop and when it ends (start + time >= length), it copy the generate buffer in return data\\n\\n\\t\\tbytes memory executorCreation = bytes.concat(\\n\\t\\t\\thex\\\"61006d600081600b8239f36000358060801b806000529060801c60205260006040525b\\\",\\n\\t\\t\\tmusicBytecode,\\n\\t\\t\\thex\\\"60ff9016604051806080019091905360010180604052602051600051600101806000529110601757602051806060526020016060f3\\\"\\n\\t\\t);\\n\\t\\tuint256 len = musicBytecode.length;\\n\\n\\t\\t// We make sure the generated code length can be encoded in the PUSH2.\\n\\t\\tuint256 codeLen;\\n\\t\\tunchecked {\\n\\t\\t\\tcodeLen = 0x4d + len;\\n\\t\\t}\\n\\t\\tif (codeLen > 0xFFFF) {\\n\\t\\t\\trevert MusicByteCodeTooLarge();\\n\\t\\t}\\n\\n\\t\\t// We store the generated creationCode length so that the creationCode work with its new length.\\n\\t\\tassembly {\\n\\t\\t\\tmstore8(add(executorCreation, 33), shr(8, codeLen))\\n\\t\\t\\tmstore8(add(executorCreation, 34), and(codeLen, 0xFF))\\n\\t\\t}\\n\\n\\t\\t// We create the contract.\\n\\t\\tassembly {\\n\\t\\t\\texecutor := create(0, add(executorCreation, 32), mload(executorCreation))\\n\\t\\t}\\n\\n\\t\\t// If there is any error, we revert.\\n\\t\\tif (executor == address(0)) {\\n\\t\\t\\trevert MusicContractCreationFailure();\\n\\t\\t}\\n\\t}\\n\\n\\t/// @dev Prepends the WAV file header for 8 bits samples at 8000Hz, mono sounds.\\n\\t/// @param samples 8 bits samples representing 8000Hz, mono sounds.\\n\\t/// @return WAV file (8 bits, 8000Hz, mono) made of the samples given.\\n\\tfunction _wrapInWAV(bytes memory samples) internal pure returns (bytes memory) {\\n\\t\\t// WAV file header, 8 bits, 8000Hz, mono, empty length.\\n\\t\\tbytes\\n\\t\\t\\tmemory dynHeader = hex\\\"524946460000000057415645666d74201000000001000100401f0000401f0000010008006461746100000000\\\";\\n\\n\\t\\tuint256 length = samples.length;\\n\\t\\tassembly {\\n\\t\\t\\t// Top header length is length of data + 36 bytes.\\n\\t\\t\\t// More precisely: (4 + (8 + SubChunk1Size) + (8 + SubChunk2Size)).\\n\\t\\t\\t// Where SubChunk1Size is 16 (for PCM) and SubChunk2Size is the length of the data.\\n\\t\\t\\tlet t := add(length, 36)\\n\\n\\t\\t\\t// We write that length info in the top header (in little endian).\\n\\t\\t\\tmstore8(add(dynHeader, 36), and(t, 0xFF))\\n\\t\\t\\tmstore8(add(dynHeader, 37), and(shr(8, t), 0xFF))\\n\\t\\t\\tmstore8(add(dynHeader, 38), and(shr(16, t), 0xFF))\\n\\n\\t\\t\\t// We also write the exact data length just before the data stream as per WAV file format spec (in little endian).\\n\\t\\t\\tmstore8(add(dynHeader, 72), and(length, 0xFF))\\n\\t\\t\\tmstore8(add(dynHeader, 73), and(shr(8, length), 0xFF))\\n\\t\\t\\tmstore8(add(dynHeader, 74), and(shr(16, length), 0xFF))\\n\\t\\t}\\n\\n\\t\\t// We concatenate the samples buffer we got from computing the music with the header above.\\n\\t\\treturn bytes.concat(dynHeader, samples);\\n\\t}\\n}\\n\",\"keccak256\":\"0xda662ecd3d351fe2d440464a15dd0cf0552d5018615317d52ce112131577c61c\",\"license\":\"AGPL-3.0-or-later\"}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b50610638806100206000396000f3fe608060405234801561001057600080fd5b50600436106100415760003560e01c80632c54e4fd146100465780635734d3511461006f5780635a3efa66146100a7575b600080fd5b6100596100543660046103f9565b6100ba565b604051610066919061046b565b60405180910390f35b61008261007d36600461049e565b6100d7565b60405173ffffffffffffffffffffffffffffffffffffffff9091168152602001610066565b6100596100b53660046103f9565b6101b2565b60606100cf6100ca8585856101b2565b6102a6565b949350505050565b600080826040516020016100eb91906104d3565b60408051601f198184030181529190528351909150604d810161ffff811115610140576040517f90860d6000000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b8060081c602184015360ff811660228401538251602084016000f0935073ffffffffffffffffffffffffffffffffffffffff84166101aa576040517fd4cefffb00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b505050919050565b606060006101bf856100d7565b90506000808273ffffffffffffffffffffffffffffffffffffffff16608086901b876fffffffffffffffffffffffffffffffff161760405160200161020691815260200190565b60408051601f19818403018152908290526102209161058b565b600060405180830381855afa9150503d806000811461025b576040519150601f19603f3d011682016040523d82523d6000602084013e610260565b606091505b50915091508161029c576040517fdae8c31100000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b9695505050505050565b606060006040518060600160405280602c81526020016105d7602c913990506000835190506024810160ff8116602484015360ff8160081c16602584015360ff8160101c1660268401535060ff8116604883015360ff8160081c16604983015360ff8160101c16604a83015381846040516020016103259291906105a7565b60405160208183030381529060405292505050919050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b600082601f83011261037d57600080fd5b813567ffffffffffffffff808211156103985761039861033d565b604051601f8301601f19908116603f011681019082821181831017156103c0576103c061033d565b816040528381528660208588010111156103d957600080fd5b836020870160208301376000602085830101528094505050505092915050565b60008060006060848603121561040e57600080fd5b833567ffffffffffffffff81111561042557600080fd5b6104318682870161036c565b9660208601359650604090950135949350505050565b60005b8381101561046257818101518382015260200161044a565b50506000910152565b602081526000825180602084015261048a816040850160208701610447565b601f01601f19169190910160400192915050565b6000602082840312156104b057600080fd5b813567ffffffffffffffff8111156104c757600080fd5b6100cf8482850161036c565b7f61006d600081600b8239f36000358060801b806000529060801c60205260006081527f40525b0000000000000000000000000000000000000000000000000000000000602082015260008251610531816023850160208701610447565b7f60ff90166040518060800190919053600101806040526020516000516001018060239390910192830152507f6000529110601757602051806060526020016060f300000000000000000000006043820152605801919050565b6000825161059d818460208701610447565b9190910192915050565b600083516105b9818460208801610447565b8351908301906105cd818360208801610447565b0194935050505056fe524946460000000057415645666d74201000000001000100401f0000401f0000010008006461746100000000a2646970667358221220fc8c6be5f32437317fabbebb0cff02a499439f909f4f0655e02b30cc04fce02564736f6c63430008100033",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b50600436106100415760003560e01c80632c54e4fd146100465780635734d3511461006f5780635a3efa66146100a7575b600080fd5b6100596100543660046103f9565b6100ba565b604051610066919061046b565b60405180910390f35b61008261007d36600461049e565b6100d7565b60405173ffffffffffffffffffffffffffffffffffffffff9091168152602001610066565b6100596100b53660046103f9565b6101b2565b60606100cf6100ca8585856101b2565b6102a6565b949350505050565b600080826040516020016100eb91906104d3565b60408051601f198184030181529190528351909150604d810161ffff811115610140576040517f90860d6000000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b8060081c602184015360ff811660228401538251602084016000f0935073ffffffffffffffffffffffffffffffffffffffff84166101aa576040517fd4cefffb00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b505050919050565b606060006101bf856100d7565b90506000808273ffffffffffffffffffffffffffffffffffffffff16608086901b876fffffffffffffffffffffffffffffffff161760405160200161020691815260200190565b60408051601f19818403018152908290526102209161058b565b600060405180830381855afa9150503d806000811461025b576040519150601f19603f3d011682016040523d82523d6000602084013e610260565b606091505b50915091508161029c576040517fdae8c31100000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b9695505050505050565b606060006040518060600160405280602c81526020016105d7602c913990506000835190506024810160ff8116602484015360ff8160081c16602584015360ff8160101c1660268401535060ff8116604883015360ff8160081c16604983015360ff8160101c16604a83015381846040516020016103259291906105a7565b60405160208183030381529060405292505050919050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b600082601f83011261037d57600080fd5b813567ffffffffffffffff808211156103985761039861033d565b604051601f8301601f19908116603f011681019082821181831017156103c0576103c061033d565b816040528381528660208588010111156103d957600080fd5b836020870160208301376000602085830101528094505050505092915050565b60008060006060848603121561040e57600080fd5b833567ffffffffffffffff81111561042557600080fd5b6104318682870161036c565b9660208601359650604090950135949350505050565b60005b8381101561046257818101518382015260200161044a565b50506000910152565b602081526000825180602084015261048a816040850160208701610447565b601f01601f19169190910160400192915050565b6000602082840312156104b057600080fd5b813567ffffffffffffffff8111156104c757600080fd5b6100cf8482850161036c565b7f61006d600081600b8239f36000358060801b806000529060801c60205260006081527f40525b0000000000000000000000000000000000000000000000000000000000602082015260008251610531816023850160208701610447565b7f60ff90166040518060800190919053600101806040526020516000516001018060239390910192830152507f6000529110601757602051806060526020016060f300000000000000000000006043820152605801919050565b6000825161059d818460208701610447565b9190910192915050565b600083516105b9818460208801610447565b8351908301906105cd818360208801610447565b0194935050505056fe524946460000000057415645666d74201000000001000100401f0000401f0000010008006461746100000000a2646970667358221220fc8c6be5f32437317fabbebb0cff02a499439f909f4f0655e02b30cc04fce02564736f6c63430008100033",
   "devdoc": {
     "kind": "dev",
     "methods": {
-      "create(bytes)": {
+      "WAV(bytes,uint256,uint256)": {
         "params": {
-          "musicBytecode": "the evm bytecode the Bleep Machine will execute in a loop"
+          "length": "the number of samples to generate.",
+          "musicBytecode": "the evm bytecode that the Bleep Machine will execute in a loop.",
+          "start": "sample offset at which the music starts."
+        },
+        "returns": {
+          "_0": "WAV file (8 bits, 8000Hz, mono)."
         }
       },
-      "execute(address,uint256,uint256)": {
+      "_create(bytes)": {
+        "details": "Creates a new contract that generate the music from a given start offset and length.",
         "params": {
-          "executor": "the generated contract that perform the Bleep Machine loop (see `create`)",
-          "length": "the number of sample to generate",
-          "start": "sample offset at whcih the music start"
+          "musicBytecode": "the evm bytecode the Bleep Machine will execute in a loop."
+        },
+        "returns": {
+          "executor": "address of the contract that will generate samples when executed."
         }
       },
-      "execute(bytes,uint256,uint256)": {
+      "generate(bytes,uint256,uint256)": {
         "params": {
-          "length": "the number of sample to generate",
-          "musicBytecode": "the evm bytecode the Bleep Machine will execute in a loop",
-          "start": "sample offset at whcih the music start"
-        }
-      },
-      "wav(address,uint256,uint256)": {
-        "params": {
-          "executor": "the generated contract that perform the Bleep Machine loop (see `create`)",
-          "length": "the number of sample to generate",
-          "start": "sample offset at whcih the music start"
-        }
-      },
-      "wav(bytes,uint256,uint256)": {
-        "params": {
-          "length": "the number of sample to generate",
-          "musicBytecode": "the evm bytecode the Bleep Machine will execute in a loop",
-          "start": "sample offset at whcih the music start"
+          "length": "the number of samples to generate.",
+          "musicBytecode": "the evm bytecode that the Bleep Machine will execute in a loop.",
+          "start": "sample offset at which the music starts."
+        },
+        "returns": {
+          "_0": "8bit samples buffer."
         }
       }
     },
@@ -216,20 +154,11 @@
   "userdoc": {
     "kind": "user",
     "methods": {
-      "create(bytes)": {
-        "notice": "create a contract that generate the music from a given start offset and length"
+      "WAV(bytes,uint256,uint256)": {
+        "notice": "Generates a WAV file (8 bits, 8000Hz, mono) from EVM bytecode (`musicBytecode`) with a specific offset and length."
       },
-      "execute(address,uint256,uint256)": {
-        "notice": "generate a raw 8 bits samples from EVM bytecode (`musicBytecode`) with a specific offset and length"
-      },
-      "execute(bytes,uint256,uint256)": {
-        "notice": "generate a raw 8 bits samples from a contract pre-created and a specific offset and length"
-      },
-      "wav(address,uint256,uint256)": {
-        "notice": "generate a wav file from a contract pre-created and a specific offset and length"
-      },
-      "wav(bytes,uint256,uint256)": {
-        "notice": "generate a wav file from EVM bytecode (`musicBytecode`) with a specific offset and length"
+      "generate(bytes,uint256,uint256)": {
+        "notice": "Generates raw 8 bits samples from EVM bytecode (`musicBytecode`) with a specific offset and length."
       }
     },
     "version": 1
