@@ -8,7 +8,8 @@ return(0, #contract)
 @contract {
   calldataload(0)  ; [calldata]
   dup1()          ; [calldata, calldata]
-  shl(128, $$)  ; [calldata, TIME]
+  shl(128, $$)  ; [calldata, TIME << 128]
+  shr(128, $$)  ; [calldata, TIME]
   dup1()        ; [calldata, TIME, TIME]
 
   mstore(0, $$) ; [calldata, TIME,]  // TIME stored at 0
