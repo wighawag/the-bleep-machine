@@ -3,7 +3,7 @@
   "chainId": "5",
   "contracts": {
     "BleepBeats": {
-      "address": "0x5aed6989B1D28d12D41E9437AA1a5b1cCa1B65f3",
+      "address": "0xdf9a70256d651331F77a7EE3B9181D78645aAE3D",
       "abi": [
         {
           "inputs": [
@@ -872,7 +872,7 @@
       ]
     },
     "TheBleepMachine": {
-      "address": "0x8A890126c932d49c2D761dcc6a8E9F7A7a8e40B5",
+      "address": "0x24F99E723329688D398fbA1bE61996057754e9Cd",
       "abi": [
         {
           "inputs": [],
@@ -964,6 +964,25 @@
             }
           ],
           "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "addr",
+              "type": "address"
+            }
+          ],
+          "name": "listenTo",
+          "outputs": [
+            {
+              "internalType": "bytes",
+              "name": "",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "view",
           "type": "function"
         }
       ]

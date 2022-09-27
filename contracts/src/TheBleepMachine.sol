@@ -75,6 +75,13 @@ contract TheBleepMachine {
 		return buffer;
 	}
 
+	/// @notice Generates a WAV file (8 bits, 8000Hz, mono) from contract's code at specific address.
+	/// @param addr address of any contract. Most will generate noises.
+	/// @return WAV file (8 bits, 8000Hz, mono).
+	function listenTo(address addr) external view returns (bytes memory) {
+		return _wrapInWAV(addr.code);
+	}
+
 	// ----------------------------------------------------------------------------------------------------------------
 	// INTERNAL
 	// ----------------------------------------------------------------------------------------------------------------
