@@ -4,12 +4,13 @@ import {getChainId} from 'hardhat';
 
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 	const {deployments, getNamedAccounts} = hre;
-	const {deploy} = deployments;
+	const {deploy, getNetworkName} = deployments;
 
 	const {deployer} = await getNamedAccounts();
 
 	const chainId = await getChainId();
-	const dev = chainId != '1'; //!hre.network.live; // TODO use tag
+	const networkName = await getNetworkName();
+	const dev = networkName !== 'mainnet' && chainId != '1'; //!hre.network.live; // TODO use tag
 
 	await deploy('TheBleepMachine', {
 		from: deployer,
