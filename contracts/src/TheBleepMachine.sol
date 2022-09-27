@@ -7,7 +7,7 @@
 // _____/\/\______/\/\__/\/\____/\/\/\/\______/\/\/\/\/\____/\/\/\____/\/\/\/\____/\/\/\/\__/\/\____________/\/\______/\/\__/\/\/\/\/\____/\/\/\/\__/\/\__/\/\__/\/\/\__/\/\__/\/\____/\/\/\/\_
 // _________________________________________________________________________________________/\/\_______________________________________________________________________________________________
 
-// The Bleep Machine Generates Music From Ethereum Bytecode.
+// The Bleep Machine Generates Music From Executing Ethereum Bytecode.
 
 // Try the following:
 // cast call --rpc-url https://rpc.bleeps.art machine.bleeps.eth "WAV(bytes,uint256,uint256)(bytes)" 0x808060081c9160091c600e1661ca98901c600f160217  0 100000 | xxd -r -p | aplay
