@@ -36,10 +36,10 @@ error MusicExecutionFailure();
 
 contract TheBleepMachine {
 	/// @notice Generates a WAV file (8 bits, 8000Hz, mono) by executing the EVM bytecode provided (`musicBytecode`).
-    /// The code is given a time offset (starting at `start`) as the only element in the stack at each loop iteration.
-    /// The bytecode is then expected to provide a 8 bits sample as the only element in the stack.
+    /// The time offset is the only element on the stack at each loop iteration.
+    /// Such offset starts at `start` and is increased by one for each iteration.
+    /// The code is expected to provide an 8 bits sample as the only element in the stack at the end of each iteration.
     /// The loop is executed `length` times to generate `length` samples which compose the music generated.
-	/// @param musicBytecode the evm bytecode that the Bleep Machine will execute in a loop.
 	/// @param start sample offset at which the music starts.
 	/// @param length the number of samples to generate.
 	/// @return WAV file (8 bits, 8000Hz, mono).
@@ -52,13 +52,14 @@ contract TheBleepMachine {
 	}
 
 	/// @notice Generates raw 8 bits samples by executing the EVM bytecode provided (`musicBytecode`).
-    /// The code is given a time offset (starting at `start`) as the only element in the stack at each loop iteration.
-    /// The bytecode is then expected to provide a 8 bits sample as the only element in the stack.
+    /// The time offset is the only element on the stack at each loop iteration.
+    /// Such offset starts at `start` and is increased by one for each iteration.
+    /// The code is expected to provide an 8 bits sample as the only element in the stack at the end of each iteration.
     /// The loop is executed `length` times to generate `length` samples which compose the music generated.
-	/// @param musicBytecode the evm bytecode that the Bleep Machine will execute in a loop.
+	/// @param musicBytecode the EVM bytecode that the Bleep Machine will execute in a loop.
 	/// @param start sample offset at which the music starts.
 	/// @param length the number of samples to generate.
-	/// @return 8bit samples buffer.
+	/// @return 8 bits samples buffer.
 	function generate(
 		bytes memory musicBytecode,
 		uint256 start,
@@ -81,7 +82,7 @@ contract TheBleepMachine {
 		return buffer;
 	}
 
-	/// @notice Generates a WAV file (8 bits, 8000Hz, mono) from contract's code at specific address.
+	/// @notice Generates a WAV file (8 bits, 8000Hz, mono) from contract's code at a specific address.
 	/// @param addr address of any contract. Most will generate noises.
 	/// @return WAV file (8 bits, 8000Hz, mono).
 	function listenTo(address addr) external view returns (bytes memory) {
@@ -93,7 +94,7 @@ contract TheBleepMachine {
 	// ----------------------------------------------------------------------------------------------------------------
 
 	/// @dev Creates a new contract that generate the music from a given start offset and length.
-	/// @param musicBytecode the evm bytecode the Bleep Machine will execute in a loop.
+	/// @param musicBytecode the EVM bytecode the Bleep Machine will execute in a loop.
 	/// @return executor address of the contract that will generate samples when executed.
 	function _create(bytes memory musicBytecode) public returns (address executor) {
 		// This code generates a contract creation-code that loops over the provided `musicBytecode`.
@@ -101,12 +102,12 @@ contract TheBleepMachine {
 		// 61006d600081600b8239f3 => simply copy the code after it.
 
 		// 6000358060801b806000529060801c60205260006040525b => prepare the data
-		// In particular it parse the calldata to extract start and length parameters (Stored in 128bit each)
-		// it then ensure that starting time is on top of the stack before the loop start
-		// the last `5b` is a JUMPDEST that will be jump to each time
+		// In particular it parses the call-data to extract the start and length parameters (Stored in 128bit each).
+		// It then ensures that the starting time is on top of the stack before the loop starts.
+		// The last `5b` is a JUMPDEST that will be jumped to at each iteration.
 
 		// 60ff9016604051806080019091905360010180604052602051600051600101806000529110601757602051806060526020016060f3
-		// => performs the loop and when it ends (start + time >= length), it copy the generate buffer in return data
+		// => Performs the loop and when it ends (start + time >= length), it copy the generated buffer in return data.
 
 		bytes memory executorCreation = bytes.concat(
 			hex"61006d600081600b8239f36000358060801b806000529060801c60205260006040525b",
@@ -156,12 +157,12 @@ contract TheBleepMachine {
 			// Where SubChunk1Size is 16 (for PCM) and SubChunk2Size is the length of the data.
 			let t := add(length, 36)
 
-			// We write that length info in the top header (in little endian).
+			// We write that length info in the top header (in little-endian).
 			mstore8(add(dynHeader, 36), and(t, 0xFF))
 			mstore8(add(dynHeader, 37), and(shr(8, t), 0xFF))
 			mstore8(add(dynHeader, 38), and(shr(16, t), 0xFF))
 
-			// We also write the exact data length just before the data stream as per WAV file format spec (in little endian).
+			// We also write the exact data length just before the data stream as per WAV file format spec (in little-endian).
 			mstore8(add(dynHeader, 72), and(length, 0xFF))
 			mstore8(add(dynHeader, 73), and(shr(8, length), 0xFF))
 			mstore8(add(dynHeader, 74), and(shr(16, length), 0xFF))
