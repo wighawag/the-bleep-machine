@@ -5,7 +5,7 @@ services:
     ports:
       - '8545:8545'
       - '30303:30303'
-    command: --dev --nousb --ws --ws.addr "0.0.0.0" --ws.origins "*" --http --http.vhosts "*" --http.addr "0.0.0.0" --http.corsdomain "*" --miner.gasprice 1000000000 --dev.period 0 --rpc.gascap 30000000
+    command: --dev --nousb --ws --ws.addr "0.0.0.0" --ws.origins "*" --http --http.vhosts "*" --http.addr "0.0.0.0" --http.corsdomain "*" --miner.gasprice 1000000000 --dev.period 0 --rpc.gascap 30000000 --rpc.allow-unprotected-txs
 
   postgres:
     image: postgres:9.6.17
