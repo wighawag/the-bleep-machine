@@ -35,7 +35,7 @@ error MusicContractCreationFailure();
 error MusicExecutionFailure();
 
 contract TheBleepMachine {
-	/// @notice Generates a WAV file (8 bits, 8000Hz, mono) from EVM bytecode (`musicBytecode`) with a specific offset and length.
+	/// @notice Generates a WAV file (8 bits, 8000Hz, mono) by executing the EVM bytecode provided (`musicBytecode`).
 	/// @param musicBytecode the evm bytecode that the Bleep Machine will execute in a loop.
 	/// @param start sample offset at which the music starts.
 	/// @param length the number of samples to generate.
@@ -48,7 +48,7 @@ contract TheBleepMachine {
 		return _wrapInWAV(generate(musicBytecode, start, length));
 	}
 
-	/// @notice Generates raw 8 bits samples from EVM bytecode (`musicBytecode`) with a specific offset and length.
+	/// @notice Generates raw 8 bits samples by executing the EVM bytecode provided (`musicBytecode`).
 	/// @param musicBytecode the evm bytecode that the Bleep Machine will execute in a loop.
 	/// @param start sample offset at which the music starts.
 	/// @param length the number of samples to generate.
