@@ -35,11 +35,16 @@ error MusicContractCreationFailure();
 error MusicExecutionFailure();
 
 contract TheBleepMachine {
+	/// @notice return the name of the contract
+	function name() external pure returns (string memory) {
+		return "The Bleep Machine";
+	}
+
 	/// @notice Generates a WAV file (8 bits, 8000Hz, mono) by executing the EVM bytecode provided (`musicBytecode`).
-    /// The time offset is the only element on the stack at each loop iteration.
-    /// Such offset starts at `start` and is increased by one for each iteration.
-    /// The code is expected to provide an 8 bits sample as the only element in the stack at the end of each iteration.
-    /// The loop is executed `length` times to generate `length` samples which compose the music generated.
+	/// The time offset is the only element on the stack at each loop iteration.
+	/// Such offset starts at `start` and is increased by one for each iteration.
+	/// The code is expected to provide an 8 bits sample as the only element in the stack at the end of each iteration.
+	/// The loop is executed `length` times to generate `length` samples which compose the music generated.
 	/// @param start sample offset at which the music starts.
 	/// @param length the number of samples to generate.
 	/// @return WAV file (8 bits, 8000Hz, mono).
@@ -52,10 +57,10 @@ contract TheBleepMachine {
 	}
 
 	/// @notice Generates raw 8 bits samples by executing the EVM bytecode provided (`musicBytecode`).
-    /// The time offset is the only element on the stack at each loop iteration.
-    /// Such offset starts at `start` and is increased by one for each iteration.
-    /// The code is expected to provide an 8 bits sample as the only element in the stack at the end of each iteration.
-    /// The loop is executed `length` times to generate `length` samples which compose the music generated.
+	/// The time offset is the only element on the stack at each loop iteration.
+	/// Such offset starts at `start` and is increased by one for each iteration.
+	/// The code is expected to provide an 8 bits sample as the only element in the stack at the end of each iteration.
+	/// The loop is executed `length` times to generate `length` samples which compose the music generated.
 	/// @param musicBytecode the EVM bytecode that the Bleep Machine will execute in a loop.
 	/// @param start sample offset at which the music starts.
 	/// @param length the number of samples to generate.
