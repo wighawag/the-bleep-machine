@@ -78,7 +78,9 @@ export function addForkConfiguration(networks: NetworksUserConfig): NetworksUser
 				forking: forkURL
 					? {
 							url: forkURL,
-							blockNumber: process.env.HARDHAT_FORK_NUMBER ? parseInt(process.env.HARDHAT_FORK_NUMBER) : undefined
+							blockNumber: process.env.HARDHAT_FORK_NUMBER
+								? parseInt(process.env.HARDHAT_FORK_NUMBER)
+								: undefined
 					  }
 					: undefined,
 				mining: process.env.MINING_INTERVAL

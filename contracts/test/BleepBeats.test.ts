@@ -49,8 +49,8 @@ describe('BleepBeats', function () {
 	it('gas: tx submitted play', async function () {
 		const state = await setup();
 
-		const receipt = await state.users[0].BleepBeats.play('0x8060081c9016', 0, 128003, {gasLimit: 10000000}).then((tx) =>
-			tx.wait()
+		const receipt = await state.users[0].BleepBeats.play('0x8060081c9016', 0, 128003, {gasLimit: 10000000}).then(
+			(tx) => tx.wait()
 		);
 		console.log(receipt.gasUsed.toNumber());
 	});

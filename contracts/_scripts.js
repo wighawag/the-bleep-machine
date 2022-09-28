@@ -82,7 +82,9 @@ async function performAction(rawArgs) {
 			filepath = filepath.slice(folder.length + 1);
 		}
 		await execute(
-			`cross-env HARDHAT_DEPLOY_LOG=true HARDHAT_NETWORK=${fixedArgs[0]} ts-node --files ${filepath} ${extra.join(' ')}`
+			`cross-env HARDHAT_DEPLOY_LOG=true HARDHAT_NETWORK=${fixedArgs[0]} ts-node --files ${filepath} ${extra.join(
+				' '
+			)}`
 		);
 	} else if (firstArg === 'geth') {
 		await execute(`docker-compose down -v --remove-orphans`);
@@ -135,7 +137,9 @@ async function performAction(rawArgs) {
 	} else if (firstArg === 'deploy') {
 		const {fixedArgs, extra} = parseArgs(args, 1, {});
 		await execute(
-			`hardhat --network ${fixedArgs[0]} deploy --report-gas ${extra.join(' ')}  --export ../web/src/lib/contracts.json`
+			`hardhat --network ${fixedArgs[0]} deploy --report-gas ${extra.join(
+				' '
+			)}  --export ../web/src/lib/contracts.json`
 		);
 	} else if (firstArg === 'verify') {
 		const {fixedArgs, extra} = parseArgs(args, 1, {});
