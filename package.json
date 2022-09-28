@@ -1,9 +1,10 @@
 {
   "name": "algorithmic-music",
   "version": "1.0.0",
-  "description": "",
+  "description": "The Bleep Machine",
+  "repository": "github:wighawag/the-bleep-machine",
+  "author": "wighawag",
   "keywords": [],
-  "author": "",
   "scripts": {
     "start": "pnpm run -r --stream dev"
   }
