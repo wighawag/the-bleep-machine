@@ -20,45 +20,14 @@ return(0, #contract)
 
   @loop:
     ; ------------------------------
-    JUMPDEST
-    JUMPDEST
-    JUMPDEST
-    JUMPDEST
-    JUMPDEST
-    JUMPDEST
-    JUMPDEST
-    JUMPDEST
-    JUMPDEST
-    JUMPDEST
-    JUMPDEST
-    JUMPDEST
-    JUMPDEST
-    JUMPDEST
-    JUMPDEST
-    JUMPDEST
-    JUMPDEST
-    JUMPDEST
-    JUMPDEST
-    JUMPDEST
-    JUMPDEST
-    JUMPDEST
-    JUMPDEST
-    JUMPDEST
-    JUMPDEST
-    JUMPDEST
-    JUMPDEST
-    JUMPDEST
-    JUMPDEST
-    JUMPDEST
-    JUMPDEST
-    JUMPDEST
+
     ; ------------------------------
     0xff            ; [0x05, 0xff]
     swap1()         ; [0xff, 0x05]
     and($$, $$)     ; [0x05]
     mload(64)       ; [0x05, OFFSET]
     dup1()          ; [0x05, OFFSET, OFFSET]
-    add(128, $$)    ; [0x05, OFFSET, BUFFER_INDEX]
+    add(96, $$)     ; [0x05, OFFSET, BUFFER_INDEX]
     swap1()         ; [0x05, BUFFER_INDEX, OFFSET]
     swap2()         ; [OFFSET, BUFFER_INDEX, 0x05]
     swap1()         ; [OFFSET, 0x05, BUFFER_INDEX]
@@ -74,8 +43,6 @@ return(0, #contract)
     swap2()         ; [TIME, OFFSET, LENGTH]
   jumpi($loop, lt($$, $$)) ; [TIME]
 
-  mload(32)         ; [TIME, LENGTH]
-  dup1()            ; [TIME, LENGTH, LENGTH]
-  mstore(96, $$)   ; [TIME, LENGTH]
-  return (96, add(32,$$))  ;
+  mload(32)         ; [TIME, LENGTH]  (get the length from memory)
+  return (96, $$)  ;
 }
