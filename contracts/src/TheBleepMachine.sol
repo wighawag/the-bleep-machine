@@ -113,7 +113,7 @@ contract TheBleepMachine {
 	/// @param start sample offset at which the music starts.
 	/// @param length the number of samples to generate.
 	/// @param buffer buffer to write to
-	/// @param offset offset to start writing from
+	/// @param offset offset to start writing to
 	function _generateAndwrite(
 		bytes memory musicBytecode,
 		uint256 start,
