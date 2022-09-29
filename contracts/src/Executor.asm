@@ -22,16 +22,12 @@ return(0, #contract)
     ; ------------------------------
 
     ; ------------------------------
-    0xff            ; [0x05, 0xff]
-    swap1()         ; [0xff, 0x05]
-    and($$, $$)     ; [0x05]
-    mload(64)       ; [0x05, OFFSET]
-    dup1()          ; [0x05, OFFSET, OFFSET]
-    add(96, $$)     ; [0x05, OFFSET, BUFFER_INDEX]
-    swap1()         ; [0x05, BUFFER_INDEX, OFFSET]
-    swap2()         ; [OFFSET, BUFFER_INDEX, 0x05]
-    swap1()         ; [OFFSET, 0x05, BUFFER_INDEX]
-    mstore8($$, $$)  ; [OFFSET]
+		mload(64)       ; [OFFSET]
+    0xff            ; [OFFSET, 0x05, 0xff]
+    and($$, $$)     ; [OFFSET, 0x05]
+    dup2()          ; [OFFSET, 0x05, OFFSET]
+    add(96, $$)     ; [OFFSET, 0x05, BUFFER_INDEX]
+		mstore8($$, $$) ; [OFFSET]
     add(1, $$)      ; [OFFSET] // + 1
     dup1()          ; [OFFSET, OFFSET]
     mstore(64, $$)  ; [OFFSET]
