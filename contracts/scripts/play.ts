@@ -23,6 +23,10 @@ async function main() {
 	console.log((SAMPLES.length - 2) / 2);
 	console.log(SAMPLES.slice(0, 128 + 64 + 64 + 2) + '...');
 
+	const SELF = await TheBleepMachine.callStatic.listenTo(TheBleepMachine.address);
+	console.log((SELF.length - 2) / 2);
+	console.log(SELF.slice(0, 128 + 64 + 64 + 2) + '...');
+
 	const estimate = await TheBleepMachine.estimateGas.WAV(
 		'0x808060081c9160091c600e1661ca98901c600f160217',
 		0, //60000,
