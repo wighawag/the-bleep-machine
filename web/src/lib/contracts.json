@@ -1,9 +1,9 @@
 {
-  "name": "localhost",
-  "chainId": "1337",
+  "name": "goerli",
+  "chainId": "5",
   "contracts": {
     "BleepBeats": {
-      "address": "0xFD471836031dc5108809D173A067e8486B9047A3",
+      "address": "0x364f0f6525F8A6CE4eff25ccFAc9A220a2070C5d",
       "abi": [
         {
           "inputs": [
