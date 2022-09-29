@@ -60,6 +60,25 @@ contract TheBleepMachine {
 		uint256 length
 	) external returns (bytes memory) {
 		return _wrapInWAV(generate(musicBytecode, start, length));
+		// // WAV file header, 8 bits, 8000Hz, mono, empty length.
+		// bytes
+		// 	memory dynHeader = hex"524946460000000057415645666d74201000000001000100401f0000401f0000010008006461746100000000";
+		// assembly {
+		// 	// Top header length is length of data + 36 bytes.
+		// 	// More precisely: (4 + (8 + SubChunk1Size) + (8 + SubChunk2Size)).
+		// 	// Where SubChunk1Size is 16 (for PCM) and SubChunk2Size is the length of the data.
+		// 	let t := add(length, 36)
+		// 	// We write that length info in the top header (in little-endian).
+		// 	mstore8(add(dynHeader, 36), and(t, 0xFF))
+		// 	mstore8(add(dynHeader, 37), and(shr(8, t), 0xFF))
+		// 	mstore8(add(dynHeader, 38), and(shr(16, t), 0xFF))
+		// 	// We also write the exact data length just before the data stream as per WAV file format spec (in little-endian).
+		// 	mstore8(add(dynHeader, 72), and(length, 0xFF))
+		// 	mstore8(add(dynHeader, 73), and(shr(8, length), 0xFF))
+		// 	mstore8(add(dynHeader, 74), and(shr(16, length), 0xFF))
+		// }
+		// _generateWithWAVHeader(musicBytecode, start, length, dynHeader);
+		// return dynHeader;
 	}
 
 	/// @notice Generates raw 8 bits samples by executing the EVM bytecode provided (`musicBytecode`).
@@ -81,9 +100,22 @@ contract TheBleepMachine {
 
 		// Execute a call on the generated contract with the start and length specified.
 		// If the music bytecode behaves, it will create a buffer of length `length`.
-		(bool success, bytes memory buffer) = executor.staticcall(
-			abi.encode((start & 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF) | (length << 128))
-		);
+		// (bool success, bytes memory buffer) = executor.staticcall(
+		// 	abi.encode((start & 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF) | (length << 128))
+		// );
+		bytes memory buffer;
+		bool success;
+		assembly {
+			let argsPointer := mload(0x40)
+			mstore(0x40, add(argsPointer, length))
+			mstore(argsPointer, or(shl(128, shr(128, start)), shl(128, length)))
+
+			// success := staticcall(gas(), executor, argsPointer, 32, 0, 0)
+			// returndatacopy(add(buffer, 32), 0, length)
+			success := staticcall(gas(), executor, argsPointer, 32, add(buffer, 32), length)
+
+			mstore(buffer, length)
+		}
 
 		// If there is any error, we revert.
 		if (!success) {
@@ -103,6 +135,55 @@ contract TheBleepMachine {
 	// ----------------------------------------------------------------------------------------------------------------
 	// INTERNAL
 	// ----------------------------------------------------------------------------------------------------------------
+
+	function _generateWithWAVHeader(
+		bytes memory musicBytecode,
+		uint256 start,
+		uint256 length,
+		bytes memory buffer
+	) internal {
+		// We create the contract from the music bytecode.
+		address executor = _create(musicBytecode);
+
+		bool success;
+		assembly {
+			let argsPointer := add(mload(0x40), length)
+			mstore(0x40, argsPointer)
+			mstore(argsPointer, or(shl(128, shr(128, start)), shl(128, length)))
+			success := staticcall(gas(), executor, argsPointer, 32, 0, 0) // 76 = 44 (wav header length) + 32
+			returndatacopy(add(buffer, 76), 0, length)
+
+			mstore(buffer, add(44, length))
+		}
+
+		// If there is any error, we revert.
+		if (!success) {
+			revert MusicExecutionFailure();
+		}
+	}
+
+	function _generateWithoutHeader(
+		bytes memory musicBytecode,
+		uint256 start,
+		uint256 length
+	) internal returns (bytes memory buffer) {
+		// We create the contract from the music bytecode.
+		address executor = _create(musicBytecode);
+
+		buffer = new bytes(length);
+		bool success;
+		assembly {
+			let argsPointer := mload(0x40)
+			mstore(argsPointer, or(shl(128, shr(128, start)), shl(128, length)))
+			success := staticcall(gas(), executor, argsPointer, 32, add(buffer, 32), length) // 76 = 44 (wav header length) + 32
+			mstore(buffer, add(44, length))
+		}
+
+		// If there is any error, we revert.
+		if (!success) {
+			revert MusicExecutionFailure();
+		}
+	}
 
 	/// @dev Creates a new contract that generate the music from a given start offset and length.
 	/// @param musicBytecode the EVM bytecode the Bleep Machine will execute in a loop.
