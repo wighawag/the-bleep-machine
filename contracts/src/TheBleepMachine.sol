@@ -59,26 +59,26 @@ contract TheBleepMachine {
 		uint256 start,
 		uint256 length
 	) external returns (bytes memory) {
-		return _wrapInWAV(generate(musicBytecode, start, length));
-		// // WAV file header, 8 bits, 8000Hz, mono, empty length.
-		// bytes
-		// 	memory dynHeader = hex"524946460000000057415645666d74201000000001000100401f0000401f0000010008006461746100000000";
-		// assembly {
-		// 	// Top header length is length of data + 36 bytes.
-		// 	// More precisely: (4 + (8 + SubChunk1Size) + (8 + SubChunk2Size)).
-		// 	// Where SubChunk1Size is 16 (for PCM) and SubChunk2Size is the length of the data.
-		// 	let t := add(length, 36)
-		// 	// We write that length info in the top header (in little-endian).
-		// 	mstore8(add(dynHeader, 36), and(t, 0xFF))
-		// 	mstore8(add(dynHeader, 37), and(shr(8, t), 0xFF))
-		// 	mstore8(add(dynHeader, 38), and(shr(16, t), 0xFF))
-		// 	// We also write the exact data length just before the data stream as per WAV file format spec (in little-endian).
-		// 	mstore8(add(dynHeader, 72), and(length, 0xFF))
-		// 	mstore8(add(dynHeader, 73), and(shr(8, length), 0xFF))
-		// 	mstore8(add(dynHeader, 74), and(shr(16, length), 0xFF))
-		// }
-		// _generateWithWAVHeader(musicBytecode, start, length, dynHeader);
-		// return dynHeader;
+		// return _wrapInWAV(generate(musicBytecode, start, length));
+		// WAV file header, 8 bits, 8000Hz, mono, empty length.
+		bytes
+			memory dynHeader = hex"524946460000000057415645666d74201000000001000100401f0000401f0000010008006461746100000000";
+		assembly {
+			// Top header length is length of data + 36 bytes.
+			// More precisely: (4 + (8 + SubChunk1Size) + (8 + SubChunk2Size)).
+			// Where SubChunk1Size is 16 (for PCM) and SubChunk2Size is the length of the data.
+			let t := add(length, 36)
+			// We write that length info in the top header (in little-endian).
+			mstore8(add(dynHeader, 36), and(t, 0xFF))
+			mstore8(add(dynHeader, 37), and(shr(8, t), 0xFF))
+			mstore8(add(dynHeader, 38), and(shr(16, t), 0xFF))
+			// We also write the exact data length just before the data stream as per WAV file format spec (in little-endian).
+			mstore8(add(dynHeader, 72), and(length, 0xFF))
+			mstore8(add(dynHeader, 73), and(shr(8, length), 0xFF))
+			mstore8(add(dynHeader, 74), and(shr(16, length), 0xFF))
+		}
+		_generateWithWAVHeader(musicBytecode, start, length, dynHeader);
+		return dynHeader;
 	}
 
 	/// @notice Generates raw 8 bits samples by executing the EVM bytecode provided (`musicBytecode`).
@@ -94,42 +94,23 @@ contract TheBleepMachine {
 		bytes memory musicBytecode,
 		uint256 start,
 		uint256 length
-	) public returns (bytes memory) {
+	) external returns (bytes memory) {
 		// We create the contract from the music bytecode.
 		address executor = _create(musicBytecode);
 
-		// Execute a call on the generated contract with the start and length specified.
-		// If the music bytecode behaves, it will create a buffer of length `length`.
-		// (bool success, bytes memory buffer) = executor.staticcall(
-		// 	abi.encode((start & 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF) | (length << 128))
-		// );
-		bytes memory buffer;
+		bytes memory buffer = new bytes(length);
 		bool success;
 		assembly {
 			let argsPointer := mload(0x40)
-			mstore(0x40, add(argsPointer, length))
 			mstore(argsPointer, or(shl(128, shr(128, start)), shl(128, length)))
-
-			// success := staticcall(gas(), executor, argsPointer, 32, 0, 0)
-			// returndatacopy(add(buffer, 32), 0, length)
 			success := staticcall(gas(), executor, argsPointer, 32, add(buffer, 32), length)
-
-			mstore(buffer, length)
 		}
 
 		// If there is any error, we revert.
 		if (!success) {
 			revert MusicExecutionFailure();
 		}
-
 		return buffer;
-	}
-
-	/// @notice Generates a WAV file (8 bits, 8000Hz, mono) from contract's code at a specific address.
-	/// @param addr address of any contract. Most will generate noises.
-	/// @return WAV file (8 bits, 8000Hz, mono).
-	function listenTo(address addr) external view returns (bytes memory) {
-		return _wrapInWAV(addr.code);
 	}
 
 	// ----------------------------------------------------------------------------------------------------------------
@@ -149,33 +130,9 @@ contract TheBleepMachine {
 		assembly {
 			let argsPointer := add(mload(0x40), length)
 			mstore(0x40, argsPointer)
-			mstore(argsPointer, or(shl(128, shr(128, start)), shl(128, length)))
-			success := staticcall(gas(), executor, argsPointer, 32, 0, 0) // 76 = 44 (wav header length) + 32
-			returndatacopy(add(buffer, 76), 0, length)
+			mstore(argsPointer, or(shr(128, shl(128, start)), shl(128, length)))
+			success := staticcall(gas(), executor, argsPointer, 32, add(buffer, 76), length) // 76 = 44 (wav header length) + 32
 
-			mstore(buffer, add(44, length))
-		}
-
-		// If there is any error, we revert.
-		if (!success) {
-			revert MusicExecutionFailure();
-		}
-	}
-
-	function _generateWithoutHeader(
-		bytes memory musicBytecode,
-		uint256 start,
-		uint256 length
-	) internal returns (bytes memory buffer) {
-		// We create the contract from the music bytecode.
-		address executor = _create(musicBytecode);
-
-		buffer = new bytes(length);
-		bool success;
-		assembly {
-			let argsPointer := mload(0x40)
-			mstore(argsPointer, or(shl(128, shr(128, start)), shl(128, length)))
-			success := staticcall(gas(), executor, argsPointer, 32, add(buffer, 32), length) // 76 = 44 (wav header length) + 32
 			mstore(buffer, add(44, length))
 		}
 
@@ -232,35 +189,5 @@ contract TheBleepMachine {
 		if (executor == address(0)) {
 			revert MusicContractCreationFailure();
 		}
-	}
-
-	/// @dev Prepends the WAV file header for 8 bits samples at 8000Hz, mono sounds.
-	/// @param samples 8 bits samples representing 8000Hz, mono sounds.
-	/// @return WAV file (8 bits, 8000Hz, mono) made of the samples given.
-	function _wrapInWAV(bytes memory samples) internal pure returns (bytes memory) {
-		// WAV file header, 8 bits, 8000Hz, mono, empty length.
-		bytes
-			memory dynHeader = hex"524946460000000057415645666d74201000000001000100401f0000401f0000010008006461746100000000";
-
-		uint256 length = samples.length;
-		assembly {
-			// Top header length is length of data + 36 bytes.
-			// More precisely: (4 + (8 + SubChunk1Size) + (8 + SubChunk2Size)).
-			// Where SubChunk1Size is 16 (for PCM) and SubChunk2Size is the length of the data.
-			let t := add(length, 36)
-
-			// We write that length info in the top header (in little-endian).
-			mstore8(add(dynHeader, 36), and(t, 0xFF))
-			mstore8(add(dynHeader, 37), and(shr(8, t), 0xFF))
-			mstore8(add(dynHeader, 38), and(shr(16, t), 0xFF))
-
-			// We also write the exact data length just before the data stream as per WAV file format spec (in little-endian).
-			mstore8(add(dynHeader, 72), and(length, 0xFF))
-			mstore8(add(dynHeader, 73), and(shr(8, length), 0xFF))
-			mstore8(add(dynHeader, 74), and(shr(16, length), 0xFF))
-		}
-
-		// We concatenate the samples buffer we got from computing the music with the header above.
-		return bytes.concat(dynHeader, samples);
 	}
 }
