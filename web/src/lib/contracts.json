@@ -1,9 +1,9 @@
 {
-  "name": "goerli",
-  "chainId": "5",
+  "name": "localhost",
+  "chainId": "1337",
   "contracts": {
     "BleepBeats": {
-      "address": "0x364f0f6525F8A6CE4eff25ccFAc9A220a2070C5d",
+      "address": "0x5081a39b8A5f0E35a8D959395a630b68B74Dd30f",
       "abi": [
         {
           "inputs": [
@@ -872,7 +872,7 @@
       ]
     },
     "TheBleepMachine": {
-      "address": "0x852CCbC30056244D749b0FE76A458aF498B9E7c5",
+      "address": "0x334b2aEbA57B01c7cb9E8C78d843Ca642566CFEF",
       "abi": [
         {
           "inputs": [],
