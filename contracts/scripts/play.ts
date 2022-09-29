@@ -7,16 +7,21 @@ async function main() {
 
 	const TheBleepMachine = await ethers.getContract<TheBleepMachine>('TheBleepMachine', deployer);
 
-	const result = await TheBleepMachine.callStatic.WAV(
+	const WAV = await TheBleepMachine.callStatic.WAV('0x808060081c9160091c600e1661ca98901c600f160217', 60000, 100000);
+	console.log((WAV.length - 2) / 2);
+	console.log(WAV.slice(0, 128 + 64 + 64 + 2) + '...');
+
+	const SAMPLES = await TheBleepMachine.callStatic.generate(
 		'0x808060081c9160091c600e1661ca98901c600f160217',
-		60000,
+		0, //60000,
 		100000
 	);
-	console.log(result.length);
+	console.log((SAMPLES.length - 2) / 2);
+	console.log(SAMPLES.slice(0, 128 + 64 + 64 + 2) + '...');
 
 	const estimate = await TheBleepMachine.estimateGas.WAV(
 		'0x808060081c9160091c600e1661ca98901c600f160217',
-		60000,
+		0, //60000,
 		100000,
 		{gasLimit: 30000000}
 	);
@@ -39,7 +44,7 @@ async function main() {
 	// 	{from: deployer, log: true},
 	// 	'WAV',
 	// 	'0x808060081c9160091c600e1661ca98901c600f160217',
-	// 	60000,
+	// 	0, //60000,
 	// 	100000
 	// );
 	console.log({gas: receipt.gasUsed.toString()});

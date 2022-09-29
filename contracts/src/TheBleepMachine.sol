@@ -117,20 +117,20 @@ contract TheBleepMachine {
 		// It then ensures that the starting time is on top of the stack before the loop starts.
 		// The last `5b` is a JUMPDEST that will be jumped to at each iteration.
 
-		// 60ff9016604051806080019091905360010180604052602051600051600101806000529110601a57602051806060526020016060f3
+		// 60ff9016604051806060019091905360010180604052602051600051600101806000529110601a576020516060f3
 		// => Performs the loop and when it ends (start + time >= length), it copy the generated buffer in return data.
 
 		bytes memory executorCreation = bytes.concat(
 			hex"61006d600081600b8239f36000358060801b60801c806000529060801c60205260006040525b",
 			musicBytecode,
-			hex"60ff9016604051806080019091905360010180604052602051600051600101806000529110601a57602051806060526020016060f3"
+			hex"60ff9016604051806060019091905360010180604052602051600051600101806000529110601a576020516060f3"
 		);
 		uint256 len = musicBytecode.length;
 
 		// We make sure the generated code length can be encoded in the PUSH2.
 		uint256 codeLen;
 		unchecked {
-			codeLen = 0x50 + len;
+			codeLen = 0x4C + len;
 		}
 		if (codeLen > 0xFFFF) {
 			revert MusicByteCodeTooLarge();
