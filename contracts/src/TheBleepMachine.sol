@@ -62,7 +62,7 @@ contract TheBleepMachine {
 		// Create empty wav file of size `length` with proper header.
 		bytes memory wavFile = _wavFile(length);
 		// Generate the samples in it at offset 44 (header size)
-		_generate(musicBytecode, start, length, wavFile, 44);
+		_generateAndwrite(musicBytecode, start, length, wavFile, 44);
 		return wavFile;
 	}
 
@@ -83,7 +83,7 @@ contract TheBleepMachine {
 		// Create empty bytes array of exact length
 		bytes memory samples = new bytes(length);
 		// Generate the samples in it
-		_generate(musicBytecode, start, length, samples, 0);
+		_generateAndwrite(musicBytecode, start, length, samples, 0);
 		return samples;
 	}
 
@@ -107,7 +107,14 @@ contract TheBleepMachine {
 	// INTERNAL
 	// ----------------------------------------------------------------------------------------------------------------
 
-	function _generate(
+	/// @dev generate sample data by executing the EVM bytecode provided (`musicBytecode`) and write it in buffer.
+	/// It generates the data in the provided buffer (assumed to have the correct length already, see _wavFile)
+	/// @param musicBytecode the EVM bytecode the Bleep Machine will execute in a loop.
+	/// @param start sample offset at which the music starts.
+	/// @param length the number of samples to generate.
+	/// @param buffer buffer to write to
+	/// @param offset offset to start writing from
+	function _generateAndwrite(
 		bytes memory musicBytecode,
 		uint256 start,
 		uint256 length,
@@ -185,6 +192,9 @@ contract TheBleepMachine {
 		}
 	}
 
+	/// @dev generate an empty WAV file of length `length`
+	/// @param length the number of samples in the WAV file.
+	/// @return zeroed out WAV file with correct headers data.
 	function _wavFile(uint256 length) internal pure returns (bytes memory header) {
 		unchecked {
 			header = new bytes(length + 44);
