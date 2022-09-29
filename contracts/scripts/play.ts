@@ -7,7 +7,11 @@ async function main() {
 
 	const TheBleepMachine = await ethers.getContract<TheBleepMachine>('TheBleepMachine', deployer);
 
-	const WAV = await TheBleepMachine.callStatic.WAV('0x808060081c9160091c600e1661ca98901c600f160217', 60000, 100000);
+	const WAV = await TheBleepMachine.callStatic.WAV(
+		'0x808060081c9160091c600e1661ca98901c600f160217',
+		0 /*60000*/,
+		100000
+	);
 	console.log((WAV.length - 2) / 2);
 	console.log(WAV.slice(0, 128 + 64 + 64 + 2) + '...');
 
