@@ -3,7 +3,7 @@
   "chainId": "5",
   "contracts": {
     "BleepBeats": {
-      "address": "0xcC5163207F6d64962664520e592f414B5F91858f",
+      "address": "0x0380D49378fA1EdE8bd05D76545A5D7547378cfC",
       "abi": [
         {
           "inputs": [
@@ -872,7 +872,7 @@
       ]
     },
     "TheBleepMachine": {
-      "address": "0x334b2aEbA57B01c7cb9E8C78d843Ca642566CFEF",
+      "address": "0xC0484EBf1709B61d009f486955C59adEed9e4eA8",
       "abi": [
         {
           "inputs": [],

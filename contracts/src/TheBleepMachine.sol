@@ -15,9 +15,13 @@
 //
 // cast call --rpc-url https://rpc.bleeps.art machine.bleeps.eth "WAV(bytes,uint256,uint256)(bytes)" 0x808060081c9160091c600e1661ca98901c600f160217  0 100000 | xxd -r -p | aplay
 //
+// Note: this requires cast (see: https://github.com/foundry-rs) + aplay + xxd + a working ethereum rpc node (here: https://rpc.bleeps.art).
+//
 // This will execute the following formula: `t*(0xCA98>>(t>>9&14)&15)|t>>8` (taken from http://viznut.fi/texts-en/bytebeat_exploring_space.pdf)
 //
-// Note: this requires cast (see: https://github.com/foundry-rs) + aplay + xxd + a working ethereum rpc node.
+// It will be executed 100,000 times with t starting at 0 and increasing by one on each iteration.
+//
+// This will produce a WAV file of 100,000 samples (8 bits, mono) at 8000 hz (or 12.5 seconds)
 
 // Copyright (C) 2022 Ronan Sandford
 
