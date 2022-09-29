@@ -21,7 +21,7 @@
 //
 // It will be executed 100,000 times with t starting at 0 and increasing by one on each iteration.
 //
-// This will produce a WAV file of 100,000 samples (8 bits, mono) at 8000 hz (or 12.5 seconds)
+// This will produce a WAV file of 100,000 samples (8 bits, mono) at 8000 hz (or 12.5 seconds).
 
 // Copyright (C) 2022 Ronan Sandford
 
@@ -150,7 +150,7 @@ contract TheBleepMachine {
 	/// @dev Creates a new contract that generate the music from a given start offset and length.
 	/// @param musicBytecode the EVM bytecode the Bleep Machine will execute in a loop.
 	/// @return executor address of the contract that will generate samples when executed.
-	function _create(bytes memory musicBytecode) public returns (address executor) {
+	function _create(bytes memory musicBytecode) internal returns (address executor) {
 		// This code generates a contract creation-code that loops over the provided `musicBytecode`.
 
 		// 61006d600081600b8239f3 => simply copy the code after it.
