@@ -51,6 +51,7 @@ contract TheBleepMachine {
 	/// Such offset starts at `start` and is increased by one for each iteration.
 	/// The code is expected to provide an 8 bits sample as the only element in the stack at the end of each iteration.
 	/// The loop is executed `length` times to generate `length` samples which compose the music generated.
+	/// @param musicBytecode the EVM bytecode that the Bleep Machine will execute in a loop.
 	/// @param start sample offset at which the music starts.
 	/// @param length the number of samples to generate.
 	/// @return WAV file (8 bits, 8000Hz, mono).
@@ -151,16 +152,15 @@ contract TheBleepMachine {
 		// 61006d600081600b8239f3 => simply copy the code after it.
 		// Note that 006d will is overwritten below with the new length
 
-		// 6000358060801b60801c806000529060801c60205260006040525b => prepare the data
+		// 6000358060801b60801c806000529060801c6020525b => prepare the data
 		// In particular it parses the call-data to extract the start and length parameters (Stored in 128bit each).
 		// It then ensures that the starting time is on top of the stack before the loop starts.
 		// The last `5b` is a JUMPDEST that will be jumped to at each iteration.
 
-		// 60ff9016604051806060019091905360010180604052602051600051600101806000529110601a576020516060f3
+		// 6040519060ff16816060015360010180604052600051810190602051116015576020516060f3
 		// => Performs the loop and when it ends (start + time >= length), it copy the generated buffer in return data.
 
 		bytes memory executorCreation = bytes.concat(
-			//
 			hex"61006d600081600b8239f36000358060801b60801c806000529060801c6020525b",
 			musicBytecode,
 			hex"6040519060ff16816060015360010180604052600051810190602051116015576020516060f3"
