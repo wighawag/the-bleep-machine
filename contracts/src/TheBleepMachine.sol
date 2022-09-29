@@ -194,29 +194,29 @@ contract TheBleepMachine {
 
 	/// @dev generate an empty WAV file of length `length`
 	/// @param length the number of samples in the WAV file.
-	/// @return zeroed out WAV file with correct headers data.
-	function _wavFile(uint256 length) internal pure returns (bytes memory header) {
+	/// @return wavFile : zeroed out WAV file with correct headers data.
+	function _wavFile(uint256 length) internal pure returns (bytes memory wavFile) {
 		unchecked {
-			header = new bytes(length + 44);
+			wavFile = new bytes(length + 44); // 44 is the header size
 		}
 
 		assembly {
 			// WAV file header, 8 bits, 8000Hz, mono, empty length.
-			mstore(add(header, 32), 0x524946460000000057415645666d74201000000001000100401f0000401f0000)
-			mstore(add(header, 64), 0x0100080064617461000000000000000000000000000000000000000000000000)
+			mstore(add(wavFile, 32), 0x524946460000000057415645666d74201000000001000100401f0000401f0000)
+			mstore(add(wavFile, 64), 0x0100080064617461000000000000000000000000000000000000000000000000)
 
 			// Top header length is length of data + 36 bytes.
 			// More precisely: (4 + (8 + SubChunk1Size) + (8 + SubChunk2Size)).
 			// Where SubChunk1Size is 16 (for PCM) and SubChunk2Size is the length of the data.
 			let t := add(length, 36)
 			// We write that length info in the top header (in little-endian).
-			mstore8(add(header, 36), and(t, 0xFF))
-			mstore8(add(header, 37), and(shr(8, t), 0xFF))
-			mstore8(add(header, 38), and(shr(16, t), 0xFF))
+			mstore8(add(wavFile, 36), and(t, 0xFF))
+			mstore8(add(wavFile, 37), and(shr(8, t), 0xFF))
+			mstore8(add(wavFile, 38), and(shr(16, t), 0xFF))
 			// We also write the exact data length just before the data stream as per WAV file format spec (in little-endian).
-			mstore8(add(header, 72), and(length, 0xFF))
-			mstore8(add(header, 73), and(shr(8, length), 0xFF))
-			mstore8(add(header, 74), and(shr(16, length), 0xFF))
+			mstore8(add(wavFile, 72), and(length, 0xFF))
+			mstore8(add(wavFile, 73), and(shr(8, length), 0xFF))
+			mstore8(add(wavFile, 74), and(shr(16, length), 0xFF))
 		}
 	}
 }
