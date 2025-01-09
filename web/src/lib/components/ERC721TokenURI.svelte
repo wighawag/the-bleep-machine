@@ -59,7 +59,7 @@
 
 	$: {
 		if (
-			($contractsInfos.contracts.AlgorithmicMusic && $wallet.state === 'Ready') ||
+			($contractsInfos.contracts.TheBleepMachine && $wallet.state === 'Ready') ||
 			$fallback.state === 'Ready' ||
 			$chain.state === 'Ready'
 		) {

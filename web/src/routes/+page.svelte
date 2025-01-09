@@ -8,6 +8,7 @@
 	import { generateBytecode } from '$lib/asm/evm-parser';
 	// import { assemble, parse } from '@ethersproject/asm'; // Does nto work in browser
 
+	let error: string | undefined;
 	let music: string | undefined;
 	let algorithm: string = `DUP1
 PUSH1 0a
@@ -18,11 +19,17 @@ MUL
 `;
 	let musicBytecode: string | undefined;
 	async function play() {
-		if (algorithm.startsWith('ASM\n')) {
-			const ast = (window as any).asm.parse(algorithm.slice(4));
-			musicBytecode = await (window as any).asm.assemble(ast, {});
-		} else {
-			musicBytecode = generateBytecode(algorithm);
+		try {
+			if (algorithm.startsWith('ASM\n')) {
+				const ast = (window as any).asm.parse(algorithm.slice(4));
+				musicBytecode = await (window as any).asm.assemble(ast, {});
+			} else {
+				musicBytecode = generateBytecode(algorithm);
+			}
+		} catch (err: any) {
+			error = err.message;
+			music = undefined;
+			throw err;
 		}
 
 		console.log({ musicBytecode });
@@ -30,8 +37,8 @@ MUL
 		// const provider = new JsonRpcProvider('http://localhost:8545');
 		// const contracts = get(contractsInfos);
 		// const contract = new Contract(
-		// 	contracts.contracts.AlgorithmicMusic.address,
-		// 	contracts.contracts.AlgorithmicMusic.abi,
+		// 	contracts.contracts.BleepBeats.address,
+		// 	contracts.contracts.BleepBeats.abi,
 		// 	provider
 		// );
 		// const result = await contract.callStatic.play(musicBytecode, 0, 128003);
@@ -40,32 +47,42 @@ MUL
 		// const metadata = await fetch(result).then((v) => v.json());
 		// music = metadata.animation_url;
 
-		if (!wallet.contracts && fallback.provider) {
-			const AlgorithmMusic = $contractsInfos.contracts.AlgorithmicMusic;
-			const contract = new Contract(AlgorithmMusic.address, AlgorithmMusic.abi, fallback.provider);
-			const result = await contract.callStatic.play(musicBytecode, 0, 100000, {
-				// gasLimit: 49000000
-			});
-			music = result;
-		} else {
-			await flow.execute(async (contracts) => {
-				const result = await contracts.AlgorithmicMusic.callStatic.play(musicBytecode, 0, 100000, {
+		try {
+			if (!wallet.contracts && fallback.provider) {
+				const BleepBeats = $contractsInfos.contracts.BleepBeats;
+				const contract = new Contract(BleepBeats.address, BleepBeats.abi, fallback.provider);
+				const result = await contract.callStatic.play(musicBytecode, 0, 100000, {
 					// gasLimit: 49000000
 				});
 				music = result;
-				// console.log(result);
-			});
+			} else {
+				await flow.execute(async (contracts) => {
+					const result = await contracts.BleepBeats.callStatic.play(musicBytecode, 0, 100000, {
+						// gasLimit: 49000000
+					});
+					music = result;
+					// console.log(result);
+				});
+			}
+		} catch (err) {
+			error = err.message;
+			music = undefined;
+			throw err;
 		}
 	}
 
 	async function mint() {
 		if (wallet.contracts) {
-			wallet.contracts.AlgorithmicMusic.mint($wallet.address, musicBytecode);
+			wallet.contracts.BleepBeats.mint($wallet.address, musicBytecode);
 		} else {
 			await flow.execute(async (contracts) => {
-				contracts.AlgorithmicMusic.mint($wallet.address, musicBytecode);
+				contracts.BleepBeats.mint($wallet.address, musicBytecode);
 			});
 		}
+	}
+
+	function volume(node: HTMLAudioElement) {
+		node.volume = 0.2;
 	}
 </script>
 
@@ -80,7 +97,18 @@ MUL
 		>
 		<p />
 
+		<button style="margin-bottom: 1rem;" on:click={() => play()}>generate</button><br />
+
+		{#if error}
+			<p>
+				{error}
+			</p>
+		{/if}
+
 		{#if music}
+			<audio use:volume src={music} autoplay controls />
+		{/if}
+		<!-- {#if music}
 			<audio src={music} autoplay controls />
 			<br />
 			<button on:click={() => mint()}>mint (on goerli)</button>
@@ -102,7 +130,7 @@ MUL
 				</p>
 			{/if}
 			<button on:click={() => play()}>play</button>
-		{/if}
+		{/if} -->
 	</div>
 </WalletAccess>
 

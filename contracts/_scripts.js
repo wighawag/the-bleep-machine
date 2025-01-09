@@ -85,21 +85,21 @@ async function performAction(rawArgs) {
 			`cross-env HARDHAT_DEPLOY_LOG=true HARDHAT_NETWORK=${fixedArgs[0]} ts-node --files ${filepath} ${extra.join(' ')}`
 		);
 	} else if (firstArg === 'geth') {
-		await execute(`docker-compose down -v --remove-orphans`);
-		execute(`docker-compose up`, 'geth.log', {shell: false});
+		await execute(`docker compose down -v --remove-orphans`);
+		execute(`docker compose up`, 'geth.log', {shell: false});
 		await execute(`wait-on tcp:localhost:8545`);
 		await performAction([`run`, 'localhost', 'scripts/fundingFromCoinbase.ts']);
 	} else if (firstArg === 'geth:stop') {
-		await execute(`docker-compose down -v --remove-orphans`);
+		await execute(`docker compose down -v --remove-orphans`);
 	} else if (firstArg === 'geth:dev') {
 		try {
-			await execute(`docker-compose down -v --remove-orphans`).catch((e) => console.log(e));
+			await execute(`docker compose down -v --remove-orphans`).catch((e) => console.log(e));
 		} catch (err) {
 			console.error(`down error`, err);
 		}
 
 		try {
-			execute(`docker-compose up`, 'geth.log', {shell: false}).catch((e) => console.log(e));
+			execute(`docker compose up`, 'geth.log', {shell: false}).catch((e) => console.log(e));
 		} catch (err) {
 			console.error(`up error`, err);
 		}
@@ -114,13 +114,13 @@ async function performAction(rawArgs) {
 		await execute(`npm run local:dev`);
 	} else if (firstArg === 'geth:watch') {
 		try {
-			await execute(`docker-compose down -v --remove-orphans`).catch((e) => console.log(e));
+			await execute(`docker compose down -v --remove-orphans`).catch((e) => console.log(e));
 		} catch (err) {
 			console.error(`down error`, err);
 		}
 
 		try {
-			execute(`docker-compose up`, 'geth.log', {shell: false}).catch((e) => console.log(e));
+			execute(`docker compose up`, 'geth.log', {shell: false}).catch((e) => console.log(e));
 		} catch (err) {
 			console.error(`up error`, err);
 		}

@@ -60,6 +60,10 @@ const config: HardhatUserConfig = {
 		goerli: {
 			url: node_url('goerli'),
 			accounts: accounts('goerli')
+		},
+		sepolia: {
+			url: node_url('sepolia'),
+			accounts: accounts('sepolia')
 		}
 	}),
 	paths: {
